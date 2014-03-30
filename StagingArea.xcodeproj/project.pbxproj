@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D50C4DC018E7EEB80032BD35 /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = D50C4DBF18E7EEB80032BD35 /* Stage.m */; };
 		D571540A18E2B80500037224 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540918E2B80500037224 /* Foundation.framework */; };
 		D571540C18E2B80500037224 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540B18E2B80500037224 /* CoreGraphics.framework */; };
 		D571540E18E2B80500037224 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540D18E2B80500037224 /* UIKit.framework */; };
@@ -22,6 +23,8 @@
 		D571542E18E2B80500037224 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540D18E2B80500037224 /* UIKit.framework */; };
 		D571543618E2B80500037224 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D571543418E2B80500037224 /* InfoPlist.strings */; };
 		D571543818E2B80500037224 /* StagingAreaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D571543718E2B80500037224 /* StagingAreaTests.m */; };
+		D5C4CEB418E3FB980011FA00 /* Geodesic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5C4CEB318E3FB980011FA00 /* Geodesic.cpp */; };
+		D5C4CEB718E416240011FA00 /* Polyhedron.mm in Sources */ = {isa = PBXBuildFile; fileRef = D5C4CEB618E416240011FA00 /* Polyhedron.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D50C4DBE18E7EEB80032BD35 /* Stage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stage.h; sourceTree = "<group>"; };
+		D50C4DBF18E7EEB80032BD35 /* Stage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stage.m; sourceTree = "<group>"; };
 		D571540618E2B80500037224 /* StagingArea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StagingArea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D571540918E2B80500037224 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D571540B18E2B80500037224 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -55,6 +60,10 @@
 		D571543318E2B80500037224 /* StagingAreaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StagingAreaTests-Info.plist"; sourceTree = "<group>"; };
 		D571543518E2B80500037224 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D571543718E2B80500037224 /* StagingAreaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StagingAreaTests.m; sourceTree = "<group>"; };
+		D5C4CEB218E3FB980011FA00 /* Geodesic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geodesic.h; sourceTree = "<group>"; };
+		D5C4CEB318E3FB980011FA00 /* Geodesic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Geodesic.cpp; sourceTree = "<group>"; };
+		D5C4CEB518E416240011FA00 /* Polyhedron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Polyhedron.h; sourceTree = "<group>"; };
+		D5C4CEB618E416240011FA00 /* Polyhedron.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Polyhedron.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +129,12 @@
 				D571541E18E2B80500037224 /* Main_iPad.storyboard */,
 				D571542118E2B80500037224 /* ViewController.h */,
 				D571542218E2B80500037224 /* ViewController.m */,
+				D50C4DBE18E7EEB80032BD35 /* Stage.h */,
+				D50C4DBF18E7EEB80032BD35 /* Stage.m */,
+				D5C4CEB518E416240011FA00 /* Polyhedron.h */,
+				D5C4CEB618E416240011FA00 /* Polyhedron.mm */,
+				D5C4CEB218E3FB980011FA00 /* Geodesic.h */,
+				D5C4CEB318E3FB980011FA00 /* Geodesic.cpp */,
 				D571542418E2B80500037224 /* Images.xcassets */,
 				D571541018E2B80500037224 /* Supporting Files */,
 			);
@@ -253,8 +268,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D50C4DC018E7EEB80032BD35 /* Stage.m in Sources */,
 				D571542318E2B80500037224 /* ViewController.m in Sources */,
+				D5C4CEB718E416240011FA00 /* Polyhedron.mm in Sources */,
 				D571541A18E2B80500037224 /* AppDelegate.m in Sources */,
+				D5C4CEB418E3FB980011FA00 /* Geodesic.cpp in Sources */,
 				D571541618E2B80500037224 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,6 +488,7 @@
 				D571543D18E2B80500037224 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D571543E18E2B80500037224 /* Build configuration list for PBXNativeTarget "StagingAreaTests" */ = {
 			isa = XCConfigurationList;
@@ -478,6 +497,7 @@
 				D571544018E2B80500037224 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
