@@ -38,14 +38,9 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [self initGL];
     stage = [[Stage alloc] init];
-}
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect{
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    
-    [stage draw];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
+    [tap setNumberOfTapsRequired:1];
+    [self.view addGestureRecognizer:tap];
 }
 
 -(void)initGL{
@@ -54,7 +49,7 @@
     GLKView *view = (GLKView *)self.view;
     view.context = context;
 
-    fieldOfView = 75;
+    fieldOfView = 25;
     aspectRatio = (float)[[UIScreen mainScreen] bounds].size.width / (float)[[UIScreen mainScreen] bounds].size.height;
     if([UIApplication sharedApplication].statusBarOrientation > 2)
         aspectRatio = 1/aspectRatio;
@@ -68,8 +63,21 @@
     glViewport(0, 0, [[UIScreen mainScreen] bounds].size.height, [[UIScreen mainScreen] bounds].size.width);
 
     glMatrixMode(GL_MODELVIEW);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glEnable(GL_DEPTH_TEST);
 }
 
+-(void) tapHandler:(UIGestureRecognizer*)sender{
+    [stage loadRandom];
+}
+
+- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect{
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    [stage draw];
+}
 
 - (void)tearDownGL{
     [EAGLContext setCurrentContext:context];
@@ -77,27 +85,6 @@
 //    glDeleteBuffers(1, &_vertexBuffer);
 //    glDeleteVertexArraysOES(1, &_vertexArray);
     effect = nil;
-}
-
--(void)enterOrthographic{
-    glDisable(GL_DEPTH_TEST);
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrthof(0, [[UIScreen mainScreen] bounds].size.height, 0, [[UIScreen mainScreen] bounds].size.width, -5, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-}
-
--(void)exitOrthographic{
-    glEnable(GL_DEPTH_TEST);
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 - (void)didReceiveMemoryWarning

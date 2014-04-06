@@ -11,5 +11,8 @@
 @interface Stage : NSObject
 
 -(void) draw;
+-(void) loadRandom;
+
+-(NSString*)makeOBJ;
 
 @end
