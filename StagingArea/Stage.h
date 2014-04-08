@@ -10,9 +10,8 @@
 
 @interface Stage : NSObject
 
+-(id) init; // init Stage after EAGL context has been setup
 -(void) draw;
--(void) loadRandom;
-
--(NSString*)makeOBJ;
+-(void) loadRandomGeodesic;
 
 @end
