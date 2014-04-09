@@ -1,16 +1,9 @@
-//
-//  Camera.cpp
-//  StagingArea
-//
-//  Created by Robby on 4/6/14.
-//  Copyright (c) 2014 Robby Kraft. All rights reserved.
-//
-///////////////////////////
 // with help from MESA 3D project
 //
 
 #include "Camera.h"
 #include <math.h>
+#include "noise.c"
 
  void normalize(float v[3]){
     float r = sqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
@@ -23,11 +16,23 @@
     result[2] = v1[0]*v2[1] - v1[1]*v2[0];
 }
 
+Camera::Camera(){
+    up[X] = 0.0f;   up[Y] = 1.0f;   up[Z] = 0.0f;
+}
+void Camera::setPosition(GLfloat pX, GLfloat pY, GLfloat pZ){
+    position[X] = pX;   position[Y] = pY;   position[Z] = pZ;
+}
+void Camera::setFocus(GLfloat fX, GLfloat fY, GLfloat fZ){
+    focus[X] = fX;  focus[Y] = fY;  focus[Z] = fZ;
+}
+void Camera::setUp(GLfloat uX, GLfloat uY, GLfloat uZ){
+    up[X] = uX;     up[Y] = uY;     up[Z] = uZ;
+}
+
 void Camera::frameShot(){
     if(animation != NULL)
-        animation();
-    animationUpAndDownAndAround();
-    focus[X] = focus[Y] = focus[Z] = 0.0f;
+        (this->*animation)();
+
     forward[0] = focus[X] - position[X];
     forward[1] = focus[Y] - position[Y];
     forward[2] = focus[Z] - position[Z];
@@ -47,12 +52,47 @@ void Camera::frameShot(){
 //    logOrientation();
 }
 
+void Camera::setAnimation(){
+    // each animation has a function which relates an input position/focus/up
+    // to a set of starting conditions for the variables in the loop
+}
+
+
+// is this going to be a problem that frameNum is static with the same name?
 void Camera::animationUpAndDownAndAround(){
-    static float frameNum;
+    static int frameNum;
     frameNum++;
     position[X] = 1.618*sinf(frameNum/100.0);
     position[Z] = 1.618*cosf(frameNum/100.0);
     position[Y] = 3*sinf(frameNum/33.0);
+}
+
+void Camera::animationPerlinNoiseRotateAround(){
+    static int frameNum;
+    frameNum++;
+    static float animAngleVelocity = 0;
+    static float animAngle;
+    animAngleVelocity = noise1(frameNum/75.0) / 2.0;
+    animAngle += animAngleVelocity;
+    position[X] = 1.75*sinf(animAngle);
+    position[Z] = 1.75*cosf(animAngle);
+    position[Y] = 3*noise1(frameNum/33.0);
+}
+
+void Camera::animationDollyZoom(){
+    static float dollyFocus[3] = {0.0f, 0.0f, 0.0f};
+    static int frameNum;
+    frameNum++;
+//    position[X] = 1.618*sinf(frameNum2/100.0);
+    position[Z] = 1.618*cosf(frameNum/50.0) + 2.3;
+//    position[Y] = sinf(frameNum2/15.0);
+    float width = 1;
+    float distance = sqrtf(pow(position[X]-dollyFocus[X], 2) +
+                           pow(position[Y]-dollyFocus[Y], 2) +
+                           pow(position[Z]-dollyFocus[Z], 2) );
+    float fov = 2*atan( width /(2*distance) );
+    fov = fov / 3.1415926 * 180.0;
+    setFieldOfView(fov);
 }
 
 void Camera::logOrientation(){
@@ -87,16 +127,6 @@ void Camera::rebuildProjectionMatrix(){
     glLoadIdentity();
     GLfloat frustum = Z_NEAR * tanf(_fieldOfView*0.00872664625997);  // pi / 180 / 2
     glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
-    glViewport(0, 0, _width, _height);
+//    glViewport(0, 0, _width, _height);
     glMatrixMode(GL_MODELVIEW);
 }
-
-///////////////////////////
-//
-// from the MESA 3D project
-
-
-// end of MESA 3D
-//
-///////////////////////////
-

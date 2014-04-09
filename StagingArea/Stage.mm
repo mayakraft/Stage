@@ -1,11 +1,3 @@
-//
-//  Stage.m
-//  StagingArea
-//
-//  Created by Robby Kraft on 3/29/14.
-//  Copyright (c) 2014 Robby Kraft. All rights reserved.
-//
-
 #import <OpenGLES/ES1/gl.h>
 #import "Stage.h"
 
@@ -20,6 +12,11 @@
     GeodesicMesh polyhedron;
     Geodesic geodesic;
     Camera camera;
+    GLfloat backgroundColor[4];
+    
+    GLfloat *cameraPosition;
+    GLfloat *cameraFocus;
+    GLfloat *cameraUp;
 }
 
 @end
@@ -29,31 +26,27 @@
 -(id)init{
     self = [super init];
     if(self){
-//        [self initLighting];
-        camera.position[0] = 0.0f;
-        camera.position[1] = 0.0f;
-        camera.position[2] = 2.0f;
-        camera.focus[0] = 0.0f;
-        camera.focus[1] = 0.0f;
-        camera.focus[2] = 0.0f;
-        camera.up[0] = 0.0f;
-        camera.up[1] = 1.0f;
-        camera.up[2] = 0.0f;
-
+        // lights
+        backgroundColor[0] = backgroundColor[1] = backgroundColor[2] = backgroundColor[3] = 1.0f;
+        
+//        [self lightsFlatBlackOnWhite];
+        [self lightsRainbow];
+//        [self lightsSpotlightNoir];
+        
+        [self customOpenGL];
+        // camera
         float aspectRatio = (float)[[UIScreen mainScreen] bounds].size.width / (float)[[UIScreen mainScreen] bounds].size.height;
         if([UIApplication sharedApplication].statusBarOrientation > 2)
             aspectRatio = 1/aspectRatio;
-        printf("ASPR %f",aspectRatio);
+        printf("AspectRatio %f\n",aspectRatio);
         camera.setAspectRatio(aspectRatio);
         camera.setFieldOfView(25);
         camera.setFrame([[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
-
-        [self customOpenGL];
-        
+        camera.setPosition(0.0f, 0.0f, 2.0f);
+        camera.setFocus(0.0f, 0.0f, 0.0f);
+        camera.animation = &Camera::animationPerlinNoiseRotateAround;  //top of draw loop
+        // action
         [self loadRandomGeodesic];
-        
-//        camera.animation = camera.animationUpAndDownAndAround;
-        
     }
     return self;
 }
@@ -63,6 +56,52 @@
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
     glEnable(GL_DEPTH_TEST);
+}
+
+-(void)lightsRainbow{
+    backgroundColor[0] = backgroundColor[1] = backgroundColor[2] = 0.0f;
+    backgroundColor[3] = 1.0f;
+    GLfloat white[] = {.3f, .3f, .3f, 1.0f};
+    GLfloat blue[] = {0.0f, 0.0f, 1.0f, 1.0f};
+    GLfloat green[] = {0.0f, 1.0f, 0.0f, 1.0f};
+    GLfloat red[] = {1.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat pos1[] = {0.0f, 10.0f, 0.0f, 1.0f};
+    GLfloat pos2[] = {-10.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat pos3[] = {10.0f, 0.0f,  0.0f, 1.0f};
+    
+    glLightfv(GL_LIGHT0, GL_AMBIENT, white);
+    glLightfv(GL_LIGHT1, GL_POSITION, pos1);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, blue);
+    glLightfv(GL_LIGHT2, GL_POSITION, pos2);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, red);
+    glLightfv(GL_LIGHT3, GL_POSITION, pos3);
+    glLightfv(GL_LIGHT3, GL_DIFFUSE, green);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, white);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
+    glEnable(GL_LIGHT2);
+    glEnable(GL_LIGHT3);
+}
+
+-(void) lightsSpotlightNoir{
+    backgroundColor[0] = backgroundColor[1] = backgroundColor[2] = 0.0f;
+    backgroundColor[3] = 1.0f;
+    GLfloat white[] = {.3f, .3f, .3f, 1.0f};
+    GLfloat pos1[] = {0.0f, 10.0f, 0.0f, 1.0f};
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+    glLightfv(GL_LIGHT0, GL_POSITION, pos1);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, white);
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+}
+
+-(void) lightsFlatBlackOnWhite{
+    backgroundColor[0] = backgroundColor[1] = backgroundColor[2] = backgroundColor[3] = 1.0f;
+    glDisable(GL_LIGHTING);
 }
 
 -(void)loadRandomGeodesic{
@@ -90,7 +129,7 @@
     glViewport(0, 0, [[UIScreen mainScreen] bounds].size.height, [[UIScreen mainScreen] bounds].size.width);
 }
 
--(NSString*)makeOBJ{
+-(NSString*)iOSSaveOBJ{
     char *obj;
     int length = 0;
     geodesic.OBJ(obj, length);
@@ -101,24 +140,11 @@
 }
 
 -(void)draw{
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    static const GLfloat XAxis[] = {-1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f};
-    static const GLfloat YAxis[] = {0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
-    static const GLfloat ZAxis[] = {0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f};
-    
-    glPushMatrix();
+
+    glPushMatrix();    
     camera.frameShot();
-    
-    glLineWidth(1.0);
-    glColor4f(0.5, 0.5, 1.0, 1.0);
-    glVertexPointer(3, GL_FLOAT, 0, XAxis);
-    glDrawArrays(GL_LINE_LOOP, 0, 2);
-    glVertexPointer(3, GL_FLOAT, 0, YAxis);
-    glDrawArrays(GL_LINE_LOOP, 0, 2);
-    glVertexPointer(3, GL_FLOAT, 0, ZAxis);
-    glDrawArrays(GL_LINE_LOOP, 0, 2);
     
     glScalef(0.25, 0.25, 0.25);
     polyhedron.draw();
@@ -171,33 +197,6 @@
 //
 //        [self exitOrthographic];
 //    }
-
-
--(void)initLighting{
-    GLfloat white[] = {.3f, .3f, .3f, 1.0f};
-    GLfloat blue[] = {0.0f, 0.0f, 1.0f, 1.0f};
-    GLfloat green[] = {0.0f, 1.0f, 0.0f, 1.0f};
-    GLfloat red[] = {1.0f, 0.0f, 0.0f, 1.0f};
-    GLfloat pos1[] = {0.0f, 10.0f, 0.0f, 1.0f};
-    GLfloat pos2[] = {-10.0f, 0.0f, 0.0f, 1.0f};
-    GLfloat pos3[] = {10.0f, 0.0f,  0.0f, 1.0f};
-    
-    glLightfv(GL_LIGHT0, GL_AMBIENT, white);
-    glLightfv(GL_LIGHT1, GL_POSITION, pos1);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, blue);
-    glLightfv(GL_LIGHT2, GL_POSITION, pos2);
-    glLightfv(GL_LIGHT2, GL_DIFFUSE, red);
-    glLightfv(GL_LIGHT3, GL_POSITION, pos3);
-    glLightfv(GL_LIGHT3, GL_DIFFUSE, green);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, white);
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, blue);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-//    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-    glEnable(GL_LIGHT2);
-    glEnable(GL_LIGHT3);
-}
 
 -(void)enterOrthographic{
     glDisable(GL_DEPTH_TEST);

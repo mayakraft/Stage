@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D50C4DC018E7EEB80032BD35 /* Stage.mm in Sources */ = {isa = PBXBuildFile; fileRef = D50C4DBF18E7EEB80032BD35 /* Stage.mm */; };
+		D539CFA318F516BE00EFFF19 /* noise.c in Sources */ = {isa = PBXBuildFile; fileRef = D539CFA218F516BE00EFFF19 /* noise.c */; };
 		D571540A18E2B80500037224 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540918E2B80500037224 /* Foundation.framework */; };
 		D571540C18E2B80500037224 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540B18E2B80500037224 /* CoreGraphics.framework */; };
 		D571540E18E2B80500037224 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540D18E2B80500037224 /* UIKit.framework */; };
@@ -41,6 +42,8 @@
 /* Begin PBXFileReference section */
 		D50C4DBE18E7EEB80032BD35 /* Stage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stage.h; sourceTree = "<group>"; };
 		D50C4DBF18E7EEB80032BD35 /* Stage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Stage.mm; sourceTree = "<group>"; };
+		D539CFA118F516B700EFFF19 /* noise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise.h; sourceTree = "<group>"; };
+		D539CFA218F516BE00EFFF19 /* noise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = noise.c; sourceTree = "<group>"; };
 		D571540618E2B80500037224 /* StagingArea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StagingArea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D571540918E2B80500037224 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D571540B18E2B80500037224 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -136,6 +139,8 @@
 				D50C4DBF18E7EEB80032BD35 /* Stage.mm */,
 				D5B98EEB18F244E200671557 /* Camera.h */,
 				D5B98EEA18F244E200671557 /* Camera.cpp */,
+				D539CFA118F516B700EFFF19 /* noise.h */,
+				D539CFA218F516BE00EFFF19 /* noise.c */,
 				D5D1B28A18EEB7BF00894526 /* GeodesicMesh.h */,
 				D5D1B28918EEB7BF00894526 /* GeodesicMesh.cpp */,
 				D5D1B28818EEB7BF00894526 /* Geodesic.h */,
@@ -276,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D539CFA318F516BE00EFFF19 /* noise.c in Sources */,
 				D50C4DC018E7EEB80032BD35 /* Stage.mm in Sources */,
 				D5D1B28B18EEB7BF00894526 /* Geodesic.cpp in Sources */,
 				D5B98EEC18F244E200671557 /* Camera.cpp in Sources */,
