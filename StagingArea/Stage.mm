@@ -1,12 +1,16 @@
 #import <OpenGLES/ES1/gl.h>
 #import "Stage.h"
-
-#import "GeodesicMesh.h"
-#import "Geodesic.h"
 #import "Camera.h"
 
 // attach the lights to the orientation matrix
 // so the rainbow always hits from a visible angle
+//
+//  make:
+//    obj -> openGL file
+//    openGL -> obj file
+
+#import "GeodesicMesh.h"
+#import "Geodesic.h"
 
 @interface Stage (){
     GeodesicMesh polyhedron;
@@ -104,16 +108,6 @@
     glDisable(GL_LIGHTING);
 }
 
--(void)loadRandomGeodesic{
-    if(arc4random()%3 == 0)
-        geodesic.tetrahedron(arc4random()%12+1);
-    else if(arc4random()%2 == 0)
-        geodesic.octahedron(arc4random()%12+1);
-    else
-        geodesic.icosahedron(arc4random()%12+1);
-    polyhedron.load(&geodesic);
-}
-
 -(void) tableTopPerspective{
     float fieldOfView = 25;
     float aspectRatio = (float)[[UIScreen mainScreen] bounds].size.width / (float)[[UIScreen mainScreen] bounds].size.height;
@@ -129,6 +123,8 @@
     glViewport(0, 0, [[UIScreen mainScreen] bounds].size.height, [[UIScreen mainScreen] bounds].size.width);
 }
 
+// GEODESIC on stage
+
 -(NSString*)iOSSaveOBJ{
     char *obj;
     int length = 0;
@@ -137,6 +133,16 @@
 //    NSLog(@"OBJ (%d)\n%@",length,objString);
 //    delete obj;
     return objString;
+}
+
+-(void)loadRandomGeodesic{
+    if(arc4random()%3 == 0)
+        geodesic.tetrahedron(arc4random()%12+1);
+    else if(arc4random()%2 == 0)
+        geodesic.octahedron(arc4random()%12+1);
+    else
+        geodesic.icosahedron(arc4random()%12+1);
+    polyhedron.load(&geodesic);
 }
 
 -(void)draw{
@@ -148,6 +154,7 @@
     
     glScalef(0.25, 0.25, 0.25);
     polyhedron.draw();
+    
 //    polyhedron.drawFaceNormalLines();
 //    polyhedron.drawNormalLines();
 //    polyhedron.drawPoints();

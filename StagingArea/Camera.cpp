@@ -57,7 +57,6 @@ void Camera::setAnimation(){
     // to a set of starting conditions for the variables in the loop
 }
 
-
 // is this going to be a problem that frameNum is static with the same name?
 void Camera::animationUpAndDownAndAround(){
     static int frameNum;

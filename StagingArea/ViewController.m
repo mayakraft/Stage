@@ -9,16 +9,6 @@
 }
 @end
 
-//
-//
-//  to do
-//
-//  make:
-//    obj -> openGL file
-//    openGL -> obj file
-//
-//
-
 @implementation ViewController
 
 - (void)viewDidLoad
