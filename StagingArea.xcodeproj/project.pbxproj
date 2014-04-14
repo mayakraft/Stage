@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D50C4DC018E7EEB80032BD35 /* Stage.mm in Sources */ = {isa = PBXBuildFile; fileRef = D50C4DBF18E7EEB80032BD35 /* Stage.mm */; };
+		D51EC01B18FBA5140021FF54 /* OBJ.mm in Sources */ = {isa = PBXBuildFile; fileRef = D51EC01A18FBA5140021FF54 /* OBJ.mm */; };
 		D539CFA318F516BE00EFFF19 /* noise.c in Sources */ = {isa = PBXBuildFile; fileRef = D539CFA218F516BE00EFFF19 /* noise.c */; };
 		D571540A18E2B80500037224 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540918E2B80500037224 /* Foundation.framework */; };
 		D571540C18E2B80500037224 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540B18E2B80500037224 /* CoreGraphics.framework */; };
@@ -24,9 +25,12 @@
 		D571542E18E2B80500037224 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540D18E2B80500037224 /* UIKit.framework */; };
 		D571543618E2B80500037224 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D571543418E2B80500037224 /* InfoPlist.strings */; };
 		D571543818E2B80500037224 /* StagingAreaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D571543718E2B80500037224 /* StagingAreaTests.m */; };
+		D5961C4718F88FE000978303 /* tiny_obj_loader.cc in Sources */ = {isa = PBXBuildFile; fileRef = D5961C4518F88FE000978303 /* tiny_obj_loader.cc */; };
 		D5B98EEC18F244E200671557 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5B98EEA18F244E200671557 /* Camera.cpp */; };
 		D5D1B28B18EEB7BF00894526 /* Geodesic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5D1B28718EEB7BF00894526 /* Geodesic.cpp */; };
 		D5D1B28C18EEB7BF00894526 /* GeodesicMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5D1B28918EEB7BF00894526 /* GeodesicMesh.cpp */; };
+		D5DC11BF18F8CF8B0013C321 /* tetra.obj in Resources */ = {isa = PBXBuildFile; fileRef = D5DC11BD18F8CF8B0013C321 /* tetra.obj */; };
+		D5DC11C018F8CF8B0013C321 /* tetra.mtl in Resources */ = {isa = PBXBuildFile; fileRef = D5DC11BE18F8CF8B0013C321 /* tetra.mtl */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +46,8 @@
 /* Begin PBXFileReference section */
 		D50C4DBE18E7EEB80032BD35 /* Stage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stage.h; sourceTree = "<group>"; };
 		D50C4DBF18E7EEB80032BD35 /* Stage.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Stage.mm; sourceTree = "<group>"; };
+		D51EC01918FBA5140021FF54 /* OBJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBJ.h; sourceTree = "<group>"; };
+		D51EC01A18FBA5140021FF54 /* OBJ.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OBJ.mm; sourceTree = "<group>"; };
 		D539CFA118F516B700EFFF19 /* noise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise.h; sourceTree = "<group>"; };
 		D539CFA218F516BE00EFFF19 /* noise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = noise.c; sourceTree = "<group>"; };
 		D571540618E2B80500037224 /* StagingArea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StagingArea.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,12 +70,16 @@
 		D571543318E2B80500037224 /* StagingAreaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StagingAreaTests-Info.plist"; sourceTree = "<group>"; };
 		D571543518E2B80500037224 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D571543718E2B80500037224 /* StagingAreaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StagingAreaTests.m; sourceTree = "<group>"; };
+		D5961C4518F88FE000978303 /* tiny_obj_loader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tiny_obj_loader.cc; sourceTree = "<group>"; };
+		D5961C4618F88FE000978303 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_obj_loader.h; sourceTree = "<group>"; };
 		D5B98EEA18F244E200671557 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		D5B98EEB18F244E200671557 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		D5D1B28718EEB7BF00894526 /* Geodesic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Geodesic.cpp; path = ../../Geodesic/Geodesic.cpp; sourceTree = "<group>"; };
 		D5D1B28818EEB7BF00894526 /* Geodesic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Geodesic.h; path = ../../Geodesic/Geodesic.h; sourceTree = "<group>"; };
 		D5D1B28918EEB7BF00894526 /* GeodesicMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GeodesicMesh.cpp; path = ../../Geodesic/GeodesicMesh.cpp; sourceTree = "<group>"; };
 		D5D1B28A18EEB7BF00894526 /* GeodesicMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GeodesicMesh.h; path = ../../Geodesic/GeodesicMesh.h; sourceTree = "<group>"; };
+		D5DC11BD18F8CF8B0013C321 /* tetra.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tetra.obj; sourceTree = "<group>"; };
+		D5DC11BE18F8CF8B0013C321 /* tetra.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tetra.mtl; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +106,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D51EC01C18FBA53A0021FF54 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				D51EC01918FBA5140021FF54 /* OBJ.h */,
+				D51EC01A18FBA5140021FF54 /* OBJ.mm */,
+				D5D1B28A18EEB7BF00894526 /* GeodesicMesh.h */,
+				D5D1B28918EEB7BF00894526 /* GeodesicMesh.cpp */,
+				D5D1B28818EEB7BF00894526 /* Geodesic.h */,
+				D5D1B28718EEB7BF00894526 /* Geodesic.cpp */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
 		D57153FD18E2B80500037224 = {
 			isa = PBXGroup;
 			children = (
@@ -139,12 +162,8 @@
 				D50C4DBF18E7EEB80032BD35 /* Stage.mm */,
 				D5B98EEB18F244E200671557 /* Camera.h */,
 				D5B98EEA18F244E200671557 /* Camera.cpp */,
-				D539CFA118F516B700EFFF19 /* noise.h */,
-				D539CFA218F516BE00EFFF19 /* noise.c */,
-				D5D1B28A18EEB7BF00894526 /* GeodesicMesh.h */,
-				D5D1B28918EEB7BF00894526 /* GeodesicMesh.cpp */,
-				D5D1B28818EEB7BF00894526 /* Geodesic.h */,
-				D5D1B28718EEB7BF00894526 /* Geodesic.cpp */,
+				D51EC01C18FBA53A0021FF54 /* Objects */,
+				D5961C3318F7C4AB00978303 /* 3rdParty */,
 				D571542418E2B80500037224 /* Images.xcassets */,
 				D571541018E2B80500037224 /* Supporting Files */,
 			);
@@ -178,6 +197,19 @@
 				D571543418E2B80500037224 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D5961C3318F7C4AB00978303 /* 3rdParty */ = {
+			isa = PBXGroup;
+			children = (
+				D5DC11BD18F8CF8B0013C321 /* tetra.obj */,
+				D5DC11BE18F8CF8B0013C321 /* tetra.mtl */,
+				D539CFA118F516B700EFFF19 /* noise.h */,
+				D539CFA218F516BE00EFFF19 /* noise.c */,
+				D5961C4618F88FE000978303 /* tiny_obj_loader.h */,
+				D5961C4518F88FE000978303 /* tiny_obj_loader.cc */,
+			);
+			name = 3rdParty;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,7 +292,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D571542018E2B80500037224 /* Main_iPad.storyboard in Resources */,
+				D5DC11BF18F8CF8B0013C321 /* tetra.obj in Resources */,
 				D571542518E2B80500037224 /* Images.xcassets in Resources */,
+				D5DC11C018F8CF8B0013C321 /* tetra.mtl in Resources */,
 				D571541D18E2B80500037224 /* Main_iPhone.storyboard in Resources */,
 				D571541418E2B80500037224 /* InfoPlist.strings in Resources */,
 			);
@@ -286,7 +320,9 @@
 				D5D1B28B18EEB7BF00894526 /* Geodesic.cpp in Sources */,
 				D5B98EEC18F244E200671557 /* Camera.cpp in Sources */,
 				D571542318E2B80500037224 /* ViewController.m in Sources */,
+				D5961C4718F88FE000978303 /* tiny_obj_loader.cc in Sources */,
 				D571541A18E2B80500037224 /* AppDelegate.m in Sources */,
+				D51EC01B18FBA5140021FF54 /* OBJ.mm in Sources */,
 				D571541618E2B80500037224 /* main.m in Sources */,
 				D5D1B28C18EEB7BF00894526 /* GeodesicMesh.cpp in Sources */,
 			);

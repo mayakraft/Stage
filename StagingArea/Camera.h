@@ -6,19 +6,19 @@
 
 class Camera{
 public:
-    void frameShot();  // call at beginning of every draw function
     
-    void setPosition(GLfloat pX, GLfloat pY, GLfloat pZ);
-    void setFocus(GLfloat fX, GLfloat fY, GLfloat fZ);
-    void setUp(GLfloat uX, GLfloat uY, GLfloat uZ);
-//    bool tiltLock;      // turn off up[3] (always above +y camera)
+    Camera();
+
+    void frameShot();  // call at beginning of every draw function
     
     void setFieldOfView(float fieldOfView);
     void setAspectRatio(float aspectRatio);
-    void setFrame(int width, int height);
-
-    float Z_NEAR = 0.1f;
-    float Z_FAR = 10.0f;
+    void setFrame(int x, int y, int width, int height);
+    
+    void setPosition(GLfloat pX, GLfloat pY, GLfloat pZ);   // x,y,z of camera lens
+    void setFocus(GLfloat fX, GLfloat fY, GLfloat fZ);      // x,y,z of point on which to focus
+    void setUp(GLfloat uX, GLfloat uY, GLfloat uZ);         // tilt/roll around line of sight
+    //    bool tiltLock;      // turn off up[3] (always above +y camera)
     
     // animation
     void (Camera::*animation)() = NULL;
@@ -28,21 +28,29 @@ public:
     void animationDollyZoom();
     void animationPerlinNoiseRotateAround();
     
-    Camera();
+    float    Z_NEAR = 0.1f;
+    float    Z_FAR = 100.0f;
     
 private:
-    GLfloat position[3] = {0.0f, 0.0f, 0.0f};  // x,y,z of camera
-    GLfloat focus[3] = {0.0f, 0.0f, 1.0f};     // x,y,z of point of attention
-    GLfloat up[3] = {0.0f, 1.0f, 0.0f};        // tilt/roll around point of attention
-
-    GLfloat m[16];
-    float _width, _height;
-    float _fieldOfView;
-    float _aspectRatio = 1.0;
-    // building matrix
-    float forward[3], side[3], above[3];
     void rebuildProjectionMatrix();
+    void enterOrthographic();
+    void exitOrthographic();
     void logOrientation();
+
+    GLfloat     position[3] = {0.0f, 0.0f, 0.0f};  // x,y,z of camera lens
+    GLfloat     focus[3] = {0.0f, 0.0f, 1.0f};     // x,y,z of point on which to focus
+    GLfloat     up[3] = {0.0f, 1.0f, 0.0f};        // tilt/roll around line of sight
+    
+    GLfloat     m[16];  // orientation
+    float       _fieldOfView = 45.0f;
+    float       _aspectRatio = 1.0f;
+    float       _screenX;
+    float       _screenY;
+    float       _screenWidth;
+    float       _screenHeight;
+    
+    // for calculating orientation matrix
+    float forward[3], side[3], above[3];
 };
 
 #endif /* defined(__Stage__Camera__) */

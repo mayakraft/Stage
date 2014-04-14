@@ -2,10 +2,10 @@
 #import "Stage.h"
 
 @interface ViewController (){
-    EAGLContext *context;
-    GLKBaseEffect *effect;
     
-    Stage *stage;
+    EAGLContext     *context;
+    GLKBaseEffect   *effect;
+    Stage           *stage;
 }
 @end
 
@@ -21,7 +21,17 @@
     [self setView:view];
     view.context = context;
     
-    stage = [[Stage alloc] init];
+    // iOS for getting screen width & height
+    float width, height;
+    if([UIApplication sharedApplication].statusBarOrientation > 2){
+        width = [[UIScreen mainScreen] bounds].size.height;
+        height = [[UIScreen mainScreen] bounds].size.width;
+    } else{
+        width = [[UIScreen mainScreen] bounds].size.width;
+        height = [[UIScreen mainScreen] bounds].size.height;
+    }
+    
+    stage = [[Stage alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
     [tap setNumberOfTapsRequired:1];
@@ -29,7 +39,8 @@
 }
 
 -(void) tapHandler:(UIGestureRecognizer*)sender{
-    [stage loadRandomGeodesic];
+    if([sender state] == 3)
+        [stage touchesEnded];
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect{

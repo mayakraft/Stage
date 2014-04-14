@@ -1,16 +1,15 @@
 // with help from MESA 3D project
 //
-
 #include "Camera.h"
 #include <math.h>
 #include "noise.c"
 
- void normalize(float v[3]){
+void normalize(float v[3]){
     float r = sqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
     if (r == 0.0) return;
     v[0] /= r;      v[1] /= r;      v[2] /= r;
 }
- void cross(float v1[3], float v2[3], float result[3]){
+void cross(float v1[3], float v2[3], float result[3]){
     result[0] = v1[1]*v2[2] - v1[2]*v2[1];
     result[1] = v1[2]*v2[0] - v1[0]*v2[2];
     result[2] = v1[0]*v2[1] - v1[1]*v2[0];
@@ -32,7 +31,7 @@ void Camera::setUp(GLfloat uX, GLfloat uY, GLfloat uZ){
 void Camera::frameShot(){
     if(animation != NULL)
         (this->*animation)();
-
+    
     forward[0] = focus[X] - position[X];
     forward[1] = focus[Y] - position[Y];
     forward[2] = focus[Z] - position[Z];
@@ -43,6 +42,9 @@ void Camera::frameShot(){
     cross(forward, above, side);
     normalize(side);
     cross(side, forward, above);
+//    velocity = sqrtf( pow(side[0]-m[0],2) + pow(side[1]-m[4],2) + pow(side[2]-m[8],2)
+//                     + pow(above[0]-m[1],2) + pow(above[1]-m[5],2) + pow(above[2]-m[9],2)
+//                     + pow(-forward[0]-m[2],2) + pow(-forward[1]-m[6],2) + pow(-forward[2]-m[10],2) );
     m[0] = side[0];     m[1] = above[0];    m[2] = -forward[0];     m[3] = 0.0f;
     m[4] = side[1];     m[5] = above[1];    m[6] = -forward[1];     m[7] = 0.0f;
     m[8] = side[2];     m[9] = above[2];    m[10] = -forward[2];    m[11] = 0.0f;
@@ -98,11 +100,11 @@ void Camera::logOrientation(){
     static int logDelay;
     logDelay++;
     if(logDelay%3 == 0){
-    GLfloat model[16];
-    glGetFloatv(GL_MODELVIEW_MATRIX, model);
-    printf("\n[%.3f, %.3f, %.3f, %.3f]\n[%.3f, %.3f, %.3f, %.3f]\n[%.3f, %.3f, %.3f, %.3f]\n[%.3f, %.3f, %.3f, %.3f]\n",
-           model[0], model[4], model[8], model[12], model[1], model[5], model[9], model[13],
-           model[2], model[6], model[10], model[14], model[3], model[7], model[11], model[15]);
+        GLfloat model[16];
+        glGetFloatv(GL_MODELVIEW_MATRIX, model);
+        printf("\n[%.3f, %.3f, %.3f, %.3f]\n[%.3f, %.3f, %.3f, %.3f]\n[%.3f, %.3f, %.3f, %.3f]\n[%.3f, %.3f, %.3f, %.3f]\n",
+               model[0], model[4], model[8], model[12], model[1], model[5], model[9], model[13],
+               model[2], model[6], model[10], model[14], model[3], model[7], model[11], model[15]);
     }
 }
 
@@ -116,9 +118,12 @@ void Camera::setAspectRatio(float aspectRatio){
     _aspectRatio = aspectRatio;
     rebuildProjectionMatrix();
 }
-void Camera::setFrame(int width, int height){
-    _width = width;
-    _height = height;
+void Camera::setFrame(int x, int y, int width, int height){
+    _screenX = x;
+    _screenY = y;
+    _screenWidth = width;
+    _screenHeight = height;
+    _aspectRatio = _screenWidth/_screenHeight;
     rebuildProjectionMatrix();
 }
 void Camera::rebuildProjectionMatrix(){
@@ -126,6 +131,28 @@ void Camera::rebuildProjectionMatrix(){
     glLoadIdentity();
     GLfloat frustum = Z_NEAR * tanf(_fieldOfView*0.00872664625997);  // pi / 180 / 2
     glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
-//    glViewport(0, 0, _width, _height);
+    glViewport(_screenX, _screenY, _screenWidth, _screenHeight);
     glMatrixMode(GL_MODELVIEW);
 }
+
+void Camera::enterOrthographic(){
+//    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrthof(0, _screenWidth, 0, _screenHeight, -5, 1);   // width and height maybe need to switch
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+}
+
+void Camera::exitOrthographic(){
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+

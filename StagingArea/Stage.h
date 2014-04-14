@@ -2,8 +2,8 @@
 
 @interface Stage : NSObject
 
--(id) init; // init Stage after EAGL context has been setup
+-(id) initWithFrame:(CGRect)frame;
 -(void) draw;
--(void) loadRandomGeodesic;
+-(void) touchesEnded;
 
 @end
