@@ -54,7 +54,7 @@
         [self drawOBJTriangles];
     }
     if(polyhedron != nil){
-        polyhedron->draw();
+        polyhedron->draw();//ExtrudedTriangles();
 //        polyhedron->drawFaceNormalLines();
 //        polyhedron->drawNormalLines();
 //        polyhedron->drawPoints();

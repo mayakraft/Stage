@@ -28,8 +28,8 @@ public:
     void animationDollyZoom();
     void animationPerlinNoiseRotateAround();
     
-    float    Z_NEAR = 0.1f;
-    float    Z_FAR = 100.0f;
+    float       Z_NEAR = 0.1f;
+    float       Z_FAR = 100.0f;
     
 private:
     void rebuildProjectionMatrix();

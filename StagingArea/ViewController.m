@@ -21,7 +21,7 @@
     [self setView:view];
     view.context = context;
     
-    // iOS for getting screen width & height
+    // iOS environment
     float width, height;
     if([UIApplication sharedApplication].statusBarOrientation > 2){
         width = [[UIScreen mainScreen] bounds].size.height;
@@ -30,12 +30,12 @@
         width = [[UIScreen mainScreen] bounds].size.width;
         height = [[UIScreen mainScreen] bounds].size.height;
     }
-    
-    stage = [[Stage alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
     [tap setNumberOfTapsRequired:1];
     [self.view addGestureRecognizer:tap];
+
+    // init stage
+    stage = [[Stage alloc] initWithFrame:CGRectMake(0, 0, width, height)];
 }
 
 -(void) tapHandler:(UIGestureRecognizer*)sender{
@@ -48,10 +48,8 @@
 }
 
 - (void)tearDownGL{
-    [EAGLContext setCurrentContext:context];
-    //unload shapes
-//    glDeleteBuffers(1, &_vertexBuffer);
-//    glDeleteVertexArraysOES(1, &_vertexArray);
+    [stage tearDownGL];
+    [EAGLContext setCurrentContext:nil];
     effect = nil;
 }
 

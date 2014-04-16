@@ -77,7 +77,7 @@ void Camera::animationPerlinNoiseRotateAround(){
     animAngle += animAngleVelocity;
     position[X] = 1.75*sinf(animAngle);
     position[Z] = 1.75*cosf(animAngle);
-    position[Y] = 3*noise1(frameNum/33.0);
+    position[Y] = 1.25*noise1(frameNum/33.0);
 }
 
 void Camera::animationDollyZoom(){
