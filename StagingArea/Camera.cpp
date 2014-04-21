@@ -4,12 +4,12 @@
 #include <math.h>
 #include "noise.c"
 
-void normalize(float v[3]){
-    float r = sqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
+void Camera::normalize(float v[3]){
+    r = sqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
     if (r == 0.0) return;
     v[0] /= r;      v[1] /= r;      v[2] /= r;
 }
-void cross(float v1[3], float v2[3], float result[3]){
+void Camera::cross(float v1[3], float v2[3], float result[3]){
     result[0] = v1[1]*v2[2] - v1[2]*v2[1];
     result[1] = v1[2]*v2[0] - v1[0]*v2[2];
     result[2] = v1[0]*v2[1] - v1[1]*v2[0];
@@ -73,7 +73,7 @@ void Camera::animationPerlinNoiseRotateAround(){
     frameNum++;
     static float animAngleVelocity = 0;
     static float animAngle;
-    animAngleVelocity = noise1(frameNum/75.0) / 2.0;
+    animAngleVelocity = noise1(frameNum/200.0) / 1.0;
     animAngle += animAngleVelocity;
     position[X] = 1.75*sinf(animAngle);
     position[Z] = 1.75*cosf(animAngle);

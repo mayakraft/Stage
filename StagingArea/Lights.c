@@ -1,14 +1,7 @@
-//
-//  Lights.cpp
-//  StagingArea
-//
-//  Created by Robby on 4/16/14.
-//  Copyright (c) 2014 Robby Kraft. All rights reserved.
-//
-
 #include "Lights.h"
+#include <OpenGLES/ES1/gl.h>
 
-void Light::rainbow(float *clearColor){
+void rainbow(float *clearColor){
     clearColor[0] = clearColor[1] = clearColor[2] = 0.0f;
     clearColor[3] = 1.0f;
     GLfloat white[] = {.3f, .3f, .3f, 1.0f};
@@ -32,7 +25,7 @@ void Light::rainbow(float *clearColor){
     glEnable(GL_LIGHT3);
 }
 
-void Light::spotlightNoir(float *clearColor){
+void spotlightNoir(float *clearColor){
     clearColor[0] = clearColor[1] = clearColor[2] = 0.0f;
     clearColor[3] = 1.0f;
     GLfloat white[] = {.3f, .3f, .3f, 1.0f};
@@ -45,8 +38,9 @@ void Light::spotlightNoir(float *clearColor){
     glEnable(GL_LIGHT0);
 }
 
-void Light::silhouette(float *clearColor){
-    clearColor[0] = clearColor[1] = clearColor[2] = clearColor[3] = 1.0f;
+void silhouette(float *clearColor){
+    clearColor[0] = clearColor[1] = clearColor[2] = 1.0f;
+    clearColor[3] = 1.0f;
     glDisable(GL_LIGHTING);
     glColor4f(0.0, 0.0, 0.0, 1.0);
 }

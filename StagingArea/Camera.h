@@ -10,7 +10,11 @@ public:
     Camera();
 
     void frameShot();  // call at beginning of every draw function
-    
+
+    void enterOrthographic();
+    void exitOrthographic();
+    void logOrientation();
+
     void setFieldOfView(float fieldOfView);
     void setAspectRatio(float aspectRatio);
     void setFrame(int x, int y, int width, int height);
@@ -33,9 +37,8 @@ public:
     
 private:
     void rebuildProjectionMatrix();
-    void enterOrthographic();
-    void exitOrthographic();
-    void logOrientation();
+    void normalize(float v[3]);
+    void cross(float v1[3], float v2[3], float result[3]);
 
     GLfloat     position[3] = {0.0f, 0.0f, 0.0f};  // x,y,z of camera lens
     GLfloat     focus[3] = {0.0f, 0.0f, 1.0f};     // x,y,z of point on which to focus
@@ -50,7 +53,7 @@ private:
     float       _screenHeight;
     
     // for calculating orientation matrix
-    float forward[3], side[3], above[3];
+    float r, forward[3], side[3], above[3];
 };
 
 #endif /* defined(__Stage__Camera__) */

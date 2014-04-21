@@ -3,13 +3,13 @@
 @interface Stage : NSObject
 
 -(id) initWithFrame:(CGRect)frame;
-
 -(void) draw;
+-(void)tearDownGL;
 
 -(void) touchesEnded;
 
--(void)tearDownGL;
-
 @property CGRect frame;
+
+-(void)setAttitude:(GLfloat*)attitude;
 
 @end
