@@ -3,13 +3,19 @@
 @interface Stage : NSObject
 
 -(id) initWithFrame:(CGRect)frame;
--(void) draw;
--(void)tearDownGL;
 
+-(void) draw;
+
+-(void) tearDownGL;
+
+-(void) touchesBegan;
+-(void) touchesMoved;
 -(void) touchesEnded;
 
 @property CGRect frame;
 
--(void)setAttitude:(GLfloat*)attitude;
+@property BOOL orientToDevice;
+
+@property GLfloat *deviceAttitude;
 
 @end

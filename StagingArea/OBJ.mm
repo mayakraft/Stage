@@ -9,13 +9,13 @@
 
 #import <OpenGLES/ES1/gl.h>
 #import "tiny_obj_loader.h"
-#import "GeodesicMesh.h"
-#import "Geodesic.h"
+//#import "GeodesicMesh.h"
+//#import "Geodesic.h"
 
 @interface OBJ (){
     std::vector<tinyobj::shape_t> shapes;
-    GeodesicMesh *polyhedron;
-    Geodesic *geodesic;
+//    GeodesicMesh *polyhedron;
+//    Geodesic *geodesic;
 }
 
 @end
@@ -33,16 +33,16 @@
 -(id)initWithGeodesic:(int)type Frequency:(int)v{
     self = [super init];
     if(self){
-        geodesic = new Geodesic();
-        polyhedron = new GeodesicMesh();
-        if(v < 1) v = 1;
-        if(type == 0)
-            geodesic->tetrahedron(v);
-        else if(type == 1)
-            geodesic->octahedron(v);
-        else
-            geodesic->icosahedron(v);
-        polyhedron->load(geodesic);
+//        geodesic = new Geodesic();
+//        polyhedron = new GeodesicMesh();
+//        if(v < 1) v = 1;
+//        if(type == 0)
+//            geodesic->tetrahedron(v);
+//        else if(type == 1)
+//            geodesic->octahedron(v);
+//        else
+//            geodesic->icosahedron(v);
+//        polyhedron->load(geodesic);
     }
     return self;
 }
@@ -53,12 +53,12 @@
 //        [self drawOBJPoints];
         [self drawOBJTriangles];
     }
-    if(polyhedron != nil){
-        polyhedron->draw();//ExtrudedTriangles();
+//    if(polyhedron != nil){
+//        polyhedron->draw();//ExtrudedTriangles();
 //        polyhedron->drawFaceNormalLines();
 //        polyhedron->drawNormalLines();
 //        polyhedron->drawPoints();
-    }
+//    }
 }
 
 -(void) drawOBJPoints{
@@ -87,8 +87,8 @@
     directory = [directory stringByAppendingString:@"/"];
     NSString *file = [[NSBundle mainBundle] pathForResource:filename ofType:nil];
     std::string err = tinyobj::LoadObj(shapes, [file cStringUsingEncoding:NSUTF8StringEncoding], [directory cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (!err.empty())
-        std::cerr << err << std::endl;
+//    if (!err.empty())
+//        std::cerr << err << std::endl;
     // don't use this
 //    for( int i = 0; i < shapes.size(); i++)
 //        if(!shapes[i].mesh.normals.size())
@@ -109,21 +109,21 @@
 }
 
 -(void)loadRandomGeodesic{
-    if(arc4random()%3 == 0)
-        geodesic->tetrahedron(arc4random()%12+1);
-    else if(arc4random()%2 == 0)
-        geodesic->octahedron(arc4random()%12+1);
-    else
-        geodesic->icosahedron(arc4random()%12+1);
-    polyhedron->load(geodesic);
+//    if(arc4random()%3 == 0)
+//        geodesic->tetrahedron(arc4random()%12+1);
+//    else if(arc4random()%2 == 0)
+//        geodesic->octahedron(arc4random()%12+1);
+//    else
+//        geodesic->icosahedron(arc4random()%12+1);
+//    polyhedron->load(geodesic);
 }
 
 // GEODESIC on stage
 
 -(NSString*)exportOBJ{
     char *obj;
-    int length = 0;
-    geodesic->OBJ(obj, length);
+//    int length = 0;
+//    geodesic->OBJ(obj, length);
     NSString *objString = [NSString stringWithUTF8String:obj];
 //    NSLog(@"OBJ (%d)\n%@",length,objString);
 //    delete obj;
