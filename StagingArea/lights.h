@@ -1,7 +1,7 @@
 #ifndef __StagingArea__Lights__
 #define __StagingArea__Lights__
 
-void rainbow(float *clearColor);
+void rainbow(float *clearColor, float *brightness, float *alpha);
 void spotlightNoir(float *clearColor);
 void silhouette(float *clearColor);
 
