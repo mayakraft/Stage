@@ -24,6 +24,7 @@
 		D571542E18E2B80500037224 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540D18E2B80500037224 /* UIKit.framework */; };
 		D571543618E2B80500037224 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D571543418E2B80500037224 /* InfoPlist.strings */; };
 		D571543818E2B80500037224 /* StagingAreaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D571543718E2B80500037224 /* StagingAreaTests.m */; };
+		D583C253191A025400824AA5 /* Screen.m in Sources */ = {isa = PBXBuildFile; fileRef = D583C252191A025400824AA5 /* Screen.m */; };
 		D5D36FA519137D6D00D3327E /* Rhombicuboctahedron.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D36FA419137D6D00D3327E /* Rhombicuboctahedron.m */; };
 		D5DC11BF18F8CF8B0013C321 /* tetra.obj in Resources */ = {isa = PBXBuildFile; fileRef = D5DC11BD18F8CF8B0013C321 /* tetra.obj */; };
 		D5DC11C018F8CF8B0013C321 /* tetra.mtl in Resources */ = {isa = PBXBuildFile; fileRef = D5DC11BE18F8CF8B0013C321 /* tetra.mtl */; };
@@ -74,6 +75,8 @@
 		D571543318E2B80500037224 /* StagingAreaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StagingAreaTests-Info.plist"; sourceTree = "<group>"; };
 		D571543518E2B80500037224 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D571543718E2B80500037224 /* StagingAreaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StagingAreaTests.m; sourceTree = "<group>"; };
+		D583C251191A025400824AA5 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
+		D583C252191A025400824AA5 /* Screen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Screen.m; sourceTree = "<group>"; };
 		D5961C4518F88FE000978303 /* tiny_obj_loader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tiny_obj_loader.cc; sourceTree = "<group>"; };
 		D5961C4618F88FE000978303 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_obj_loader.h; sourceTree = "<group>"; };
 		D5B98EEA18F244E200671557 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -168,6 +171,8 @@
 				D50C4DBF18E7EEB80032BD35 /* Stage.m */,
 				D5F68C91191789BF002C97F3 /* Room.h */,
 				D5F68C92191789BF002C97F3 /* Room.m */,
+				D583C251191A025400824AA5 /* Screen.h */,
+				D583C252191A025400824AA5 /* Screen.m */,
 				D5D36FA319137D6D00D3327E /* Rhombicuboctahedron.h */,
 				D5D36FA419137D6D00D3327E /* Rhombicuboctahedron.m */,
 				D51D4A3018FE7A0700AA6C13 /* lights.h */,
@@ -332,6 +337,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5F68C93191789BF002C97F3 /* Room.m in Sources */,
+				D583C253191A025400824AA5 /* Screen.m in Sources */,
 				D50C4DC018E7EEB80032BD35 /* Stage.m in Sources */,
 				D5D36FA519137D6D00D3327E /* Rhombicuboctahedron.m in Sources */,
 				D571542318E2B80500037224 /* ViewController.m in Sources */,

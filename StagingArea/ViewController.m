@@ -54,9 +54,7 @@
             _attitudeMatrix[8] = a.m11;    _attitudeMatrix[9] = a.m21;   _attitudeMatrix[10] = a.m31;  _attitudeMatrix[11] = 0.0f;
             _attitudeMatrix[12] = 0.0f;    _attitudeMatrix[13] = 0.0f;   _attitudeMatrix[14] = 0.0f;   _attitudeMatrix[15] = 1.0f;
         
-//                _lookVector = GLKVector3Make(-_attitudeMatrix.m02,
-//                                             -_attitudeMatrix.m12,
-//                                             -_attitudeMatrix.m22);
+//                _lookVector = GLKVector3Make(-_attitudeMatrix.m02, -_attitudeMatrix.m12, -_attitudeMatrix.m22);
 //                _lookAzimuth = -atan2f(-_lookVector.z, -_lookVector.x);
 //                _lookAltitude = asinf(_lookVector.y);
         }];

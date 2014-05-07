@@ -1,16 +1,13 @@
 # OpenGL Stage
 
-simple way to layout OpenGL
-
-lights, camera, action (scripts), and actors (objects)
-
-# classes
+lights, camera, scripts, object loader
 
 ``` objective-c
-@class Stage // HQ
-
-@class OBJ   // objects can be loaded from an OBJ file, and can be animated
-class Camera // gluLookAt-style with CENTER, LOOK, UP vectors
+@class Stage  // parent
+|
+|--@class Screen  // orthographic layer sits on top of everything
+|
+|--@class Room  // stage decorations
 ```
 
 # methods
@@ -27,12 +24,8 @@ void setFrame(x, y, width, height);
 void setPosition(x, y, z);
 void setFocus(x, y, z);
 
- // action
-void setAnimation(__)
-
- // objects
+ // object file loader
 -(id)initWithOBJ:(NSString*)file Path:(NSString*)path;
-
 ```
 
 * animationDollyZoom;  // Hitchcock zoom / Vertigo zoom

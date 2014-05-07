@@ -2,6 +2,7 @@
 #import <CoreMotion/CoreMotion.h>
 #import "Stage.h"
 #include "Room.h"
+#include "Screen.h"
 
 //#import "OBJ.h"
 
@@ -16,8 +17,9 @@
 
 @interface Stage (){
     
+    Screen      *screen;
     
-    Room *room;
+    Room        *room;
     camera      camera1;
     GLfloat     *cameraPosition;
     GLfloat     *cameraFocus;
@@ -25,8 +27,7 @@
 
     float screenColor[4];
 
-//    OBJ         *obj;
-    
+//    OBJ                 *obj;
     geodesic            geo;
     geomeshTriangles    mesh;
     geomeshTriangles    echoMesh;
@@ -54,6 +55,7 @@
 //        obj = [[OBJ alloc] initWithGeodesic:3 Frequency:arc4random()%6+1];
 
         geo = icosahedron(3);
+        //65535
         mesh = makeMeshTriangles(&geo, .8333333);
         echoMesh = makeMeshTriangles(&geo, .833333);
         camDistance = 2.25;
@@ -75,7 +77,9 @@
 
 -(void) setup{
 
-    room = [[Rhombicuboctahedron alloc] init];
+    screen = [[Screen alloc] initWithFrame:_frame];
+    
+//    room = [[Rhombicuboctahedron alloc] init];
     
     float brightness = 0.8f;
     float alpha = 1.0f;
@@ -117,8 +121,8 @@
     elapsedMillis = -[start timeIntervalSinceNow];
     if(touchTime + .5 > elapsedMillis && touchTime < elapsedMillis){
         float scale = (elapsedMillis - touchTime)/6.0;
+        scale = sqrtf(scale)*.25;
         extrudeTriangles(&echoMesh, &geo, scale);
-        printf("ANIM: %f\n",scale);
     }
     static GLfloat whiteColor[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     static GLfloat noColor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
@@ -132,10 +136,15 @@
     }
     frame_shot(&camera1);
 
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);  // panorama display at full color
-    [room draw];
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
+//    [room draw];
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, noColor);
 
+    float one = 1.0f;
+    
+    rainbow(screenColor, &one, &one);
+
+    
 //    static GLfloat blueColor[] = {0.0f, 0.0f, 1.0f, .50f};
 //    static GLfloat greenColor[] = {0.0f, 1.0f, 0.2f, .50f};
 //    static GLfloat redColor[] = {1.0f, 0.2f, 0.0f, .50f};
@@ -148,38 +157,20 @@
 //    float low_shininess = 5.0f;
 //    float high_shininess = 100.0f;
 //    float mat_emission[4] = {0.3f, 0.2f, 0.2f, 0.0f};
-//    
-//    
-//    glMaterialfv(GL_FRONT, GL_AMBIENT, no_mat);
-//    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-//    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-//    glMaterialf(GL_FRONT, GL_SHININESS, low_shininess);
-//    glMaterialfv(GL_FRONT, GL_EMISSION, no_mat);
-    
-    
     
 //    if(geo.numFaces) geodesicDrawTriangles(&geo);
 //    if(geo.numLines) geodesicDrawLines(&geo);
 //    if(geo.numPoints) geodesicDrawPoints(&geo);
 
-    float one = 1.0f;
-    
-    rainbow(screenColor, &one, &one);
 
     if(mesh.numTriangles) geodesicMeshDrawExtrudedTriangles(&mesh);
  
     float scale = 1.0-(elapsedMillis - touchTime)/.50;
     rainbow(screenColor, &one, &scale);
     
-    whiteAlpha[3] = scale;
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, whiteAlpha);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, whiteAlpha);
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteAlpha);
-
     if(touchTime + .5 > elapsedMillis && touchTime < elapsedMillis)
         if(echoMesh.numTriangles)
             geodesicMeshDrawExtrudedTriangles(&echoMesh);
-        
 
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, redColor);
 //    if(mesh.numVertexNormals)
@@ -191,8 +182,11 @@
 //    if(mesh.numFaceNormals)
 //        geodesicMeshDrawFaceNormalLines(&mesh);
 
-
 //    [obj draw];
+    
+    if(screen)
+        [screen draw];
+
 
     glPopMatrix();
 }
