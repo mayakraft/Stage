@@ -7,7 +7,7 @@ lights, camera, scripts, object loader
 |
 |--@class Screen  // orthographic layer sits on top of everything
 |
-|--@class Room  // stage decorations
+|--@class Room
 ```
 
 # methods

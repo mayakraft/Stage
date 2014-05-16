@@ -77,6 +77,8 @@
 		D571543718E2B80500037224 /* StagingAreaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StagingAreaTests.m; sourceTree = "<group>"; };
 		D583C251191A025400824AA5 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
 		D583C252191A025400824AA5 /* Screen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Screen.m; sourceTree = "<group>"; };
+		D5959A02191AEBC600622464 /* geodiagram.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = geodiagram.c; path = ../../Geodesic/geodiagram.c; sourceTree = "<group>"; };
+		D5959A03191AEBC600622464 /* geodiagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = geodiagram.h; path = ../../Geodesic/geodiagram.h; sourceTree = "<group>"; };
 		D5961C4518F88FE000978303 /* tiny_obj_loader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tiny_obj_loader.cc; sourceTree = "<group>"; };
 		D5961C4618F88FE000978303 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_obj_loader.h; sourceTree = "<group>"; };
 		D5B98EEA18F244E200671557 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -123,6 +125,8 @@
 				D56C6F4C190E568A00460690 /* geodesic.c */,
 				D54D4D7B1912C01000D9E319 /* geomesh.h */,
 				D54D4D7A1912C01000D9E319 /* geomesh.c */,
+				D5959A03191AEBC600622464 /* geodiagram.h */,
+				D5959A02191AEBC600622464 /* geodiagram.c */,
 			);
 			name = geodesic;
 			sourceTree = "<group>";

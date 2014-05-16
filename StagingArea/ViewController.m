@@ -69,6 +69,12 @@
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect{
     [stage draw];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, 400, 100)];
+    [label setFont:[UIFont systemFontOfSize:30]];
+    [label setTextColor:[UIColor whiteColor]];
+    [label setText:@"TITLE"];
+    [self.view addSubview:label];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
