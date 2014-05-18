@@ -15,6 +15,8 @@
 
 @implementation NavigationBar
 
+#define arrowWidth 50
+
 -(void) customDraw{
 
     static GLfloat whiteColor[4] = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -33,10 +35,10 @@
 //    [self drawRectOutline:CGRectMake(width*.5, height*.5, width*.99, height*.99)];
     
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, clearColor);
-    [self drawRect:CGRectMake(self.frame.size.width*.5, 40, self.frame.size.width, 80)];
+    [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, arrowWidth*2)];
     
-    [self drawRect:CGRectMake(25, self.frame.size.height-25, 40, 40)];
-    [self drawRect:CGRectMake(self.frame.size.width-25, self.frame.size.height-25, 40, 40)];
+    [self drawRect:CGRectMake(25, self.frame.size.height-(arrowWidth*.5)-5, arrowWidth, arrowWidth)];
+    [self drawRect:CGRectMake(self.frame.size.width-(arrowWidth*.5)-5, self.frame.size.height-(arrowWidth*.5)-5, arrowWidth, arrowWidth)];
 }
 
 

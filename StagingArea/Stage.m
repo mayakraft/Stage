@@ -26,9 +26,9 @@ typedef enum{
 
 @interface Stage (){
     
-    Scene       scene;
+    Scene       _scene;
     
-    Screen      *screen;
+//    Screen      *screen;
     
     NavigationBar *navBar;
     
@@ -51,6 +51,9 @@ typedef enum{
     NSTimeInterval touchTime;
     
     float whiteAlpha[4];
+    UILabel *titleLabel;
+    
+    NSArray *hotspots;
 }
 
 @end
@@ -70,7 +73,7 @@ typedef enum{
 -(void) setup{
     [self customizeOpenGL];
     
-    screen = [[Screen alloc] initWithFrame:_frame];
+//    screen = [[Screen alloc] initWithFrame:_frame];
     
     navBar = [[NavigationBar alloc] initWithFrame:_frame];
     
@@ -93,7 +96,7 @@ typedef enum{
 //        obj = [[OBJ alloc] initWithOBJ:@"tetra.obj" Path:[[NSBundle mainBundle] resourcePath]];
 //        obj = [[OBJ alloc] initWithGeodesic:3 Frequency:arc4random()%6+1];
     
-    geo = icosahedron(3);
+    geo = icosahedron(1);
     //65535
     mesh = makeMeshTriangles(&geo, .8333333);
     echoMesh = makeMeshTriangles(&geo, .833333);
@@ -105,12 +108,32 @@ typedef enum{
     
     whiteAlpha[0] = whiteAlpha[1] = whiteAlpha[2] = whiteAlpha[3] = 1.0f;
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _frame.size.width, 60)];
-    [label setFont:[UIFont systemFontOfSize:30]];
-    [label setTextAlignment:NSTextAlignmentCenter];
-    [label setTextColor:[UIColor whiteColor]];
-    [label setText:@"TITLE"];
-    [self addSubview:label];
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _frame.size.width, 60)];
+    [titleLabel setFont:[UIFont systemFontOfSize:30]];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [titleLabel setTextColor:[UIColor whiteColor]];
+    [titleLabel setText:@"SCENE 1"];
+    [self addSubview:titleLabel];
+    
+    hotspots = @[ [NSValue valueWithCGRect:CGRectMake(5, 5, 40, 40)],
+                  [NSValue valueWithCGRect:CGRectMake(_frame.size.width-45, 5, 40, 40)]];
+}
+
+-(void) changeScene:(Scene)newScene{
+    _scene = newScene;
+    reset_lighting();
+    if(_scene == scene1){
+        [titleLabel setTextColor:[UIColor whiteColor]];
+        [titleLabel setText:@"SCENE 1"];
+    }else if (_scene == scene2){
+        [titleLabel setTextColor:[UIColor blackColor]];
+        [titleLabel setText:@"SCENE 2"];
+    }else if (_scene == scene3){
+        [titleLabel setTextColor:[UIColor whiteColor]];
+        [titleLabel setText:@"SCENE 3"];
+    }else if (_scene == scene4){
+        [titleLabel setText:@"SCENE 4"];
+    }
 }
 
 -(void) customizeOpenGL{
@@ -122,11 +145,21 @@ typedef enum{
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
--(void) touchesBegan{   }
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{  }
 
--(void) touchesMoved{   }
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{  }
 
--(void) touchesEnded{
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    for(int i = 0; i < hotspots.count; i++){
+        CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
+        if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
+            if(i == 0 && _scene > scene1)
+                [self changeScene:_scene-1];
+            else if(i == 1 && _scene < scene4)
+                [self changeScene:_scene+1];
+            return;
+        }
+    }
     deleteMeshTriangles(&echoMesh);
     
     deleteMeshTriangles(&mesh);
@@ -164,11 +197,6 @@ typedef enum{
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
 //    [room draw];
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, noColor);
-
-    float one = 1.0f;
-    
-    rainbow(screenColor, &one, &one);
-
     
 //    static GLfloat blueColor[] = {0.0f, 0.0f, 1.0f, .50f};
 //    static GLfloat greenColor[] = {0.0f, 1.0f, 0.2f, .50f};
@@ -187,11 +215,27 @@ typedef enum{
 //    if(geo.numLines) geodesicDrawLines(&geo);
 //    if(geo.numPoints) geodesicDrawPoints(&geo);
 
-
+    float one = 1.0f;
+    float pointthree = 0.3f;
+    
+    if(_scene == scene1)
+        rainbow(screenColor, &one, &one);
+    else if(_scene == scene2)
+        silhouette(screenColor, &pointthree, &one);
+    else if(_scene == scene3)
+        spotlightNoir(screenColor, &one, &one);
+    
     if(mesh.numTriangles) geodesicMeshDrawExtrudedTriangles(&mesh);
  
     float scale = 1.0-(elapsedMillis - touchTime)/.50;
-    rainbow(screenColor, &one, &scale);
+    
+    if(_scene == scene1)
+        rainbow(screenColor, &one, &scale);
+    else if(_scene == scene2)
+        silhouette(screenColor, &pointthree, &scale);
+    else if(_scene == scene3)
+        spotlightNoir(screenColor, &one, &scale);
+    
     
     if(touchTime + .5 > elapsedMillis && touchTime < elapsedMillis)
         if(echoMesh.numTriangles)

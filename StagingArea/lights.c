@@ -28,10 +28,21 @@ void rainbow(float *clearColor, float *brightness, float *alpha){
     glEnable(GL_LIGHT3);
 }
 
-void spotlightNoir(float *clearColor){
+void reset_lighting(){
+    glDisable(GL_LIGHT0);
+    glDisable(GL_LIGHT1);
+    glDisable(GL_LIGHT2);
+    glDisable(GL_LIGHT3);
+    glDisable(GL_LIGHT4);
+    glDisable(GL_LIGHT5);
+    glDisable(GL_LIGHT6);
+    glDisable(GL_LIGHT7);
+}
+
+void spotlightNoir(float *clearColor, float *brightness, float *alpha){
     clearColor[0] = clearColor[1] = clearColor[2] = 0.0f;
     clearColor[3] = 1.0f;
-    GLfloat white[] = {.3f, .3f, .3f, 1.0f};
+    GLfloat white[] = {*brightness, *brightness, *brightness, *alpha};
     GLfloat pos1[] = {0.0f, 10.0f, 0.0f, 1.0f};
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
     glLightfv(GL_LIGHT0, GL_POSITION, pos1);
@@ -41,7 +52,7 @@ void spotlightNoir(float *clearColor){
     glEnable(GL_LIGHT0);
 }
 
-void silhouette(float *clearColor){
+void silhouette(float *clearColor, float *brightness, float *alpha){
     clearColor[0] = clearColor[1] = clearColor[2] = 1.0f;
     clearColor[3] = 1.0f;
     glDisable(GL_LIGHTING);

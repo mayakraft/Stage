@@ -65,13 +65,13 @@
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    [stage touchesBegan];
+    [stage touchesBegan:touches withEvent:event];
 }
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    [stage touchesMoved];
+    [stage touchesMoved:touches withEvent:event];
 }
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    [stage touchesEnded];
+    [stage touchesEnded:touches withEvent:event];
 }
 
 - (void)tearDownGL{

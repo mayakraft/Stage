@@ -9,9 +9,9 @@
 
 -(void) tearDownGL;
 
--(void) touchesBegan;
--(void) touchesMoved;
--(void) touchesEnded;
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 
 @property CGRect frame;
 
