@@ -8,9 +8,10 @@
     
     EAGLContext     *context;
     GLKBaseEffect   *effect;
-    Stage           *stage;
     CMMotionManager *motionManager;
     GLfloat         _attitudeMatrix[16];
+
+    Stage           *stage;
 }
 @end
 
@@ -22,9 +23,11 @@
 	// Do any additional setup after loading the view, typically from a nib.
     context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
     [EAGLContext setCurrentContext:context];
-    GLKView *view = [[GLKView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [self setView:view];
-    view.context = context;
+    stage = [[Stage alloc] initWithFrame:[[UIScreen mainScreen] bounds] context:context];
+    [self setView:stage];
+    [self initDeviceOrientation];
+    [stage setDeviceAttitude:_attitudeMatrix];
+    [stage setOrientToDevice:YES];
     
     // iOS environment
     float width, height;
@@ -35,12 +38,6 @@
         width = [[UIScreen mainScreen] bounds].size.width;
         height = [[UIScreen mainScreen] bounds].size.height;
     }
-
-    // init stage
-    stage = [[Stage alloc] initWithFrame:CGRectMake(0, 0, width, height)];
-    [self initDeviceOrientation];
-    [stage setDeviceAttitude:_attitudeMatrix];
-    [stage setOrientToDevice:YES];
 }
 -(void) initDeviceOrientation{
     motionManager = [[CMMotionManager alloc] init];
@@ -53,28 +50,18 @@
             _attitudeMatrix[4] = a.m13;    _attitudeMatrix[5] = a.m23;   _attitudeMatrix[6] = a.m33;   _attitudeMatrix[7] = 0.0f;
             _attitudeMatrix[8] = a.m11;    _attitudeMatrix[9] = a.m21;   _attitudeMatrix[10] = a.m31;  _attitudeMatrix[11] = 0.0f;
             _attitudeMatrix[12] = 0.0f;    _attitudeMatrix[13] = 0.0f;   _attitudeMatrix[14] = 0.0f;   _attitudeMatrix[15] = 1.0f;
-        
-//                _lookVector = GLKVector3Make(-_attitudeMatrix.m02, -_attitudeMatrix.m12, -_attitudeMatrix.m22);
-//                _lookAzimuth = -atan2f(-_lookVector.z, -_lookVector.x);
-//                _lookAltitude = asinf(_lookVector.y);
         }];
     }
     else{
-        _attitudeMatrix[0] = 1.0f;   _attitudeMatrix[1] = 0.0f;  _attitudeMatrix[2] = 0.0f;  _attitudeMatrix[3] = 0.0f;
+        _attitudeMatrix[0] = 1.0f;    _attitudeMatrix[1] = 0.0f;   _attitudeMatrix[2] = 0.0f;   _attitudeMatrix[3] = 0.0f;
         _attitudeMatrix[4] = 0.0f;    _attitudeMatrix[5] = 1.0f;   _attitudeMatrix[6] = 0.0f;   _attitudeMatrix[7] = 0.0f;
         _attitudeMatrix[8] = 0.0f;    _attitudeMatrix[9] = 0.0f;   _attitudeMatrix[10] = 1.0f;  _attitudeMatrix[11] = 0.0f;
-        _attitudeMatrix[12] = 0.0f;    _attitudeMatrix[13] = 0.0f;   _attitudeMatrix[14] = 0.0f;   _attitudeMatrix[15] = 1.0f;
+        _attitudeMatrix[12] = 0.0f;   _attitudeMatrix[13] = 0.0f;  _attitudeMatrix[14] = 0.0f;  _attitudeMatrix[15] = 1.0f;
     }
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect{
     [stage draw];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(120, 0, 400, 100)];
-    [label setFont:[UIFont systemFontOfSize:30]];
-    [label setTextColor:[UIColor whiteColor]];
-    [label setText:@"TITLE"];
-    [self.view addSubview:label];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{

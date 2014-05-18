@@ -1,8 +1,9 @@
 #import <Foundation/Foundation.h>
+#import <GLKit/GLKit.h>
 
-@interface Stage : NSObject
+@interface Stage : GLKView
 
--(id) initWithFrame:(CGRect)frame;
+-(void) setup;
 
 -(void) draw;
 
