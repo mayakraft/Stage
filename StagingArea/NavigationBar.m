@@ -18,14 +18,15 @@
 #define arrowWidth 50
 
 -(void) customDraw{
+    glDisable(GL_LIGHTING);
 
-    static GLfloat whiteColor[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-    static GLfloat clearColor[4] = {1.0f, 1.0f, 1.0f, 0.3f};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, whiteColor);
-    
+    if(*_scenePointer == 1)
+        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+    else
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    [self drawRect:CGRectMake(arrowWidth*.5+5, self.frame.size.height-(arrowWidth*.5)-5, arrowWidth, arrowWidth)];
+    [self drawRect:CGRectMake(self.frame.size.width-(arrowWidth*.5)-5, self.frame.size.height-(arrowWidth*.5)-5, arrowWidth, arrowWidth)];
+
 // a line loop, 2 pixel wide square sides, 10.0 line width makes a crosshair
 //    glLineWidth(10.0);
 //    glTranslatef(height*.5, width*.5, 0.0);
@@ -34,11 +35,32 @@
 //    glLineWidth(10.0);
 //    [self drawRectOutline:CGRectMake(width*.5, height*.5, width*.99, height*.99)];
     
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, clearColor);
-    [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, arrowWidth*2)];
+    if(*_scenePointer == 0){
+        [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, arrowWidth*2)];
+        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+        [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, 4)];
+        for(int i = 0; i < 9; i++){
+            [self drawRect:CGRectMake((self.frame.size.width)/12.*(i+2), arrowWidth, 1, arrowWidth*.5)];
+        }
+    }
+    else if(*_scenePointer == 1){
+        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+        [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, arrowWidth*2)];
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, 4)];
+        for(int i = 0; i < 9; i++){
+            [self drawRect:CGRectMake((self.frame.size.width)/12.*(i+2), arrowWidth, 1, arrowWidth*.5)];
+        }
+    }
+    else if(*_scenePointer == 2){
+        [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, arrowWidth*2)];
+        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+        [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, 4)];
+        for(int i = 0; i < 9; i++){
+            [self drawRect:CGRectMake((self.frame.size.width)/12.*(i+2), arrowWidth, 1, arrowWidth*.5)];
+        }
+    }
     
-    [self drawRect:CGRectMake(25, self.frame.size.height-(arrowWidth*.5)-5, arrowWidth, arrowWidth)];
-    [self drawRect:CGRectMake(self.frame.size.width-(arrowWidth*.5)-5, self.frame.size.height-(arrowWidth*.5)-5, arrowWidth, arrowWidth)];
 }
 
 

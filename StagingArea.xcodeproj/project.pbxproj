@@ -26,6 +26,8 @@
 		D571542E18E2B80500037224 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571540D18E2B80500037224 /* UIKit.framework */; };
 		D571543618E2B80500037224 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D571543418E2B80500037224 /* InfoPlist.strings */; };
 		D571543818E2B80500037224 /* StagingAreaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D571543718E2B80500037224 /* StagingAreaTests.m */; };
+		D572FDBF192AB29E0043443E /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D572FDBC192AB25E0043443E /* Montserrat-Bold.ttf */; };
+		D572FDC0192AB2A00043443E /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D572FDBD192AB25E0043443E /* Montserrat-Regular.ttf */; };
 		D583C253191A025400824AA5 /* Screen.m in Sources */ = {isa = PBXBuildFile; fileRef = D583C252191A025400824AA5 /* Screen.m */; };
 		D5D36FA519137D6D00D3327E /* Rhombicuboctahedron.m in Sources */ = {isa = PBXBuildFile; fileRef = D5D36FA419137D6D00D3327E /* Rhombicuboctahedron.m */; };
 		D5DC11BF18F8CF8B0013C321 /* tetra.obj in Resources */ = {isa = PBXBuildFile; fileRef = D5DC11BD18F8CF8B0013C321 /* tetra.obj */; };
@@ -81,6 +83,9 @@
 		D571543318E2B80500037224 /* StagingAreaTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StagingAreaTests-Info.plist"; sourceTree = "<group>"; };
 		D571543518E2B80500037224 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D571543718E2B80500037224 /* StagingAreaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StagingAreaTests.m; sourceTree = "<group>"; };
+		D572FDBC192AB25E0043443E /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		D572FDBD192AB25E0043443E /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		D572FDC1192ABE560043443E /* StageCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StageCommon.h; sourceTree = "<group>"; };
 		D583C251191A025400824AA5 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
 		D583C252191A025400824AA5 /* Screen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Screen.m; sourceTree = "<group>"; };
 		D5959A02191AEBC600622464 /* geodiagram.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = geodiagram.c; path = ../../Geodesic/geodiagram.c; sourceTree = "<group>"; };
@@ -175,6 +180,7 @@
 				D571541918E2B80500037224 /* AppDelegate.m */,
 				D571541B18E2B80500037224 /* Main_iPhone.storyboard */,
 				D571541E18E2B80500037224 /* Main_iPad.storyboard */,
+				D572FDC1192ABE560043443E /* StageCommon.h */,
 				D5579DAA19287F67005C49C7 /* Primitives.h */,
 				D5579DAB19287F67005C49C7 /* Primitives.m */,
 				D571542118E2B80500037224 /* ViewController.h */,
@@ -197,6 +203,7 @@
 				D5B98EEA18F244E200671557 /* Camera.cpp */,
 				D51EC01918FBA5140021FF54 /* OBJ.h */,
 				D51EC01A18FBA5140021FF54 /* OBJ.mm */,
+				D572FDBE192AB2650043443E /* Fonts */,
 				D51EC01C18FBA53A0021FF54 /* geodesic */,
 				D5961C3318F7C4AB00978303 /* 3rdParty */,
 				D571542418E2B80500037224 /* Images.xcassets */,
@@ -232,6 +239,15 @@
 				D571543418E2B80500037224 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D572FDBE192AB2650043443E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				D572FDBC192AB25E0043443E /* Montserrat-Bold.ttf */,
+				D572FDBD192AB25E0043443E /* Montserrat-Regular.ttf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		D5961C3318F7C4AB00978303 /* 3rdParty */ = {
@@ -332,6 +348,8 @@
 				D5DC11C018F8CF8B0013C321 /* tetra.mtl in Resources */,
 				D571541D18E2B80500037224 /* Main_iPhone.storyboard in Resources */,
 				D571541418E2B80500037224 /* InfoPlist.strings in Resources */,
+				D572FDBF192AB29E0043443E /* Montserrat-Bold.ttf in Resources */,
+				D572FDC0192AB2A00043443E /* Montserrat-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

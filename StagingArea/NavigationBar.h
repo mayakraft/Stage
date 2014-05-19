@@ -10,4 +10,6 @@
 
 @interface NavigationBar : Screen
 
+@property int* scenePointer;
+
 @end

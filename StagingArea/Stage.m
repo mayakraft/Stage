@@ -76,6 +76,7 @@ typedef enum{
 //    screen = [[Screen alloc] initWithFrame:_frame];
     
     navBar = [[NavigationBar alloc] initWithFrame:_frame];
+    [navBar setScenePointer:(int*)&_scene];
     
 //    room = [[Rhombicuboctahedron alloc] init];
     
@@ -109,7 +110,7 @@ typedef enum{
     whiteAlpha[0] = whiteAlpha[1] = whiteAlpha[2] = whiteAlpha[3] = 1.0f;
     
     titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _frame.size.width, 60)];
-    [titleLabel setFont:[UIFont systemFontOfSize:30]];
+    [titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:30]];//[UIFont systemFontOfSize:30]];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setTextColor:[UIColor whiteColor]];
     [titleLabel setText:@"SCENE 1"];
@@ -145,7 +146,16 @@ typedef enum{
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{  }
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    for(int i = 0; i < hotspots.count; i++){
+        CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
+        if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
+            return;
+        }
+    }
+//    if(_scene != scene1)
+//        shrinkMeshFaces(&mesh, &geo, 1.0);
+}
 
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{  }
 
@@ -160,15 +170,20 @@ typedef enum{
             return;
         }
     }
-    deleteMeshTriangles(&echoMesh);
+    if(_scene == scene1){
+        deleteMeshTriangles(&echoMesh);
     
-    deleteMeshTriangles(&mesh);
-    deleteGeodesic(&geo);
-    geo = icosahedron(arc4random()%10+1);
-    mesh = makeMeshTriangles(&geo, .8333333);
+        deleteMeshTriangles(&mesh);
+        deleteGeodesic(&geo);
+        geo = icosahedron(arc4random()%10+1);
+        mesh = makeMeshTriangles(&geo, .8333333);
 
-    echoMesh = makeMeshTriangles(&geo, .833333);
-    touchTime = elapsedMillis;
+        echoMesh = makeMeshTriangles(&geo, .833333);
+        touchTime = elapsedMillis;
+    }
+//    else{
+//        shrinkMeshFaces(&mesh, &geo, .8333333);
+//    }
 }
 
 -(void)draw{
@@ -182,11 +197,17 @@ typedef enum{
         scale = sqrtf(scale)*.25;
         extrudeTriangles(&echoMesh, &geo, scale);
     }
-    static GLfloat whiteColor[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-    static GLfloat noColor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    static GLfloat one = 1.0f;
+    static GLfloat pointthree = 0.3f;
+    
     glClearColor(screenColor[0], screenColor[1], screenColor[2], screenColor[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    
+    if(_scene == scene3)
+        spotlightNoir(screenColor, &one, &one);
+
+    
     glPushMatrix();
     if(_orientToDevice){
         set_position(&camera1, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
@@ -196,7 +217,7 @@ typedef enum{
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
 //    [room draw];
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, noColor);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zeroColor);
     
 //    static GLfloat blueColor[] = {0.0f, 0.0f, 1.0f, .50f};
 //    static GLfloat greenColor[] = {0.0f, 1.0f, 0.2f, .50f};
@@ -215,15 +236,10 @@ typedef enum{
 //    if(geo.numLines) geodesicDrawLines(&geo);
 //    if(geo.numPoints) geodesicDrawPoints(&geo);
 
-    float one = 1.0f;
-    float pointthree = 0.3f;
-    
     if(_scene == scene1)
         rainbow(screenColor, &one, &one);
     else if(_scene == scene2)
         silhouette(screenColor, &pointthree, &one);
-    else if(_scene == scene3)
-        spotlightNoir(screenColor, &one, &one);
     
     if(mesh.numTriangles) geodesicMeshDrawExtrudedTriangles(&mesh);
  
@@ -233,14 +249,31 @@ typedef enum{
         rainbow(screenColor, &one, &scale);
     else if(_scene == scene2)
         silhouette(screenColor, &pointthree, &scale);
-    else if(_scene == scene3)
+    else if(_scene == scene3){
+        glPopMatrix();
         spotlightNoir(screenColor, &one, &scale);
+        glPushMatrix();
+        if(_orientToDevice){
+            set_position(&camera1, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
+            set_up(&camera1, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+        }
+        frame_shot(&camera1);
+    }
     
+    if(_scene == scene1){
     
     if(touchTime + .5 > elapsedMillis && touchTime < elapsedMillis)
         if(echoMesh.numTriangles)
             geodesicMeshDrawExtrudedTriangles(&echoMesh);
 
+    }
+    else{
+        // geodesic un-spherizes back into original polyhedra
+        // manage 2 geodesic objects. one morphs into the other
+        // triangle faces extrude back into sphere with new frequency
+    }
+    
+    
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, redColor);
 //    if(mesh.numVertexNormals)
 //        geodesicMeshDrawVertexNormalLines(&mesh);
