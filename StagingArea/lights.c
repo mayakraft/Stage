@@ -50,13 +50,20 @@ void spotlightNoir(float *clearColor, float *brightness, float *alpha){
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-//    static GLfloat lightWhite[4] = {1.0f, 1.0f, 1.0f, 0.3f};
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, lightWhite);
+    static GLfloat lightWhite[4] = {.60f, .60f, .60f, 1.0f};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, lightWhite);
 }
 
-void silhouette(float *clearColor, float *brightness, float *alpha){
+void silhouette(float *clearColor){
     clearColor[0] = clearColor[1] = clearColor[2] = 1.0f;
     clearColor[3] = 1.0f;
     glDisable(GL_LIGHTING);
     glColor4f(0.0, 0.0, 0.0, 1.0);
+}
+
+void whiteSilhouette(float *clearColor){
+    clearColor[0] = clearColor[1] = clearColor[2] = 0.0f;
+    clearColor[3] = 1.0f;
+    glDisable(GL_LIGHTING);
+    glColor4f(1.0, 1.0, 1.0, 1.0);
 }

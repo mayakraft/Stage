@@ -52,6 +52,7 @@ typedef enum{
     
     float whiteAlpha[4];
     UILabel *titleLabel;
+    UILabel *numberLabels[9];
     
     NSArray *hotspots;
 }
@@ -78,7 +79,7 @@ typedef enum{
     navBar = [[NavigationBar alloc] initWithFrame:_frame];
     [navBar setScenePointer:(int*)&_scene];
     
-//    room = [[Rhombicuboctahedron alloc] init];
+    room = [[Rhombicuboctahedron alloc] init];
     
     float brightness = 0.8f;
     float alpha = 1.0f;
@@ -110,29 +111,52 @@ typedef enum{
     whiteAlpha[0] = whiteAlpha[1] = whiteAlpha[2] = whiteAlpha[3] = 1.0f;
     
     titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _frame.size.width, 60)];
-    [titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:30]];//[UIFont systemFontOfSize:30]];
+    [titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:30]];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setTextColor:[UIColor whiteColor]];
     [titleLabel setText:@"SCENE 1"];
     [self addSubview:titleLabel];
     
+    float arrowWidth = 50;
+
+    for(int i = 0; i < 9; i++){
+        numberLabels[i] = [[UILabel alloc] initWithFrame:CGRectMake((_frame.size.width)/12.*(i+1.5), self.frame.size.height-arrowWidth, (_frame.size.width)/12., (_frame.size.width)/12.)];
+        [numberLabels[i] setFont:[UIFont fontWithName:@"Montserrat-Regular" size:30]];
+        [numberLabels[i] setTextAlignment:NSTextAlignmentCenter];
+        [numberLabels[i] setText:[NSString stringWithFormat:@"%d",i+1]];
+        [numberLabels[i] setTextColor:[UIColor blackColor]];
+        [self addSubview:numberLabels[i]];
+    }
+    
     hotspots = @[ [NSValue valueWithCGRect:CGRectMake(5, 5, 40, 40)],
-                  [NSValue valueWithCGRect:CGRectMake(_frame.size.width-45, 5, 40, 40)]];
+                  [NSValue valueWithCGRect:CGRectMake(_frame.size.width-45, 5, 40, 40)],
+                  [NSValue valueWithCGRect:CGRectMake(0, _frame.size.height-arrowWidth*2.5, _frame.size.width, arrowWidth*2.5)]];
 }
 
 -(void) changeScene:(Scene)newScene{
     _scene = newScene;
     reset_lighting();
     if(_scene == scene1){
+        for (int i = 0; i < 9; i++)
+            [numberLabels[i] setTextColor:[UIColor blackColor]];
         [titleLabel setTextColor:[UIColor whiteColor]];
         [titleLabel setText:@"SCENE 1"];
     }else if (_scene == scene2){
+        for (int i = 0; i < 9; i++)
+            [numberLabels[i] setTextColor:[UIColor whiteColor]];
         [titleLabel setTextColor:[UIColor blackColor]];
         [titleLabel setText:@"SCENE 2"];
     }else if (_scene == scene3){
+        for (int i = 0; i < 9; i++){
+            [numberLabels[i] setTextColor:[UIColor blackColor]];
+            [numberLabels[i] setHidden:NO];
+        }
         [titleLabel setTextColor:[UIColor whiteColor]];
         [titleLabel setText:@"SCENE 3"];
     }else if (_scene == scene4){
+        for (int i = 0; i < 9; i++)
+            [numberLabels[i] setHidden:YES];
+        [titleLabel setTextColor:[UIColor blackColor]];
         [titleLabel setText:@"SCENE 4"];
     }
 }
@@ -167,23 +191,28 @@ typedef enum{
                 [self changeScene:_scene-1];
             else if(i == 1 && _scene < scene4)
                 [self changeScene:_scene+1];
+            else if(i == 2){
+                int freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
+                if(freq < 0) freq = 0;
+                if(freq > 8) freq = 8;
+                [navBar setRadioBarPosition:freq];
+                [self loadNewGeodesic:freq+1];
+            }
             return;
         }
     }
-    if(_scene == scene1){
-        deleteMeshTriangles(&echoMesh);
-    
-        deleteMeshTriangles(&mesh);
-        deleteGeodesic(&geo);
-        geo = icosahedron(arc4random()%10+1);
-        mesh = makeMeshTriangles(&geo, .8333333);
+}
 
-        echoMesh = makeMeshTriangles(&geo, .833333);
-        touchTime = elapsedMillis;
-    }
-//    else{
-//        shrinkMeshFaces(&mesh, &geo, .8333333);
-//    }
+-(void) loadNewGeodesic:(int)frequency{
+    deleteMeshTriangles(&echoMesh);
+    
+    deleteMeshTriangles(&mesh);
+    deleteGeodesic(&geo);
+    geo = icosahedron(frequency);
+    mesh = makeMeshTriangles(&geo, .8333333);
+    
+    echoMesh = makeMeshTriangles(&geo, .833333);
+    touchTime = elapsedMillis;
 }
 
 -(void)draw{
@@ -198,7 +227,6 @@ typedef enum{
         extrudeTriangles(&echoMesh, &geo, scale);
     }
     static GLfloat one = 1.0f;
-    static GLfloat pointthree = 0.3f;
     
     glClearColor(screenColor[0], screenColor[1], screenColor[2], screenColor[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -215,23 +243,12 @@ typedef enum{
     }
     frame_shot(&camera1);
 
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
-//    [room draw];
+    if(_scene == scene4){
+        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
+        [room draw];
+    }
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zeroColor);
-    
-//    static GLfloat blueColor[] = {0.0f, 0.0f, 1.0f, .50f};
-//    static GLfloat greenColor[] = {0.0f, 1.0f, 0.2f, .50f};
-//    static GLfloat redColor[] = {1.0f, 0.2f, 0.0f, .50f};
-//    float no_mat[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-//    float mat_ambient[4] = {0.7f, 0.7f, 0.7f, 1.0f};
-//    float mat_ambient_color[4] = {0.8f, 0.8f, 0.2f, 1.0f};
-//    float mat_diffuse[4] = {0.1f, 0.5f, 0.8f, 1.0f};
-//    float mat_specular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-//    float no_shininess = 0.0f;
-//    float low_shininess = 5.0f;
-//    float high_shininess = 100.0f;
-//    float mat_emission[4] = {0.3f, 0.2f, 0.2f, 0.0f};
-    
+   
 //    if(geo.numFaces) geodesicDrawTriangles(&geo);
 //    if(geo.numLines) geodesicDrawLines(&geo);
 //    if(geo.numPoints) geodesicDrawPoints(&geo);
@@ -239,16 +256,17 @@ typedef enum{
     if(_scene == scene1)
         rainbow(screenColor, &one, &one);
     else if(_scene == scene2)
-        silhouette(screenColor, &pointthree, &one);
+        silhouette(screenColor);
     
-    if(mesh.numTriangles) geodesicMeshDrawExtrudedTriangles(&mesh);
+    if(_scene != scene4)
+        if(mesh.numTriangles) geodesicMeshDrawExtrudedTriangles(&mesh);
  
     float scale = 1.0-(elapsedMillis - touchTime)/.50;
     
     if(_scene == scene1)
         rainbow(screenColor, &one, &scale);
     else if(_scene == scene2)
-        silhouette(screenColor, &pointthree, &scale);
+        silhouette(screenColor);
     else if(_scene == scene3){
         glPopMatrix();
         spotlightNoir(screenColor, &one, &scale);

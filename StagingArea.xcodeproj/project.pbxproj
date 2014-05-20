@@ -90,10 +90,9 @@
 		D583C252191A025400824AA5 /* Screen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Screen.m; sourceTree = "<group>"; };
 		D5959A02191AEBC600622464 /* geodiagram.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = geodiagram.c; path = ../../Geodesic/geodiagram.c; sourceTree = "<group>"; };
 		D5959A03191AEBC600622464 /* geodiagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = geodiagram.h; path = ../../Geodesic/geodiagram.h; sourceTree = "<group>"; };
-		D5961C4518F88FE000978303 /* tiny_obj_loader.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tiny_obj_loader.cc; sourceTree = "<group>"; };
+		D5961C4518F88FE000978303 /* tiny_obj_loader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tiny_obj_loader.c; sourceTree = "<group>"; };
 		D5961C4618F88FE000978303 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_obj_loader.h; sourceTree = "<group>"; };
-		D5B98EEA18F244E200671557 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
-		D5B98EEB18F244E200671557 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Camera.hpp; sourceTree = "<group>"; };
+		D5B98EEA18F244E200671557 /* Camera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Camera.m; sourceTree = "<group>"; };
 		D5D36FA319137D6D00D3327E /* Rhombicuboctahedron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rhombicuboctahedron.h; sourceTree = "<group>"; };
 		D5D36FA419137D6D00D3327E /* Rhombicuboctahedron.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rhombicuboctahedron.m; sourceTree = "<group>"; };
 		D5DC11BD18F8CF8B0013C321 /* tetra.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tetra.obj; sourceTree = "<group>"; };
@@ -199,8 +198,7 @@
 				D51D4A2F18FE7A0700AA6C13 /* lights.c */,
 				D5F03275190F3BDC0056281A /* camera.h */,
 				D5F03276190F3BDC0056281A /* camera.c */,
-				D5B98EEB18F244E200671557 /* Camera.hpp */,
-				D5B98EEA18F244E200671557 /* Camera.cpp */,
+				D5B98EEA18F244E200671557 /* Camera.m */,
 				D51EC01918FBA5140021FF54 /* OBJ.h */,
 				D51EC01A18FBA5140021FF54 /* OBJ.mm */,
 				D572FDBE192AB2650043443E /* Fonts */,
@@ -258,7 +256,7 @@
 				D539CFA118F516B700EFFF19 /* noise.h */,
 				D539CFA218F516BE00EFFF19 /* noise.c */,
 				D5961C4618F88FE000978303 /* tiny_obj_loader.h */,
-				D5961C4518F88FE000978303 /* tiny_obj_loader.cc */,
+				D5961C4518F88FE000978303 /* tiny_obj_loader.c */,
 			);
 			name = 3rdParty;
 			sourceTree = "<group>";
@@ -523,6 +521,7 @@
 					"~/Code/Geodesic/",
 				);
 				INFOPLIST_FILE = "StagingArea/StagingArea-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -546,6 +545,7 @@
 					"~/Code/Geodesic/",
 				);
 				INFOPLIST_FILE = "StagingArea/StagingArea-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

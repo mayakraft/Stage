@@ -12,5 +12,6 @@
 -(void) drawHexagons;
 -(void) drawHexLines;
 
+-(void) drawRect:(CGRect)rect WithRotation:(float)degrees;
 
 @end

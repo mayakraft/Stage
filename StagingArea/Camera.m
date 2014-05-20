@@ -4,31 +4,62 @@
 #include <math.h>
 #include "noise.c"
 
-void Camera::normalize(float v[3]){
+@interface Camera (){
+   
+    float       Z_NEAR = 0.1f;
+    float       Z_FAR = 100.0f;
+    
+    
+    GLfloat     position[3] = {0.0f, 0.0f, 0.0f};  // x,y,z of camera lens
+    GLfloat     focus[3] = {0.0f, 0.0f, 1.0f};     // x,y,z of point on which to focus
+    GLfloat     up[3] = {0.0f, 1.0f, 0.0f};        // tilt/roll around line of sight
+    
+    GLfloat     m[16];  // orientation
+    float       _fieldOfView = 45.0f;
+    float       _aspectRatio = 1.0f;
+    float       _screenX;
+    float       _screenY;
+    float       _screenWidth;
+    float       _screenHeight;
+    
+    // for calculating orientation matrix
+    float r, forward[3], side[3], above[3];
+}
+
+@end
+
+@implementation Camera
+
+-(void)normalize:(float) v[3]{
     r = sqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
     if (r == 0.0) return;
     v[0] /= r;      v[1] /= r;      v[2] /= r;
 }
-void Camera::cross(float v1[3], float v2[3], float result[3]){
+-(void) cross:(float) v1[3] :(float) v2[3] :(float) result[3]{
     result[0] = v1[1]*v2[2] - v1[2]*v2[1];
     result[1] = v1[2]*v2[0] - v1[0]*v2[2];
     result[2] = v1[0]*v2[1] - v1[1]*v2[0];
 }
 
-Camera::Camera(){
-    up[X] = 0.0f;   up[Y] = 1.0f;   up[Z] = 0.0f;
-}
-void Camera::setPosition(GLfloat pX, GLfloat pY, GLfloat pZ){
-    position[X] = pX;   position[Y] = pY;   position[Z] = pZ;
-}
-void Camera::setFocus(GLfloat fX, GLfloat fY, GLfloat fZ){
-    focus[X] = fX;  focus[Y] = fY;  focus[Z] = fZ;
-}
-void Camera::setUp(GLfloat uX, GLfloat uY, GLfloat uZ){
-    up[X] = uX;     up[Y] = uY;     up[Z] = uZ;
+-(id) init{
+    self = [super init];
+    if(self){
+        up[X] = 0.0f;   up[Y] = 1.0f;   up[Z] = 0.0f;
+    }
+    return self;
 }
 
-void Camera::frameShot(){
+//-(void) setPosition(GLfloat pX, GLfloat pY, GLfloat pZ){
+//    position[X] = pX;   position[Y] = pY;   position[Z] = pZ;
+//}
+//-(void) setFocus(GLfloat fX, GLfloat fY, GLfloat fZ){
+//    focus[X] = fX;  focus[Y] = fY;  focus[Z] = fZ;
+//}
+//-(void) setUp(GLfloat uX, GLfloat uY, GLfloat uZ){
+//    up[X] = uX;     up[Y] = uY;     up[Z] = uZ;
+//}
+
+-(void) frameShot{
     if(animation != NULL)
         (this->*animation)();
     
@@ -42,25 +73,25 @@ void Camera::frameShot(){
     cross(forward, above, side);
     normalize(side);
     cross(side, forward, above);
-//    velocity = sqrtf( pow(side[0]-m[0],2) + pow(side[1]-m[4],2) + pow(side[2]-m[8],2)
-//                     + pow(above[0]-m[1],2) + pow(above[1]-m[5],2) + pow(above[2]-m[9],2)
-//                     + pow(-forward[0]-m[2],2) + pow(-forward[1]-m[6],2) + pow(-forward[2]-m[10],2) );
+    //    velocity = sqrtf( pow(side[0]-m[0],2) + pow(side[1]-m[4],2) + pow(side[2]-m[8],2)
+    //                     + pow(above[0]-m[1],2) + pow(above[1]-m[5],2) + pow(above[2]-m[9],2)
+    //                     + pow(-forward[0]-m[2],2) + pow(-forward[1]-m[6],2) + pow(-forward[2]-m[10],2) );
     m[0] = side[0];     m[1] = above[0];    m[2] = -forward[0];     m[3] = 0.0f;
     m[4] = side[1];     m[5] = above[1];    m[6] = -forward[1];     m[7] = 0.0f;
     m[8] = side[2];     m[9] = above[2];    m[10] = -forward[2];    m[11] = 0.0f;
     m[12] = 0.0f;       m[13] = 0.0f;       m[14] = 0.0f;           m[15] = 1.0f;
     glMultMatrixf(&m[0]);
     glTranslatef(-position[X], -position[Y], -position[Z]);
-//    logOrientation();
+    //    logOrientation();
 }
 
-void Camera::setAnimation(){
+-(void) setAnimation{
     // each animation has a function which relates an input position/focus/up
     // to a set of starting conditions for the variables in the loop
 }
 
 // is this going to be a problem that frameNum is static with the same name?
-void Camera::animationUpAndDownAndAround(){
+-(void) animationUpAndDownAndAround{
     static int frameNum;
     frameNum++;
     position[X] = 1.618*sinf(frameNum/100.0);
@@ -68,7 +99,7 @@ void Camera::animationUpAndDownAndAround(){
     position[Y] = 3*sinf(frameNum/33.0);
 }
 
-void Camera::animationPerlinNoiseRotateAround(){
+-(void) animationPerlinNoiseRotateAround{
     static int frameNum;
     frameNum++;
     static float animAngleVelocity = 0;
@@ -80,13 +111,13 @@ void Camera::animationPerlinNoiseRotateAround(){
     position[Y] = 1.25*noise1(frameNum/33.0);
 }
 
-void Camera::animationDollyZoom(){
+-(void) animationDollyZoom{
     static float dollyFocus[3] = {0.0f, 0.0f, 0.0f};
     static int frameNum;
     frameNum++;
-//    position[X] = 1.618*sinf(frameNum2/100.0);
+    //    position[X] = 1.618*sinf(frameNum2/100.0);
     position[Z] = 1.618*cosf(frameNum/50.0) + 2.3;
-//    position[Y] = sinf(frameNum2/15.0);
+    //    position[Y] = sinf(frameNum2/15.0);
     float width = 1;
     float distance = sqrtf(pow(position[X]-dollyFocus[X], 2) +
                            pow(position[Y]-dollyFocus[Y], 2) +
@@ -96,7 +127,7 @@ void Camera::animationDollyZoom(){
     setFieldOfView(fov);
 }
 
-void Camera::logOrientation(){
+-(void) logOrientation{
     static int logDelay;
     logDelay++;
     if(logDelay%3 == 0){
@@ -110,15 +141,15 @@ void Camera::logOrientation(){
 
 // RESET CAMERA POSITION
 
-void Camera::setFieldOfView(float fieldOfView){
+-(void) setFieldOfView:(float) fieldOfView{
     _fieldOfView = fieldOfView;
     rebuildProjectionMatrix();
 }
-void Camera::setAspectRatio(float aspectRatio){
+-(void) setAspectRatio:(float) aspectRatio{
     _aspectRatio = aspectRatio;
     rebuildProjectionMatrix();
 }
-void Camera::setFrame(int x, int y, int width, int height){
+-(void) setFrame:(CGRect)frame{
     _screenX = x;
     _screenY = y;
     _screenWidth = width;
@@ -126,7 +157,7 @@ void Camera::setFrame(int x, int y, int width, int height){
     _aspectRatio = _screenWidth/_screenHeight;
     rebuildProjectionMatrix();
 }
-void Camera::rebuildProjectionMatrix(){
+-(void) rebuildProjectionMatrix{
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     GLfloat frustum = Z_NEAR * tanf(_fieldOfView*0.00872664625997);  // pi / 180 / 2
@@ -135,7 +166,7 @@ void Camera::rebuildProjectionMatrix(){
     glMatrixMode(GL_MODELVIEW);
 }
 
-void Camera::enterOrthographic(){
+-(void) enterOrthographic{
 //    glDisable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -147,7 +178,7 @@ void Camera::enterOrthographic(){
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 }
 
-void Camera::exitOrthographic(){
+-(void) exitOrthographic{
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -155,4 +186,8 @@ void Camera::exitOrthographic(){
 //    glEnable(GL_BLEND);
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
+
+
+
+@end
 

@@ -12,4 +12,6 @@
 
 @property int* scenePointer;
 
+@property int radioBarPosition;
+
 @end

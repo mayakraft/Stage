@@ -30,3 +30,42 @@ void enter_orthographic(float width, float height);
 void exit_orthographic();
 
 #endif /* defined(__Camera__) */
+
+
+//
+//  Objective-C  sibling implementation
+//
+
+/*
+@interface Camera
+
+-(void) frameShot;  // call at beginning of every draw function
+
+-(void) enterOrthographic;
+-(void) exitOrthographic;
+-(void) logOrientation;
+
+-(void) setFieldOfView:(float) fieldOfView;
+-(void) setAspectRatio:(float) aspectRatio;
+-(void) setFrame:(CGRect)frame;
+
+void setPosition(GLfloat pX, GLfloat pY, GLfloat pZ);   // x,y,z of camera lens
+void setFocus(GLfloat fX, GLfloat fY, GLfloat fZ);      // x,y,z of point on which to focus
+void setUp(GLfloat uX, GLfloat uY, GLfloat uZ);         // tilt/roll around line of sight
+//    bool tiltLock;      // turn off up[3] (always above +y camera)
+
+// animation
+//void (Camera::*animation)() = NULL;
+//void setAnimation();
+// make your own animation scripts
+void animationUpAndDownAndAround();
+void animationDollyZoom();
+void animationPerlinNoiseRotateAround();
+
+void rebuildProjectionMatrix();
+void normalize(float v[3]);
+void cross(float v1[3], float v2[3], float result[3]);
+
+@end
+
+*/

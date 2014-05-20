@@ -3,6 +3,7 @@
 #import <OpenGLES/ES1/gl.h>
 
 @implementation Primitives
+
 -(void) drawRect:(CGRect)rect{
     static const GLfloat _unit_square[] = {
         -0.5f, 0.5f,
@@ -64,5 +65,24 @@
     glDrawArrays(GL_LINE_LOOP, 0, 6);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
+
+-(void) drawRect:(CGRect)rect WithRotation:(float)degrees{
+    static const GLfloat _unit_square[] = {
+        -0.5f, 0.5f,
+        0.5f, 0.5f,
+        -0.5f, -0.5f,
+        0.5f, -0.5f
+    };
+    glPushMatrix();
+    glTranslatef(rect.origin.x, rect.origin.y, 0.0);
+    glScalef(rect.size.width, rect.size.height, 1.0);
+    glRotatef(degrees, 0, 0, 1);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(2, GL_FLOAT, 0, _unit_square);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glPopMatrix();
+}
+
 
 @end
