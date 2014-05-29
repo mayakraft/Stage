@@ -12,6 +12,6 @@
 
 @property int* scenePointer;
 
-@property int radioBarPosition;
+@property float radioBarPosition;
 
 @end

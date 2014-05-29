@@ -115,9 +115,9 @@
     static float dollyFocus[3] = {0.0f, 0.0f, 0.0f};
     static int frameNum;
     frameNum++;
-    //    position[X] = 1.618*sinf(frameNum2/100.0);
+//    position[X] = 1.618*sinf(frameNum2/100.0);
     position[Z] = 1.618*cosf(frameNum/50.0) + 2.3;
-    //    position[Y] = sinf(frameNum2/15.0);
+//    position[Y] = sinf(frameNum2/15.0);
     float width = 1;
     float distance = sqrtf(pow(position[X]-dollyFocus[X], 2) +
                            pow(position[Y]-dollyFocus[Y], 2) +

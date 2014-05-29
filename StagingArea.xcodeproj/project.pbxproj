@@ -88,8 +88,6 @@
 		D572FDC1192ABE560043443E /* StageCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StageCommon.h; sourceTree = "<group>"; };
 		D583C251191A025400824AA5 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
 		D583C252191A025400824AA5 /* Screen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Screen.m; sourceTree = "<group>"; };
-		D5959A02191AEBC600622464 /* geodiagram.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = geodiagram.c; path = ../../Geodesic/geodiagram.c; sourceTree = "<group>"; };
-		D5959A03191AEBC600622464 /* geodiagram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = geodiagram.h; path = ../../Geodesic/geodiagram.h; sourceTree = "<group>"; };
 		D5961C4518F88FE000978303 /* tiny_obj_loader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tiny_obj_loader.c; sourceTree = "<group>"; };
 		D5961C4618F88FE000978303 /* tiny_obj_loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tiny_obj_loader.h; sourceTree = "<group>"; };
 		D5B98EEA18F244E200671557 /* Camera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Camera.m; sourceTree = "<group>"; };
@@ -97,8 +95,8 @@
 		D5D36FA419137D6D00D3327E /* Rhombicuboctahedron.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rhombicuboctahedron.m; sourceTree = "<group>"; };
 		D5DC11BD18F8CF8B0013C321 /* tetra.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tetra.obj; sourceTree = "<group>"; };
 		D5DC11BE18F8CF8B0013C321 /* tetra.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tetra.mtl; sourceTree = "<group>"; };
-		D5F03275190F3BDC0056281A /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
-		D5F03276190F3BDC0056281A /* camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = camera.c; sourceTree = "<group>"; };
+		D5F03275190F3BDC0056281A /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		D5F03276190F3BDC0056281A /* Camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Camera.c; sourceTree = "<group>"; };
 		D5F68C91191789BF002C97F3 /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
 		D5F68C92191789BF002C97F3 /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -135,8 +133,6 @@
 				D56C6F4C190E568A00460690 /* geodesic.c */,
 				D54D4D7B1912C01000D9E319 /* geomesh.h */,
 				D54D4D7A1912C01000D9E319 /* geomesh.c */,
-				D5959A03191AEBC600622464 /* geodiagram.h */,
-				D5959A02191AEBC600622464 /* geodiagram.c */,
 			);
 			name = geodesic;
 			sourceTree = "<group>";
@@ -196,8 +192,8 @@
 				D5D36FA419137D6D00D3327E /* Rhombicuboctahedron.m */,
 				D51D4A3018FE7A0700AA6C13 /* lights.h */,
 				D51D4A2F18FE7A0700AA6C13 /* lights.c */,
-				D5F03275190F3BDC0056281A /* camera.h */,
-				D5F03276190F3BDC0056281A /* camera.c */,
+				D5F03275190F3BDC0056281A /* Camera.h */,
+				D5F03276190F3BDC0056281A /* Camera.c */,
 				D5B98EEA18F244E200671557 /* Camera.m */,
 				D51EC01918FBA5140021FF54 /* OBJ.h */,
 				D51EC01A18FBA5140021FF54 /* OBJ.mm */,

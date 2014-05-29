@@ -9,13 +9,15 @@
 //#import "OBJ.h"
 
 #include "lights.c"
-#include "camera.c"
+#include "Camera.c"
 #include "geodesic.c"
 
 #import "Rhombicuboctahedron.h"
 
-// attach the lights to the orientation matrix
-// so the rainbow always hits from a visible angle
+typedef enum{
+    stateWaiting,
+    stateAnimating
+} State;
 
 typedef enum{
     scene1,
@@ -24,16 +26,45 @@ typedef enum{
     scene4
 } Scene;
 
+typedef struct Animation Animation;
+struct Animation{
+    NSTimeInterval startTime;
+    NSTimeInterval endTime;
+    NSTimeInterval duration;
+    void (*animate)();
+};
+Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)()){
+    Animation *a = malloc(sizeof(Animation));
+    a->startTime = start;
+    a->endTime = end;
+    a->duration = start-end;
+    a->animate = animationFunction;
+    return a;
+}
+Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)()){
+    Animation *a = malloc(sizeof(Animation));
+    a->startTime = start;
+    a->endTime = start+duration;
+    a->duration = duration;
+    a->animate = animationFunction;
+    return a;
+}
+void comp(){
+    NSLog(@"THIS");
+}
+
 @interface Stage (){
     
-    Scene       _scene;
+    Scene       scene;
+    State       state;
+    Animation   *animation;
     
 //    Screen      *screen;
     
     NavigationBar *navBar;
     
     Room        *room;
-    camera      camera1;
+    Camera      camera;
     GLfloat     *cameraPosition;
     GLfloat     *cameraFocus;
     GLfloat     *cameraUp;
@@ -44,11 +75,16 @@ typedef enum{
     geodesic            geo;
     geomeshTriangles    mesh;
     geomeshTriangles    echoMesh;
+    geomeshCropPlanes   cropPlanes;
     float camDistance;
     
     NSDate *start;
-    NSTimeInterval elapsedMillis;
-    NSTimeInterval touchTime;
+    NSTimeInterval elapsedSeconds;  // seconds
+    NSTimeInterval timeTouchesBegan, timeTouchesMoved, timeTouchesEnded;
+    
+    BOOL transitioning;
+    BOOL interactionDisabled;
+    NSTimeInterval interactionDownTime, interactionDownDuration;
     
     float whiteAlpha[4];
     UILabel *titleLabel;
@@ -77,8 +113,8 @@ typedef enum{
 //    screen = [[Screen alloc] initWithFrame:_frame];
     
     navBar = [[NavigationBar alloc] initWithFrame:_frame];
-    [navBar setScenePointer:(int*)&_scene];
-    
+    [navBar setScenePointer:(int*)&scene];
+
     room = [[Rhombicuboctahedron alloc] init];
     
     float brightness = 0.8f;
@@ -88,9 +124,9 @@ typedef enum{
 //    spotlightNoir(screenColor);
     
     // camera
-    set_up(&camera1, 0, 1, 0);
-    set_position(&camera1, 0, 0, 3);
-    set_focus(&camera1, 0, 0, 0);
+    set_up(&camera, 0, 1, 0);
+    set_position(&camera, 0, 0, 3);
+    set_focus(&camera, 0, 0, 0);
     build_projection_matrix(_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 60);
 //    camera1.animation = &Camera::animationPerlinNoiseRotateAround;  //top of draw loop
 
@@ -102,8 +138,8 @@ typedef enum{
     //65535
     mesh = makeMeshTriangles(&geo, .8333333);
     echoMesh = makeMeshTriangles(&geo, .833333);
-    
-    makeDiagram(&geo);
+    cropPlanes = makeMeshCropPlanes(&geo);
+
     
     camDistance = 2.25;
     start = [NSDate date];
@@ -133,27 +169,43 @@ typedef enum{
                   [NSValue valueWithCGRect:CGRectMake(0, _frame.size.height-arrowWidth*2.5, _frame.size.width, arrowWidth*2.5)]];
 }
 
+-(void) chateState:(State) newState{
+    state = newState;
+    if(state == stateWaiting){
+        
+    }
+    else if(state == stateAnimating){
+        
+    }
+}
+
 -(void) changeScene:(Scene)newScene{
-    _scene = newScene;
+    scene = newScene;
     reset_lighting();
-    if(_scene == scene1){
+    if(scene == scene1){
+        _orientToDevice = true;
         for (int i = 0; i < 9; i++)
             [numberLabels[i] setTextColor:[UIColor blackColor]];
         [titleLabel setTextColor:[UIColor whiteColor]];
         [titleLabel setText:@"SCENE 1"];
-    }else if (_scene == scene2){
+    }else if (scene == scene2){
+        _orientToDevice = false;
+        set_position(&camera, camDistance, 0, 0);
+        set_up(&camera, 0, 1, 0);
         for (int i = 0; i < 9; i++)
             [numberLabels[i] setTextColor:[UIColor whiteColor]];
         [titleLabel setTextColor:[UIColor blackColor]];
         [titleLabel setText:@"SCENE 2"];
-    }else if (_scene == scene3){
+    }else if (scene == scene3){
+        _orientToDevice = true;
         for (int i = 0; i < 9; i++){
             [numberLabels[i] setTextColor:[UIColor blackColor]];
             [numberLabels[i] setHidden:NO];
         }
         [titleLabel setTextColor:[UIColor whiteColor]];
         [titleLabel setText:@"SCENE 3"];
-    }else if (_scene == scene4){
+    }else if (scene == scene4){
+        _orientToDevice = true;
         for (int i = 0; i < 9; i++)
             [numberLabels[i] setHidden:YES];
         [titleLabel setTextColor:[UIColor blackColor]];
@@ -171,48 +223,71 @@ typedef enum{
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    for(int i = 0; i < hotspots.count; i++){
-        CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
-        if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
-            return;
+    if(!interactionDisabled){
+        for(int i = 0; i < hotspots.count; i++){
+            CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
+            if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
+                break;
+            }
         }
-    }
 //    if(_scene != scene1)
 //        shrinkMeshFaces(&mesh, &geo, 1.0);
+        timeTouchesBegan = elapsedSeconds;
+    }
 }
 
--(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{  }
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(!interactionDisabled){
+        for(int i = 0; i < hotspots.count; i++){
+            CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
+            if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
+                if(i == 2){
+                    float freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
+                    if(freq < 0) freq = 0;
+                    if(freq > 8) freq = 8;
+                    [navBar setRadioBarPosition:freq];
+                }
+                break;
+            }
+        }
+        timeTouchesMoved = elapsedSeconds;
+    }
+}
 
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    for(int i = 0; i < hotspots.count; i++){
-        CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
-        if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
-            if(i == 0 && _scene > scene1)
-                [self changeScene:_scene-1];
-            else if(i == 1 && _scene < scene4)
-                [self changeScene:_scene+1];
-            else if(i == 2){
-                int freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
-                if(freq < 0) freq = 0;
-                if(freq > 8) freq = 8;
-                [navBar setRadioBarPosition:freq];
-                [self loadNewGeodesic:freq+1];
+    if(!interactionDisabled){
+        for(int i = 0; i < hotspots.count; i++){
+            CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
+            if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
+                if(i == 0 && scene > scene1)
+                    [self changeScene:scene-1];
+                else if(i == 1 && scene < scene4)
+                    [self changeScene:scene+1];
+                else if(i == 2){
+                    int freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
+                    if(freq < 0) freq = 0;
+                    if(freq > 8) freq = 8;
+                    [navBar setRadioBarPosition:freq];
+                    [self loadNewGeodesic:freq+1];
+                }
+                break;
             }
-            return;
         }
+        timeTouchesEnded = elapsedSeconds;
     }
 }
 
 -(void) loadNewGeodesic:(int)frequency{
+    deleteCropPlanes(&cropPlanes);
     deleteMeshTriangles(&echoMesh);
     
     deleteMeshTriangles(&mesh);
     deleteGeodesic(&geo);
     geo = icosahedron(frequency);
     mesh = makeMeshTriangles(&geo, .8333333);
+    cropPlanes = makeMeshCropPlanes(&geo);
     
     echoMesh = makeMeshTriangles(&geo, .833333);
-    touchTime = elapsedMillis;
 }
 
 -(void)draw{
@@ -220,9 +295,21 @@ typedef enum{
     
     // a non statically oriented push/pop section
     
-    elapsedMillis = -[start timeIntervalSinceNow];
-    if(touchTime + .5 > elapsedMillis && touchTime < elapsedMillis){
-        float scale = (elapsedMillis - touchTime)/6.0;
+    elapsedSeconds = -[start timeIntervalSinceNow];
+    
+    if(animation != nil){
+        animation->animate();
+        if(animation->endTime < elapsedSeconds){
+            free(animation);
+            animation = nil;
+        }
+    }
+    
+    if(elapsedSeconds < 4 && elapsedSeconds > 3 && animation == nil)
+        animation = makeAnimation(3, 4, comp);
+    
+    if(timeTouchesEnded + .5 > elapsedSeconds && timeTouchesEnded < elapsedSeconds){
+        float scale = (elapsedSeconds - timeTouchesEnded)/6.0;
         scale = sqrtf(scale)*.25;
         extrudeTriangles(&echoMesh, &geo, scale);
     }
@@ -232,18 +319,18 @@ typedef enum{
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     
-    if(_scene == scene3)
+    if(scene == scene3)
         spotlightNoir(screenColor, &one, &one);
 
     
     glPushMatrix();
     if(_orientToDevice){
-        set_position(&camera1, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
-        set_up(&camera1, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+        set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
+        set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
     }
-    frame_shot(&camera1);
+    frame_shot(&camera);
 
-    if(_scene == scene4){
+    if(scene == scene4){
         glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
         [room draw];
     }
@@ -253,36 +340,41 @@ typedef enum{
 //    if(geo.numLines) geodesicDrawLines(&geo);
 //    if(geo.numPoints) geodesicDrawPoints(&geo);
 
-    if(_scene == scene1)
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
+
+    
+    if(scene == scene1)
         rainbow(screenColor, &one, &one);
-    else if(_scene == scene2)
+    else if(scene == scene2)
         silhouette(screenColor);
     
-    if(_scene != scene4)
+    if(scene != scene4){
+//        if(cropPlanes.numPlanes) geodesicMeshDrawCropPlanes(&cropPlanes);
         if(mesh.numTriangles) geodesicMeshDrawExtrudedTriangles(&mesh);
+    }
  
-    float scale = 1.0-(elapsedMillis - touchTime)/.50;
+    float scale = 1.0-(elapsedSeconds - timeTouchesEnded)/.50;
     
-    if(_scene == scene1)
+    if(scene == scene1)
         rainbow(screenColor, &one, &scale);
-    else if(_scene == scene2)
+    else if(scene == scene2)
         silhouette(screenColor);
-    else if(_scene == scene3){
+    else if(scene == scene3){
         glPopMatrix();
         spotlightNoir(screenColor, &one, &scale);
         glPushMatrix();
         if(_orientToDevice){
-            set_position(&camera1, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
-            set_up(&camera1, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+            set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
+            set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
         }
-        frame_shot(&camera1);
+        frame_shot(&camera);
     }
     
-    if(_scene == scene1){
-    
-    if(touchTime + .5 > elapsedMillis && touchTime < elapsedMillis)
-        if(echoMesh.numTriangles)
-            geodesicMeshDrawExtrudedTriangles(&echoMesh);
+    if(scene == scene1){
+        
+        if(timeTouchesEnded + .5 > elapsedSeconds && timeTouchesEnded < elapsedSeconds)
+            if(echoMesh.numTriangles)
+                geodesicMeshDrawExtrudedTriangles(&echoMesh);
 
     }
     else{
@@ -290,6 +382,7 @@ typedef enum{
         // manage 2 geodesic objects. one morphs into the other
         // triangle faces extrude back into sphere with new frequency
     }
+    
     
     
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, redColor);

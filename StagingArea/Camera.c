@@ -1,6 +1,6 @@
 // with help from MESA 3D project
 //
-#include "camera.h"
+#include "Camera.h"
 #include <math.h>
 #include "noise.c"
 
@@ -16,7 +16,7 @@ static void cross(float v1[3], float v2[3], float result[3]){
     result[2] = v1[0]*v2[1] - v1[1]*v2[0];
 }
 
-void frame_shot(camera *cam){
+void frame_shot(Camera *cam){
     cam->forward[0] = cam->focus[0] - cam->position[0];
     cam->forward[1] = cam->focus[1] - cam->position[1];
     cam->forward[2] = cam->focus[2] - cam->position[2];
@@ -39,17 +39,17 @@ void frame_shot(camera *cam){
 //    logOrientation();
 }
 
-void set_position(camera *cam, GLfloat pX, GLfloat pY, GLfloat pZ){
+void set_position(Camera *cam, GLfloat pX, GLfloat pY, GLfloat pZ){
     cam->position[0] = pX;
     cam->position[1] = pY;
     cam->position[2] = pZ;
 }
-void set_focus(camera *cam, GLfloat fX, GLfloat fY, GLfloat fZ){
+void set_focus(Camera *cam, GLfloat fX, GLfloat fY, GLfloat fZ){
     cam->focus[0] = fX;
     cam->focus[1] = fY;
     cam->focus[2] = fZ;
 }
-void set_up(camera *cam, GLfloat uX, GLfloat uY, GLfloat uZ){
+void set_up(Camera *cam, GLfloat uX, GLfloat uY, GLfloat uZ){
     cam->up[0] = uX;
     cam->up[1] = uY;
     cam->up[2] = uZ;
