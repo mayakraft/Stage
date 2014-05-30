@@ -1,35 +1,13 @@
 # OpenGL Stage
 
-lights, camera, scripts, object loader
+3D environment for app building with dramatic control over lighting and camera
 
 ``` objective-c
-@class Stage  // parent
+@class Stage  // dispatch for user-feedback and timing animations
 |
-|--@class Screen  // orthographic layer sits on top of everything
+|--@class Screen  // on top: orthographic layer for all 2D user interface
 |
-|--@class Room
+|--@class Room    // below: the 3D world
 ```
-
-# methods
-
-``` objective-c
- // lights
--(void) lightsSilhouette;
--(void) lightsRainbow;
--(void) lightsSpotlightNoir;
-
- // camera
-void setFieldOfView(fov);
-void setFrame(x, y, width, height);
-void setPosition(x, y, z);
-void setFocus(x, y, z);
-
- // object file loader
--(id)initWithOBJ:(NSString*)file Path:(NSString*)path;
-```
-
-* animationDollyZoom;  // Hitchcock zoom / Vertigo zoom
-* animationPerlinNoiseRotateAround;
-* animationUpAndDownAndAround;
 
 ![image](https://raw.github.com/robbykraft/StagingArea/master/globe-theatre.jpg)

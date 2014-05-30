@@ -10,12 +10,14 @@
 #import <OpenGLES/ES1/gl.h>
 
 @interface NavigationBar ()
-
+{
+//    static float arrowWidth = ;   // fix this, put make it static
+}
 @end
 
 @implementation NavigationBar
 
-#define arrowWidth 50
+#define arrowWidth self.frame.size.width*.125
 
 -(void) customDraw{
     glDisable(GL_LIGHTING);

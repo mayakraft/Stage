@@ -8,8 +8,8 @@
 
 //#import "OBJ.h"
 
-#include "lights.c"
 #include "Camera.c"
+#include "lights.c"
 #include "geodesic.c"
 
 #import "Rhombicuboctahedron.h"
@@ -31,17 +31,17 @@ struct Animation{
     NSTimeInterval startTime;
     NSTimeInterval endTime;
     NSTimeInterval duration;
-    void (*animate)();
+    void (*animate)(Animation *a, float elapsedSeconds);
 };
-Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)()){
+Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)(Animation *a, float elapsedSeconds)){
     Animation *a = malloc(sizeof(Animation));
     a->startTime = start;
     a->endTime = end;
-    a->duration = start-end;
+    a->duration = end-start;
     a->animate = animationFunction;
     return a;
 }
-Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)()){
+Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)(Animation *a, float elapsedSeconds)){
     Animation *a = malloc(sizeof(Animation));
     a->startTime = start;
     a->endTime = start+duration;
@@ -49,15 +49,20 @@ Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval durati
     a->animate = animationFunction;
     return a;
 }
-void comp(){
-    NSLog(@"THIS");
+void logAnimation(Animation *a, float elapsedSeconds){
+    NSLog(@"%.2f < %.2f < %.2f", a->startTime, elapsedSeconds, a->endTime);
+}
+
+void animateNewGeodesic(Animation *a, float elapsedSeconds){
+
 }
 
 @interface Stage (){
     
     Scene       scene;
     State       state;
-    Animation   *animation;
+    Animation   *animationTransition;  // triggered by navbar forward/back
+    Animation   *animationNewGeodesic; // triggered by loading new geodesic
     
 //    Screen      *screen;
     
@@ -140,32 +145,31 @@ void comp(){
     echoMesh = makeMeshTriangles(&geo, .833333);
     cropPlanes = makeMeshCropPlanes(&geo);
 
-    
     camDistance = 2.25;
     start = [NSDate date];
     
     whiteAlpha[0] = whiteAlpha[1] = whiteAlpha[2] = whiteAlpha[3] = 1.0f;
     
-    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _frame.size.width, 60)];
-    [titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:30]];
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _frame.size.width, _frame.size.width*.18)];
+    [titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:_frame.size.width*.1]];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setTextColor:[UIColor whiteColor]];
     [titleLabel setText:@"SCENE 1"];
     [self addSubview:titleLabel];
     
-    float arrowWidth = 50;
+    float arrowWidth = _frame.size.width*.125;
 
     for(int i = 0; i < 9; i++){
         numberLabels[i] = [[UILabel alloc] initWithFrame:CGRectMake((_frame.size.width)/12.*(i+1.5), self.frame.size.height-arrowWidth, (_frame.size.width)/12., (_frame.size.width)/12.)];
-        [numberLabels[i] setFont:[UIFont fontWithName:@"Montserrat-Regular" size:30]];
+        [numberLabels[i] setFont:[UIFont fontWithName:@"Montserrat-Regular" size:_frame.size.width*.1]];
         [numberLabels[i] setTextAlignment:NSTextAlignmentCenter];
         [numberLabels[i] setText:[NSString stringWithFormat:@"%d",i+1]];
         [numberLabels[i] setTextColor:[UIColor blackColor]];
         [self addSubview:numberLabels[i]];
     }
     
-    hotspots = @[ [NSValue valueWithCGRect:CGRectMake(5, 5, 40, 40)],
-                  [NSValue valueWithCGRect:CGRectMake(_frame.size.width-45, 5, 40, 40)],
+    hotspots = @[ [NSValue valueWithCGRect:CGRectMake(5, 5, arrowWidth, arrowWidth)],
+                  [NSValue valueWithCGRect:CGRectMake(_frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)],
                   [NSValue valueWithCGRect:CGRectMake(0, _frame.size.height-arrowWidth*2.5, _frame.size.width, arrowWidth*2.5)]];
 }
 
@@ -259,16 +263,21 @@ void comp(){
         for(int i = 0; i < hotspots.count; i++){
             CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
             if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
-                if(i == 0 && scene > scene1)
+                if(i == 0 && scene > scene1){
+                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
                     [self changeScene:scene-1];
-                else if(i == 1 && scene < scene4)
+                }
+                else if(i == 1 && scene < scene4){
+                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
                     [self changeScene:scene+1];
+                }
                 else if(i == 2){
                     int freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
                     if(freq < 0) freq = 0;
                     if(freq > 8) freq = 8;
                     [navBar setRadioBarPosition:freq];
                     [self loadNewGeodesic:freq+1];
+                    animationNewGeodesic = makeAnimation(elapsedSeconds, elapsedSeconds+.5, animateNewGeodesic);
                 }
                 break;
             }
@@ -297,22 +306,34 @@ void comp(){
     
     elapsedSeconds = -[start timeIntervalSinceNow];
     
-    if(animation != nil){
-        animation->animate();
-        if(animation->endTime < elapsedSeconds){
-            free(animation);
-            animation = nil;
+    // this may be how one could trigger a timed event
+//    if(elapsedSeconds < 4 && elapsedSeconds > 3 && animation == nil)
+//        animation = makeAnimation(3, 4, logAnimation);
+
+    if(animationTransition != nil){
+        animationTransition->animate(animationTransition, elapsedSeconds);
+        if(animationTransition->endTime < elapsedSeconds){  // this stuff could go into the function pointer function
+            free(animationTransition);
+            animationTransition = nil;
         }
     }
     
-    if(elapsedSeconds < 4 && elapsedSeconds > 3 && animation == nil)
-        animation = makeAnimation(3, 4, comp);
-    
-    if(timeTouchesEnded + .5 > elapsedSeconds && timeTouchesEnded < elapsedSeconds){
-        float scale = (elapsedSeconds - timeTouchesEnded)/6.0;
+    if(animationNewGeodesic != nil){
+        animationNewGeodesic->animate(animationNewGeodesic, elapsedSeconds);
+        float scale = (elapsedSeconds - animationNewGeodesic->startTime)/6.0;
         scale = sqrtf(scale)*.25;
         extrudeTriangles(&echoMesh, &geo, scale);
+        if(animationNewGeodesic->endTime < elapsedSeconds){
+            free(animationNewGeodesic);
+            animationNewGeodesic = nil;
+        }
     }
+    
+//    if(timeTouchesEnded + .5 > elapsedSeconds && timeTouchesEnded < elapsedSeconds){
+//        float scale = (elapsedSeconds - timeTouchesEnded)/6.0;
+//        scale = sqrtf(scale)*.25;
+//        extrudeTriangles(&echoMesh, &geo, scale);
+//    }
     static GLfloat one = 1.0f;
     
     glClearColor(screenColor[0], screenColor[1], screenColor[2], screenColor[3]);
@@ -352,38 +373,36 @@ void comp(){
 //        if(cropPlanes.numPlanes) geodesicMeshDrawCropPlanes(&cropPlanes);
         if(mesh.numTriangles) geodesicMeshDrawExtrudedTriangles(&mesh);
     }
+    if(animationNewGeodesic != nil){
  
-    float scale = 1.0-(elapsedSeconds - timeTouchesEnded)/.50;
-    
-    if(scene == scene1)
-        rainbow(screenColor, &one, &scale);
-    else if(scene == scene2)
-        silhouette(screenColor);
-    else if(scene == scene3){
-        glPopMatrix();
-        spotlightNoir(screenColor, &one, &scale);
-        glPushMatrix();
-        if(_orientToDevice){
-            set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
-            set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+        float scale = 1.0-(elapsedSeconds - animationNewGeodesic->startTime)/animationNewGeodesic->duration;
+
+        if(scene == scene1)
+            rainbow(screenColor, &one, &scale);
+        else if(scene == scene2)
+            silhouette(screenColor);
+        else if(scene == scene3){
+            glPopMatrix();
+            spotlightNoir(screenColor, &one, &scale);
+            glPushMatrix();
+            if(_orientToDevice){
+                set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
+                set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+            }
+            frame_shot(&camera);
         }
-        frame_shot(&camera);
-    }
-    
-    if(scene == scene1){
         
-        if(timeTouchesEnded + .5 > elapsedSeconds && timeTouchesEnded < elapsedSeconds)
+        if(scene == scene1 || scene == scene3){
             if(echoMesh.numTriangles)
                 geodesicMeshDrawExtrudedTriangles(&echoMesh);
-
-    }
-    else{
-        // geodesic un-spherizes back into original polyhedra
-        // manage 2 geodesic objects. one morphs into the other
-        // triangle faces extrude back into sphere with new frequency
-    }
+        }
+        else{
+            // geodesic un-spherizes back into original polyhedra
+            // manage 2 geodesic objects. one morphs into the other
+            // triangle faces extrude back into sphere with new frequency
+        }
     
-    
+    }
     
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, redColor);
 //    if(mesh.numVertexNormals)
