@@ -17,6 +17,8 @@
 
 @property BOOL orientToDevice;
 
+@property NSTimeInterval elapsedSeconds;
+
 @property GLfloat *deviceAttitude;  // pointer to data coming from ViewController's CMMotionManager
 @property GLKMatrix4 orientationMatrix;
 

@@ -12,6 +12,8 @@
 
 #import "Rhombicuboctahedron.h"
 
+#import "Animation.h"
+
 //#import "OBJ.h"
 
 typedef enum{
@@ -27,36 +29,36 @@ typedef enum{
     scene4
 } Scene;
 
-typedef struct Animation Animation;
-struct Animation{
-    NSTimeInterval startTime;
-    NSTimeInterval endTime;
-    NSTimeInterval duration;
-    void (*animate)(Stage *s, Animation *a, float elapsedSeconds);
-};
-Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
-    Animation *a = malloc(sizeof(Animation));
-    a->startTime = start;
-    a->endTime = end;
-    a->duration = end-start;
-    a->animate = animationFunction;
-    return a;
-}
-Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
-    Animation *a = malloc(sizeof(Animation));
-    a->startTime = start;
-    a->endTime = start+duration;
-    a->duration = duration;
-    a->animate = animationFunction;
-    return a;
-}
-void logAnimation(Stage *s, Animation *a, float elapsedSeconds){
-    NSLog(@"%.2f < %.2f < %.2f", a->startTime, elapsedSeconds, a->endTime);
-}
+//typedef struct Animation Animation;
+//struct Animation{
+//    NSTimeInterval startTime;
+//    NSTimeInterval endTime;
+//    NSTimeInterval duration;
+//    void (*animate)(Stage *s, Animation *a, float elapsedSeconds);
+//};
+//Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
+//    Animation *a = malloc(sizeof(Animation));
+//    a->startTime = start;
+//    a->endTime = end;
+//    a->duration = end-start;
+//    a->animate = animationFunction;
+//    return a;
+//}
+//Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
+//    Animation *a = malloc(sizeof(Animation));
+//    a->startTime = start;
+//    a->endTime = start+duration;
+//    a->duration = duration;
+//    a->animate = animationFunction;
+//    return a;
+//}
+//void logAnimation(Stage *s, Animation *a, float elapsedSeconds){
+//    NSLog(@"%.2f < %.2f < %.2f", a->startTime, elapsedSeconds, a->endTime);
+//}
 
-void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
-
-}
+//void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
+//
+//}
 
 @interface Stage (){
     
@@ -85,7 +87,6 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
     float camDistance;
     
     NSDate *start;
-    NSTimeInterval elapsedSeconds;  // seconds
     NSTimeInterval timeTouchesBegan, timeTouchesMoved, timeTouchesEnded;
     
     BOOL transitioning;
@@ -140,9 +141,8 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
     build_projection_matrix(_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 60);
     
     GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance, 0, 0, 0, 0, 0, 0, 1, 0);
-    NSLog(@"\n%f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f", m.m00, m.m01, m.m02, m.m03, m.m10, m.m11, m.m12, m.m13, m.m20, m.m21, m.m22, m.m23, m.m30, m.m31, m.m32, m.m33);
     quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
-    NSLog(@"%f, (%f, %f, %f)",quaternionFrontFacing.w, quaternionFrontFacing.x, quaternionFrontFacing.y, quaternionFrontFacing.z);
+//    NSLog(@"\n%f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f", m.m00, m.m01, m.m02, m.m03, m.m10, m.m11, m.m12, m.m13, m.m20, m.m21, m.m22, m.m23, m.m30, m.m31, m.m32, m.m33);
     
 //        obj = [[OBJ alloc] initWithOBJ:@"tetra.obj" Path:[[NSBundle mainBundle] resourcePath]];
 //        obj = [[OBJ alloc] initWithGeodesic:3 Frequency:arc4random()%6+1];
@@ -176,6 +176,7 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
     hotspots = @[ [NSValue valueWithCGRect:CGRectMake(5, 5, arrowWidth, arrowWidth)],
                   [NSValue valueWithCGRect:CGRectMake(_frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)],
                   [NSValue valueWithCGRect:CGRectMake(0, _frame.size.height-arrowWidth*2.5, _frame.size.width, arrowWidth*2.5)]];
+    
     start = [NSDate date];
 }
 
@@ -183,6 +184,12 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
     if(newState == animationNone){
         if(cameraAnimationState == animationEnteringDevicePerspective){
             _orientToDevice = true;
+            // TODO: build what will be the new matrix based on new device orientation
+//            GLKMatrix4 m = GLKMatrix4Make(_orientationMatrix.m[0], _orientationMatrix.m[1], _orientationMatrix.m[2], _orientationMatrix.m[3],
+//                                          _orientationMatrix.m[4], _orientationMatrix.m[5], _orientationMatrix.m[6], _orientationMatrix.m[7],
+//                                          _orientationMatrix.m[8], _orientationMatrix.m[9], _orientationMatrix.m[10], _orientationMatrix.m[11],
+//                                          _orientationMatrix.m[12], _orientationMatrix.m[13], _orientationMatrix.m[14], _orientationMatrix.m[15]);
+//            orientation = GLKQuaternionMakeWithMatrix4(m);
         }
     }
     else if(newState == animationEnteringFixedOrthographic){
@@ -193,16 +200,48 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
         orientation = GLKQuaternionMakeWithMatrix4(m);
         _orientToDevice = false;
     }
-    else if(newState == animationEnteringDevicePerspective){
-        // TODO: build what will be the new matrix based on new device orientation
-//        GLKMatrix4 m = GLKMatrix4Make(_orientationMatrix.m[0], _orientationMatrix.m[1], _orientationMatrix.m[2], _orientationMatrix.m[3],
-//                                      _orientationMatrix.m[4], _orientationMatrix.m[5], _orientationMatrix.m[6], _orientationMatrix.m[7],
-//                                      _orientationMatrix.m[8], _orientationMatrix.m[9], _orientationMatrix.m[10], _orientationMatrix.m[11],
-//                                      _orientationMatrix.m[12], _orientationMatrix.m[13], _orientationMatrix.m[14], _orientationMatrix.m[15]);
-//        orientation = GLKQuaternionMakeWithMatrix4(m);
-        
-    }
     cameraAnimationState = newState;
+}
+
+-(void) animationFrame{
+// list all animations
+    
+    if(animationNewGeodesic != nil){
+//        animationNewGeodesic->animate(self, animationNewGeodesic, elapsedSeconds);
+        // this is getting called twice
+        float scale = [animationNewGeodesic scale]/12.;
+        scale = sqrtf(scale)*.25;
+        extrudeTriangles(&echoMesh, &geo, scale);
+        if(animationNewGeodesic.endTime < _elapsedSeconds){
+//            free(animationNewGeodesic);
+            animationNewGeodesic = nil;
+        }
+    }
+    
+    if(animationTransition != nil){
+//        animationTransition->animate(self, animationTransition, elapsedSeconds);
+        if(cameraAnimationState == animationEnteringFixedOrthographic){
+            float progress = [animationTransition scale];
+            if(progress > 1) progress = 1.0;
+            GLKQuaternion q = GLKQuaternionSlerp(orientation, quaternionFrontFacing, progress);
+            _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+        }
+        if(cameraAnimationState == animationEnteringDevicePerspective){
+            float progress = [animationTransition scale];
+            if(progress > 1) progress = 1.0;
+            GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+            GLKQuaternion mtoq = GLKQuaternionMakeWithMatrix4(m);
+            GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, mtoq, progress);
+            _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+        }
+        if(animationTransition.endTime < _elapsedSeconds){  // this stuff could go into the function pointer function
+            if(cameraAnimationState == animationEnteringDevicePerspective)
+                _orientToDevice = true;
+            cameraAnimationState = animationNone;
+//            free(animationTransition);
+            animationTransition = nil;
+        }
+    }
 }
 
 -(void) changeScene:(Scene)newScene{
@@ -255,7 +294,9 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
         }
 //    if(_scene != scene1)
 //        shrinkMeshFaces(&mesh, &geo, 1.0);
-        timeTouchesBegan = elapsedSeconds;
+
+//TODO: does this need to be?
+        timeTouchesBegan = _elapsedSeconds;
     }
 }
 
@@ -273,7 +314,7 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
                 break;
             }
         }
-        timeTouchesMoved = elapsedSeconds;
+        timeTouchesMoved = _elapsedSeconds;
     }
 }
 
@@ -283,7 +324,8 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
             CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
             if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
                 if(i == 0 && scene > scene1){
-                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
+                    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
+//                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
                     if(scene == scene2)
                         [self changeCameraAnimationState:animationEnteringDevicePerspective];
                     else if (scene-1 == scene2)
@@ -295,7 +337,8 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
                         [self changeCameraAnimationState:animationEnteringDevicePerspective];
                     else if (scene+1 == scene2)
                         [self changeCameraAnimationState:animationEnteringFixedOrthographic];
-                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
+//                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
+                    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
                     [self changeScene:scene+1];
                 }
                 else if(i == 2){
@@ -304,12 +347,13 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
                     if(freq > 8) freq = 8;
                     [navBar setRadioBarPosition:freq];
                     [self loadNewGeodesic:freq+1];
-                    animationNewGeodesic = makeAnimation(elapsedSeconds, elapsedSeconds+.5, animateNewGeodesic);
+//                    animationNewGeodesic = makeAnimation(elapsedSeconds, elapsedSeconds+.5, animateNewGeodesic);
+                    animationNewGeodesic = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.5];
                 }
                 break;
             }
         }
-        timeTouchesEnded = elapsedSeconds;
+        timeTouchesEnded = _elapsedSeconds;
     }
 }
 
@@ -331,45 +375,14 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
     
     // a non statically oriented push/pop section
     
-    elapsedSeconds = -[start timeIntervalSinceNow];
+    _elapsedSeconds = -[start timeIntervalSinceNow];
     
     // this may be how one could trigger a timed event
 //    if(elapsedSeconds < 4 && elapsedSeconds > 3 && animation == nil)
 //        animation = makeAnimation(3, 4, logAnimation);
 
-    if(animationTransition != nil){
-        animationTransition->animate(self, animationTransition, elapsedSeconds);
-        if(cameraAnimationState == animationEnteringFixedOrthographic){
-            float progress = -(animationTransition->startTime-elapsedSeconds)/ animationTransition->duration;
-            if(progress > 1) progress = 1.0;
-            GLKQuaternion q = GLKQuaternionSlerp(orientation, quaternionFrontFacing, progress);
-            _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
-        }
-        if(cameraAnimationState == animationEnteringDevicePerspective){
-            float progress = -(animationTransition->startTime-elapsedSeconds)/ animationTransition->duration;
-            if(progress > 1) progress = 1.0;
-            GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, orientation, progress);
-            _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
-        }
-        if(animationTransition->endTime < elapsedSeconds){  // this stuff could go into the function pointer function
-            if(cameraAnimationState == animationEnteringDevicePerspective)
-                _orientToDevice = true;
-            cameraAnimationState = animationNone;
-            free(animationTransition);
-            animationTransition = nil;
-        }
-    }
-    
-    if(animationNewGeodesic != nil){
-        animationNewGeodesic->animate(self, animationNewGeodesic, elapsedSeconds);
-        float scale = (elapsedSeconds - animationNewGeodesic->startTime)/6.0;
-        scale = sqrtf(scale)*.25;
-        extrudeTriangles(&echoMesh, &geo, scale);
-        if(animationNewGeodesic->endTime < elapsedSeconds){
-            free(animationNewGeodesic);
-            animationNewGeodesic = nil;
-        }
-    }
+
+    [self animationFrame];
     
 //    if(timeTouchesEnded + .5 > elapsedSeconds && timeTouchesEnded < elapsedSeconds){
 //        float scale = (elapsedSeconds - timeTouchesEnded)/6.0;
@@ -420,7 +433,7 @@ void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
     }
     if(animationNewGeodesic != nil){
  
-        float scale = 1.0-(elapsedSeconds - animationNewGeodesic->startTime)/animationNewGeodesic->duration;
+        float scale = 1.0-[animationNewGeodesic scale];  // this is getting called twice,
 
         if(scene == scene1)
             rainbow(screenColor, &one, &scale);
