@@ -6,18 +6,19 @@
 
 #import "NavigationBar.h"
 
-//#import "OBJ.h"
-
 #include "Camera.c"
 #include "lights.c"
 #include "geodesic.c"
 
 #import "Rhombicuboctahedron.h"
 
+//#import "OBJ.h"
+
 typedef enum{
-    stateWaiting,
-    stateAnimating
-} State;
+    animationNone,
+    animationEnteringFixedOrthographic,
+    animationEnteringDevicePerspective
+} AnimationState;
 
 typedef enum{
     scene1,
@@ -31,9 +32,9 @@ struct Animation{
     NSTimeInterval startTime;
     NSTimeInterval endTime;
     NSTimeInterval duration;
-    void (*animate)(Animation *a, float elapsedSeconds);
+    void (*animate)(Stage *s, Animation *a, float elapsedSeconds);
 };
-Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)(Animation *a, float elapsedSeconds)){
+Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
     Animation *a = malloc(sizeof(Animation));
     a->startTime = start;
     a->endTime = end;
@@ -41,7 +42,7 @@ Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animat
     a->animate = animationFunction;
     return a;
 }
-Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)(Animation *a, float elapsedSeconds)){
+Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
     Animation *a = malloc(sizeof(Animation));
     a->startTime = start;
     a->endTime = start+duration;
@@ -49,20 +50,20 @@ Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval durati
     a->animate = animationFunction;
     return a;
 }
-void logAnimation(Animation *a, float elapsedSeconds){
+void logAnimation(Stage *s, Animation *a, float elapsedSeconds){
     NSLog(@"%.2f < %.2f < %.2f", a->startTime, elapsedSeconds, a->endTime);
 }
 
-void animateNewGeodesic(Animation *a, float elapsedSeconds){
+void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
 
 }
 
 @interface Stage (){
     
-    Scene       scene;
-    State       state;
-    Animation   *animationTransition;  // triggered by navbar forward/back
-    Animation   *animationNewGeodesic; // triggered by loading new geodesic
+    Scene           scene;
+    AnimationState  cameraAnimationState;
+    Animation       *animationTransition;  // triggered by navbar forward/back
+    Animation       *animationNewGeodesic; // triggered by loading new geodesic
     
 //    Screen      *screen;
     
@@ -96,6 +97,8 @@ void animateNewGeodesic(Animation *a, float elapsedSeconds){
     UILabel *numberLabels[9];
     
     NSArray *hotspots;
+    
+    GLKQuaternion orientation, quaternionFrontFacing;
 }
 
 @end
@@ -129,12 +132,17 @@ void animateNewGeodesic(Animation *a, float elapsedSeconds){
 //    spotlightNoir(screenColor);
     
     // camera
+    camDistance = 2.25;
+    
     set_up(&camera, 0, 1, 0);
-    set_position(&camera, 0, 0, 3);
+    set_position(&camera, 0, 0, camDistance);
     set_focus(&camera, 0, 0, 0);
     build_projection_matrix(_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 60);
-//    camera1.animation = &Camera::animationPerlinNoiseRotateAround;  //top of draw loop
-
+    
+    GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance, 0, 0, 0, 0, 0, 0, 1, 0);
+    NSLog(@"\n%f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f", m.m00, m.m01, m.m02, m.m03, m.m10, m.m11, m.m12, m.m13, m.m20, m.m21, m.m22, m.m23, m.m30, m.m31, m.m32, m.m33);
+    quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
+    NSLog(@"%f, (%f, %f, %f)",quaternionFrontFacing.w, quaternionFrontFacing.x, quaternionFrontFacing.y, quaternionFrontFacing.z);
     
 //        obj = [[OBJ alloc] initWithOBJ:@"tetra.obj" Path:[[NSBundle mainBundle] resourcePath]];
 //        obj = [[OBJ alloc] initWithGeodesic:3 Frequency:arc4random()%6+1];
@@ -144,9 +152,6 @@ void animateNewGeodesic(Animation *a, float elapsedSeconds){
     mesh = makeMeshTriangles(&geo, .8333333);
     echoMesh = makeMeshTriangles(&geo, .833333);
     cropPlanes = makeMeshCropPlanes(&geo);
-
-    camDistance = 2.25;
-    start = [NSDate date];
     
     whiteAlpha[0] = whiteAlpha[1] = whiteAlpha[2] = whiteAlpha[3] = 1.0f;
     
@@ -171,50 +176,64 @@ void animateNewGeodesic(Animation *a, float elapsedSeconds){
     hotspots = @[ [NSValue valueWithCGRect:CGRectMake(5, 5, arrowWidth, arrowWidth)],
                   [NSValue valueWithCGRect:CGRectMake(_frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)],
                   [NSValue valueWithCGRect:CGRectMake(0, _frame.size.height-arrowWidth*2.5, _frame.size.width, arrowWidth*2.5)]];
+    start = [NSDate date];
 }
 
--(void) chateState:(State) newState{
-    state = newState;
-    if(state == stateWaiting){
+-(void) changeCameraAnimationState:(AnimationState) newState{
+    if(newState == animationNone){
+        if(cameraAnimationState == animationEnteringDevicePerspective){
+            _orientToDevice = true;
+        }
+    }
+    else if(newState == animationEnteringFixedOrthographic){
+        GLKMatrix4 m = GLKMatrix4Make(_orientationMatrix.m[0], _orientationMatrix.m[1], _orientationMatrix.m[2], _orientationMatrix.m[3],
+                                      _orientationMatrix.m[4], _orientationMatrix.m[5], _orientationMatrix.m[6], _orientationMatrix.m[7],
+                                      _orientationMatrix.m[8], _orientationMatrix.m[9], _orientationMatrix.m[10], _orientationMatrix.m[11],
+                                      _orientationMatrix.m[12], _orientationMatrix.m[13], _orientationMatrix.m[14], _orientationMatrix.m[15]);
+        orientation = GLKQuaternionMakeWithMatrix4(m);
+        _orientToDevice = false;
+    }
+    else if(newState == animationEnteringDevicePerspective){
+        // TODO: build what will be the new matrix based on new device orientation
+//        GLKMatrix4 m = GLKMatrix4Make(_orientationMatrix.m[0], _orientationMatrix.m[1], _orientationMatrix.m[2], _orientationMatrix.m[3],
+//                                      _orientationMatrix.m[4], _orientationMatrix.m[5], _orientationMatrix.m[6], _orientationMatrix.m[7],
+//                                      _orientationMatrix.m[8], _orientationMatrix.m[9], _orientationMatrix.m[10], _orientationMatrix.m[11],
+//                                      _orientationMatrix.m[12], _orientationMatrix.m[13], _orientationMatrix.m[14], _orientationMatrix.m[15]);
+//        orientation = GLKQuaternionMakeWithMatrix4(m);
         
     }
-    else if(state == stateAnimating){
-        
-    }
+    cameraAnimationState = newState;
 }
 
 -(void) changeScene:(Scene)newScene{
-    scene = newScene;
     reset_lighting();
-    if(scene == scene1){
-        _orientToDevice = true;
+    if(newScene == scene1){
         for (int i = 0; i < 9; i++)
             [numberLabels[i] setTextColor:[UIColor blackColor]];
         [titleLabel setTextColor:[UIColor whiteColor]];
         [titleLabel setText:@"SCENE 1"];
-    }else if (scene == scene2){
-        _orientToDevice = false;
+    }else if (newScene == scene2){
         set_position(&camera, camDistance, 0, 0);
         set_up(&camera, 0, 1, 0);
         for (int i = 0; i < 9; i++)
             [numberLabels[i] setTextColor:[UIColor whiteColor]];
         [titleLabel setTextColor:[UIColor blackColor]];
         [titleLabel setText:@"SCENE 2"];
-    }else if (scene == scene3){
-        _orientToDevice = true;
+    }else if (newScene == scene3){
         for (int i = 0; i < 9; i++){
             [numberLabels[i] setTextColor:[UIColor blackColor]];
             [numberLabels[i] setHidden:NO];
         }
         [titleLabel setTextColor:[UIColor whiteColor]];
         [titleLabel setText:@"SCENE 3"];
-    }else if (scene == scene4){
+    }else if (newScene == scene4){
         _orientToDevice = true;
         for (int i = 0; i < 9; i++)
             [numberLabels[i] setHidden:YES];
         [titleLabel setTextColor:[UIColor blackColor]];
         [titleLabel setText:@"SCENE 4"];
     }
+    scene = newScene;
 }
 
 -(void) customizeOpenGL{
@@ -265,9 +284,17 @@ void animateNewGeodesic(Animation *a, float elapsedSeconds){
             if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
                 if(i == 0 && scene > scene1){
                     animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
+                    if(scene == scene2)
+                        [self changeCameraAnimationState:animationEnteringDevicePerspective];
+                    else if (scene-1 == scene2)
+                        [self changeCameraAnimationState:animationEnteringFixedOrthographic];
                     [self changeScene:scene-1];
                 }
                 else if(i == 1 && scene < scene4){
+                    if(scene == scene2)
+                        [self changeCameraAnimationState:animationEnteringDevicePerspective];
+                    else if (scene+1 == scene2)
+                        [self changeCameraAnimationState:animationEnteringFixedOrthographic];
                     animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
                     [self changeScene:scene+1];
                 }
@@ -311,15 +338,30 @@ void animateNewGeodesic(Animation *a, float elapsedSeconds){
 //        animation = makeAnimation(3, 4, logAnimation);
 
     if(animationTransition != nil){
-        animationTransition->animate(animationTransition, elapsedSeconds);
+        animationTransition->animate(self, animationTransition, elapsedSeconds);
+        if(cameraAnimationState == animationEnteringFixedOrthographic){
+            float progress = -(animationTransition->startTime-elapsedSeconds)/ animationTransition->duration;
+            if(progress > 1) progress = 1.0;
+            GLKQuaternion q = GLKQuaternionSlerp(orientation, quaternionFrontFacing, progress);
+            _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+        }
+        if(cameraAnimationState == animationEnteringDevicePerspective){
+            float progress = -(animationTransition->startTime-elapsedSeconds)/ animationTransition->duration;
+            if(progress > 1) progress = 1.0;
+            GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, orientation, progress);
+            _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+        }
         if(animationTransition->endTime < elapsedSeconds){  // this stuff could go into the function pointer function
+            if(cameraAnimationState == animationEnteringDevicePerspective)
+                _orientToDevice = true;
+            cameraAnimationState = animationNone;
             free(animationTransition);
             animationTransition = nil;
         }
     }
     
     if(animationNewGeodesic != nil){
-        animationNewGeodesic->animate(animationNewGeodesic, elapsedSeconds);
+        animationNewGeodesic->animate(self, animationNewGeodesic, elapsedSeconds);
         float scale = (elapsedSeconds - animationNewGeodesic->startTime)/6.0;
         scale = sqrtf(scale)*.25;
         extrudeTriangles(&echoMesh, &geo, scale);
@@ -346,10 +388,13 @@ void animateNewGeodesic(Animation *a, float elapsedSeconds){
     
     glPushMatrix();
     if(_orientToDevice){
-        set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
-        set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+        _orientationMatrix = GLKMatrix4MakeLookAt(camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+//        set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
+//        set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
     }
-    frame_shot(&camera);
+//    frame_shot(&camera);
+    _orientationMatrix.m32 = -camDistance;
+    glMultMatrixf(_orientationMatrix.m);
 
     if(scene == scene4){
         glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
@@ -389,7 +434,7 @@ void animateNewGeodesic(Animation *a, float elapsedSeconds){
                 set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
                 set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
             }
-            frame_shot(&camera);
+//            frame_shot(&camera);
         }
         
         if(scene == scene1 || scene == scene3){

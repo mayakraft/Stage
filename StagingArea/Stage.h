@@ -17,6 +17,7 @@
 
 @property BOOL orientToDevice;
 
-@property GLfloat *deviceAttitude;
+@property GLfloat *deviceAttitude;  // pointer to data coming from ViewController's CMMotionManager
+@property GLKMatrix4 orientationMatrix;
 
 @end
