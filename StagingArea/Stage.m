@@ -16,10 +16,14 @@
 
 //#import "OBJ.h"
 
+#define camHomeDistance 2.25
+
 typedef enum{
     animationNone,
-    animationEnteringFixedOrthographic,
-    animationEnteringDevicePerspective
+    animationOrthoToPerspective,
+    animationPerspectiveToOrtho,
+    animationInsideToPerspective,
+    animationPerspectiveToInside
 } AnimationState;
 
 typedef enum{
@@ -28,37 +32,6 @@ typedef enum{
     scene3,
     scene4
 } Scene;
-
-//typedef struct Animation Animation;
-//struct Animation{
-//    NSTimeInterval startTime;
-//    NSTimeInterval endTime;
-//    NSTimeInterval duration;
-//    void (*animate)(Stage *s, Animation *a, float elapsedSeconds);
-//};
-//Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
-//    Animation *a = malloc(sizeof(Animation));
-//    a->startTime = start;
-//    a->endTime = end;
-//    a->duration = end-start;
-//    a->animate = animationFunction;
-//    return a;
-//}
-//Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
-//    Animation *a = malloc(sizeof(Animation));
-//    a->startTime = start;
-//    a->endTime = start+duration;
-//    a->duration = duration;
-//    a->animate = animationFunction;
-//    return a;
-//}
-//void logAnimation(Stage *s, Animation *a, float elapsedSeconds){
-//    NSLog(@"%.2f < %.2f < %.2f", a->startTime, elapsedSeconds, a->endTime);
-//}
-
-//void animateNewGeodesic(Stage *s, Animation *a, float elapsedSeconds){
-//
-//}
 
 @interface Stage (){
     
@@ -72,10 +45,6 @@ typedef enum{
     NavigationBar *navBar;
     
     Room        *room;
-    Camera      camera;
-    GLfloat     *cameraPosition;
-    GLfloat     *cameraFocus;
-    GLfloat     *cameraUp;
 
     float screenColor[4];
 
@@ -84,7 +53,10 @@ typedef enum{
     geomeshTriangles    mesh;
     geomeshTriangles    echoMesh;
     geomeshCropPlanes   cropPlanes;
-    float camDistance;
+    
+    Camera      camera;
+    float       camDistance;
+    GLKQuaternion orientation, quaternionFrontFacing;
     
     NSDate *start;
     NSTimeInterval timeTouchesBegan, timeTouchesMoved, timeTouchesEnded;
@@ -94,12 +66,10 @@ typedef enum{
     NSTimeInterval interactionDownTime, interactionDownDuration;
     
     float whiteAlpha[4];
+    
     UILabel *titleLabel;
     UILabel *numberLabels[9];
-    
     NSArray *hotspots;
-    
-    GLKQuaternion orientation, quaternionFrontFacing;
 }
 
 @end
@@ -119,33 +89,20 @@ typedef enum{
 -(void) setup{
     [self customizeOpenGL];
     
-//    screen = [[Screen alloc] initWithFrame:_frame];
-    
     navBar = [[NavigationBar alloc] initWithFrame:_frame];
     [navBar setScenePointer:(int*)&scene];
 
     room = [[Rhombicuboctahedron alloc] init];
     
-    float brightness = 0.8f;
-    float alpha = 1.0f;
-    rainbow(screenColor, &brightness, &alpha);
-//    silhouette(screenColor);
-//    spotlightNoir(screenColor);
-    
     // camera
-    camDistance = 2.25;
-    
+    camDistance = camHomeDistance;
     set_up(&camera, 0, 1, 0);
     set_position(&camera, 0, 0, camDistance);
     set_focus(&camera, 0, 0, 0);
-    build_projection_matrix(_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 60);
+    build_projection_matrix(_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 58);  // 60
     
     GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance, 0, 0, 0, 0, 0, 0, 1, 0);
     quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
-//    NSLog(@"\n%f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f", m.m00, m.m01, m.m02, m.m03, m.m10, m.m11, m.m12, m.m13, m.m20, m.m21, m.m22, m.m23, m.m30, m.m31, m.m32, m.m33);
-    
-//        obj = [[OBJ alloc] initWithOBJ:@"tetra.obj" Path:[[NSBundle mainBundle] resourcePath]];
-//        obj = [[OBJ alloc] initWithGeodesic:3 Frequency:arc4random()%6+1];
     
     geo = icosahedron(1);
     //65535
@@ -172,6 +129,7 @@ typedef enum{
         [numberLabels[i] setTextColor:[UIColor blackColor]];
         [self addSubview:numberLabels[i]];
     }
+    [titleLabel setTextColor:[UIColor whiteColor]];
     
     hotspots = @[ [NSValue valueWithCGRect:CGRectMake(5, 5, arrowWidth, arrowWidth)],
                   [NSValue valueWithCGRect:CGRectMake(_frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)],
@@ -179,20 +137,44 @@ typedef enum{
     
     start = [NSDate date];
 }
+-(void) changeScene:(Scene)newScene{
+//    reset_lighting();
+    if(newScene == scene1){
+//        for (int i = 0; i < 9; i++)
+//            [numberLabels[i] setTextColor:[UIColor blackColor]];
+//        [titleLabel setTextColor:[UIColor whiteColor]];
+        [titleLabel setText:@"SCENE 1"];
+    }else if (newScene == scene2){
+        set_position(&camera, camDistance, 0, 0);
+        set_up(&camera, 0, 1, 0);
+//        for (int i = 0; i < 9; i++)
+//            [numberLabels[i] setTextColor:[UIColor whiteColor]];
+//        [titleLabel setTextColor:[UIColor blackColor]];
+        [titleLabel setText:@"SCENE 2"];
+    }else if (newScene == scene3){
+        for (int i = 0; i < 9; i++){
+//            [numberLabels[i] setTextColor:[UIColor blackColor]];
+            [numberLabels[i] setHidden:NO];
+        }
+//        [titleLabel setTextColor:[UIColor whiteColor]];
+        [titleLabel setText:@"SCENE 3"];
+    }else if (newScene == scene4){
+        _orientToDevice = true;
+        for (int i = 0; i < 9; i++)
+            [numberLabels[i] setHidden:YES];
+//        [titleLabel setTextColor:[UIColor blackColor]];
+        [titleLabel setText:@"SCENE 4"];
+    }
+    scene = newScene;
+}
 
 -(void) changeCameraAnimationState:(AnimationState) newState{
     if(newState == animationNone){
-        if(cameraAnimationState == animationEnteringDevicePerspective){
+        if(cameraAnimationState == animationOrthoToPerspective){
             _orientToDevice = true;
-            // TODO: build what will be the new matrix based on new device orientation
-//            GLKMatrix4 m = GLKMatrix4Make(_orientationMatrix.m[0], _orientationMatrix.m[1], _orientationMatrix.m[2], _orientationMatrix.m[3],
-//                                          _orientationMatrix.m[4], _orientationMatrix.m[5], _orientationMatrix.m[6], _orientationMatrix.m[7],
-//                                          _orientationMatrix.m[8], _orientationMatrix.m[9], _orientationMatrix.m[10], _orientationMatrix.m[11],
-//                                          _orientationMatrix.m[12], _orientationMatrix.m[13], _orientationMatrix.m[14], _orientationMatrix.m[15]);
-//            orientation = GLKQuaternionMakeWithMatrix4(m);
         }
     }
-    else if(newState == animationEnteringFixedOrthographic){
+    else if(newState == animationPerspectiveToOrtho){
         GLKMatrix4 m = GLKMatrix4Make(_orientationMatrix.m[0], _orientationMatrix.m[1], _orientationMatrix.m[2], _orientationMatrix.m[3],
                                       _orientationMatrix.m[4], _orientationMatrix.m[5], _orientationMatrix.m[6], _orientationMatrix.m[7],
                                       _orientationMatrix.m[8], _orientationMatrix.m[9], _orientationMatrix.m[10], _orientationMatrix.m[11],
@@ -209,9 +191,9 @@ typedef enum{
     if(animationNewGeodesic != nil){
 //        animationNewGeodesic->animate(self, animationNewGeodesic, elapsedSeconds);
         // this is getting called twice
-        float scale = [animationNewGeodesic scale]/12.;
-        scale = sqrtf(scale)*.25;
-        extrudeTriangles(&echoMesh, &geo, scale);
+        float frame = [animationNewGeodesic scale]/12.;
+        frame = sqrtf(frame)*.25;
+        extrudeTriangles(&echoMesh, &geo, frame);
         if(animationNewGeodesic.endTime < _elapsedSeconds){
 //            free(animationNewGeodesic);
             animationNewGeodesic = nil;
@@ -220,59 +202,35 @@ typedef enum{
     
     if(animationTransition != nil){
 //        animationTransition->animate(self, animationTransition, elapsedSeconds);
-        if(cameraAnimationState == animationEnteringFixedOrthographic){
-            float progress = [animationTransition scale];
-            if(progress > 1) progress = 1.0;
-            GLKQuaternion q = GLKQuaternionSlerp(orientation, quaternionFrontFacing, progress);
+        float frame = [animationTransition scale];
+        if(frame > 1) frame = 1.0;
+        if(cameraAnimationState == animationPerspectiveToOrtho){
+            GLKQuaternion q = GLKQuaternionSlerp(orientation, quaternionFrontFacing, powf(frame,2));
             _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+            [self dollyZoomFlat:powf(frame,3)];
         }
-        if(cameraAnimationState == animationEnteringDevicePerspective){
-            float progress = [animationTransition scale];
-            if(progress > 1) progress = 1.0;
+        if(cameraAnimationState == animationOrthoToPerspective){
             GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
             GLKQuaternion mtoq = GLKQuaternionMakeWithMatrix4(m);
-            GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, mtoq, progress);
+            GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, mtoq, powf(frame,2));
             _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+            [self dollyZoomFlat:powf(1-frame,3)];
         }
+        if(cameraAnimationState == animationPerspectiveToInside){
+            [self flyToCenter:frame];
+        }
+        if(cameraAnimationState == animationInsideToPerspective){
+            [self flyToCenter:1-frame];
+        }
+        
         if(animationTransition.endTime < _elapsedSeconds){  // this stuff could go into the function pointer function
-            if(cameraAnimationState == animationEnteringDevicePerspective)
+            if(cameraAnimationState == animationOrthoToPerspective)
                 _orientToDevice = true;
             cameraAnimationState = animationNone;
 //            free(animationTransition);
             animationTransition = nil;
         }
     }
-}
-
--(void) changeScene:(Scene)newScene{
-    reset_lighting();
-    if(newScene == scene1){
-        for (int i = 0; i < 9; i++)
-            [numberLabels[i] setTextColor:[UIColor blackColor]];
-        [titleLabel setTextColor:[UIColor whiteColor]];
-        [titleLabel setText:@"SCENE 1"];
-    }else if (newScene == scene2){
-        set_position(&camera, camDistance, 0, 0);
-        set_up(&camera, 0, 1, 0);
-        for (int i = 0; i < 9; i++)
-            [numberLabels[i] setTextColor:[UIColor whiteColor]];
-        [titleLabel setTextColor:[UIColor blackColor]];
-        [titleLabel setText:@"SCENE 2"];
-    }else if (newScene == scene3){
-        for (int i = 0; i < 9; i++){
-            [numberLabels[i] setTextColor:[UIColor blackColor]];
-            [numberLabels[i] setHidden:NO];
-        }
-        [titleLabel setTextColor:[UIColor whiteColor]];
-        [titleLabel setText:@"SCENE 3"];
-    }else if (newScene == scene4){
-        _orientToDevice = true;
-        for (int i = 0; i < 9; i++)
-            [numberLabels[i] setHidden:YES];
-        [titleLabel setTextColor:[UIColor blackColor]];
-        [titleLabel setText:@"SCENE 4"];
-    }
-    scene = newScene;
 }
 
 -(void) customizeOpenGL{
@@ -305,7 +263,7 @@ typedef enum{
         for(int i = 0; i < hotspots.count; i++){
             CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
             if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
-                if(i == 2){
+                if(i == 2 && scene != scene4){
                     float freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
                     if(freq < 0) freq = 0;
                     if(freq > 8) freq = 8;
@@ -327,21 +285,29 @@ typedef enum{
                     animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
 //                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
                     if(scene == scene2)
-                        [self changeCameraAnimationState:animationEnteringDevicePerspective];
-                    else if (scene-1 == scene2)
-                        [self changeCameraAnimationState:animationEnteringFixedOrthographic];
+                        [self changeCameraAnimationState:animationOrthoToPerspective];
+                    if(scene == scene4)
+                        [self changeCameraAnimationState:animationInsideToPerspective];
+                    if (scene-1 == scene2)
+                        [self changeCameraAnimationState:animationPerspectiveToOrtho];
+                    if (scene-1 == scene4)
+                        [self changeCameraAnimationState:animationPerspectiveToInside];
                     [self changeScene:scene-1];
                 }
                 else if(i == 1 && scene < scene4){
                     if(scene == scene2)
-                        [self changeCameraAnimationState:animationEnteringDevicePerspective];
-                    else if (scene+1 == scene2)
-                        [self changeCameraAnimationState:animationEnteringFixedOrthographic];
+                        [self changeCameraAnimationState:animationOrthoToPerspective];
+                    if(scene == scene4)
+                        [self changeCameraAnimationState:animationInsideToPerspective];
+                    if (scene+1 == scene2)
+                        [self changeCameraAnimationState:animationPerspectiveToOrtho];
+                    if (scene+1 == scene4)
+                        [self changeCameraAnimationState:animationPerspectiveToInside];
 //                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
                     animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
                     [self changeScene:scene+1];
                 }
-                else if(i == 2){
+                else if(i == 2 && scene != scene4){
                     int freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
                     if(freq < 0) freq = 0;
                     if(freq > 8) freq = 8;
@@ -370,33 +336,38 @@ typedef enum{
     echoMesh = makeMeshTriangles(&geo, .833333);
 }
 
+-(void) flyToCenter:(float)frame{
+    if(frame > 1) frame = 1;
+    if(frame < 0) frame = 0;
+    camDistance = .1+camHomeDistance*(1-frame);
+    if(camDistance < 1.0) glCullFace(GL_BACK);
+    else glCullFace(GL_FRONT);
+}
+
+
+-(void) dollyZoomFlat:(float)frame{
+
+    float width = 1;
+    float distance = camHomeDistance + frame * 50;
+    camDistance = distance;
+    float fov = 5*atan( width /(2*distance) );
+    fov = fov / 3.1415926 * 180.0;
+//    NSLog(@"FOV %f",fov);
+    build_projection_matrix(_frame.origin.x, _frame.origin.y, 2*_frame.size.width, 2*_frame.size.height, fov);
+}
+
 -(void)draw{
-    // a device oriented push/pop section
-    
-    // a non statically oriented push/pop section
-    
     _elapsedSeconds = -[start timeIntervalSinceNow];
     
-    // this may be how one could trigger a timed event
-//    if(elapsedSeconds < 4 && elapsedSeconds > 3 && animation == nil)
-//        animation = makeAnimation(3, 4, logAnimation);
-
-
     [self animationFrame];
-    
-//    if(timeTouchesEnded + .5 > elapsedSeconds && timeTouchesEnded < elapsedSeconds){
-//        float scale = (elapsedSeconds - timeTouchesEnded)/6.0;
-//        scale = sqrtf(scale)*.25;
-//        extrudeTriangles(&echoMesh, &geo, scale);
-//    }
-    static GLfloat one = 1.0f;
     
     glClearColor(screenColor[0], screenColor[1], screenColor[2], screenColor[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     
-    if(scene == scene3)
-        spotlightNoir(screenColor, &one, &one);
+    static GLfloat one = 1.0f;
+//    if(scene == scene3)
+//        spotlightNoir(screenColor, &one, &one);
 
     
     glPushMatrix();
@@ -406,51 +377,56 @@ typedef enum{
 //        set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
     }
 //    frame_shot(&camera);
+    
     _orientationMatrix.m32 = -camDistance;
     glMultMatrixf(_orientationMatrix.m);
 
-    if(scene == scene4){
-        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
-        [room draw];
-    }
+//    if(scene == scene4){
+//        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
+//        [room draw];
+//    }
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zeroColor);
-   
+
+//    if(scene != scene4)
+        rainbow(screenColor, &one, &one);
+//    else
+//        silhouette(screenColor);
+    
+//    if(scene == scene1)
+//        rainbow(screenColor, &one, &one);
+//    else if(scene == scene2)
+//        silhouette(screenColor);
+    
 //    if(geo.numFaces) geodesicDrawTriangles(&geo);
 //    if(geo.numLines) geodesicDrawLines(&geo);
 //    if(geo.numPoints) geodesicDrawPoints(&geo);
-
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
-
-    
-    if(scene == scene1)
-        rainbow(screenColor, &one, &one);
-    else if(scene == scene2)
-        silhouette(screenColor);
-    
-    if(scene != scene4){
+//    if(scene != scene4){
 //        if(cropPlanes.numPlanes) geodesicMeshDrawCropPlanes(&cropPlanes);
-        if(mesh.numTriangles) geodesicMeshDrawExtrudedTriangles(&mesh);
-    }
+    if(mesh.numTriangles)
+        geodesicMeshDrawExtrudedTriangles(&mesh);
+//    }
     if(animationNewGeodesic != nil){
  
         float scale = 1.0-[animationNewGeodesic scale];  // this is getting called twice,
 
-        if(scene == scene1)
-            rainbow(screenColor, &one, &scale);
-        else if(scene == scene2)
-            silhouette(screenColor);
-        else if(scene == scene3){
-            glPopMatrix();
-            spotlightNoir(screenColor, &one, &scale);
-            glPushMatrix();
-            if(_orientToDevice){
-                set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
-                set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
-            }
+        rainbow(screenColor, &one, &scale);
+
+//        if(scene == scene1)
+//            rainbow(screenColor, &one, &scale);
+//        else if(scene == scene2)
+//            silhouette(screenColor);
+//        else if(scene == scene3){
+//            glPopMatrix();
+//            spotlightNoir(screenColor, &one, &scale);
+//            glPushMatrix();
+//            if(_orientToDevice){
+//                set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
+//                set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+//            }
 //            frame_shot(&camera);
-        }
+//        }
         
-        if(scene == scene1 || scene == scene3){
+        if(scene != scene4){
             if(echoMesh.numTriangles)
                 geodesicMeshDrawExtrudedTriangles(&echoMesh);
         }
@@ -459,9 +435,13 @@ typedef enum{
             // manage 2 geodesic objects. one morphs into the other
             // triangle faces extrude back into sphere with new frequency
         }
-    
     }
     
+    if(navBar){
+        glDisable(GL_CULL_FACE);
+        [navBar draw];
+        glEnable(GL_CULL_FACE);
+    }
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, redColor);
 //    if(mesh.numVertexNormals)
 //        geodesicMeshDrawVertexNormalLines(&mesh);
@@ -471,31 +451,6 @@ typedef enum{
 //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, blueColor);
 //    if(mesh.numFaceNormals)
 //        geodesicMeshDrawFaceNormalLines(&mesh);
-
-//    [obj draw];
-    
-    
-//    if(screen)
-//        [screen draw];
-    
-    if(navBar)
-        [navBar draw];
-    
-    // elevation points
-    
-//    glDisable(GL_LIGHTING);
-//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
-//    
-//    glPushMatrix();
-//    glScalef(.002, .002*.5, .002);
-//    glTranslatef(-500, 0, -500);
-//    glTranslatef(200, 600, 0);
-//    glEnableClientState(GL_VERTEX_ARRAY);
-//    glVertexPointer(3, GL_FLOAT, 0, data);
-//    glDrawArrays(GL_POINTS, 0, 100*100);
-//    glDisableClientState(GL_VERTEX_ARRAY);
-//    glPopMatrix();
-
 
     glPopMatrix();
 }
@@ -507,3 +462,6 @@ typedef enum{
 }
 
 @end
+
+//NSLog(@"\n%f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f", m.m00, m.m01, m.m02, m.m03, m.m10, m.m11, m.m12, m.m13, m.m20, m.m21, m.m22, m.m23, m.m30, m.m31, m.m32, m.m33);
+

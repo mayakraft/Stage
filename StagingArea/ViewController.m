@@ -45,6 +45,8 @@
         motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
         [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error) {
             CMRotationMatrix a = deviceMotion.attitude.rotationMatrix;
+//            CMQuaternion q = deviceMotion.attitude.quaternion;
+            // TODO: switch to quaternion and save memory?
             // matrix has 2 built-in 90 rotations, and reflection across the Z to inverted texture
             _attitudeMatrix[0] = -a.m12;   _attitudeMatrix[1] = -a.m22;  _attitudeMatrix[2] = -a.m32;  _attitudeMatrix[3] = 0.0f;
             _attitudeMatrix[4] = a.m13;    _attitudeMatrix[5] = a.m23;   _attitudeMatrix[6] = a.m33;   _attitudeMatrix[7] = 0.0f;

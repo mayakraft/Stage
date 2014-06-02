@@ -1,11 +1,3 @@
-//
-//  Animation.m
-//  StagingArea
-//
-//  Created by Robby on 6/2/14.
-//  Copyright (c) 2014 Robby Kraft. All rights reserved.
-//
-
 #import "Animation.h"
 
 @implementation Animation
@@ -41,5 +33,33 @@
     
 }
 
-
 @end
+
+
+
+//typedef struct Animation Animation;
+//struct Animation{
+//    NSTimeInterval startTime;
+//    NSTimeInterval endTime;
+//    NSTimeInterval duration;
+//    void (*animate)(Stage *s, Animation *a, float elapsedSeconds);
+//};
+//Animation* makeAnimation(NSTimeInterval start, NSTimeInterval end, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
+//    Animation *a = malloc(sizeof(Animation));
+//    a->startTime = start;
+//    a->endTime = end;
+//    a->duration = end-start;
+//    a->animate = animationFunction;
+//    return a;
+//}
+//Animation* makeAnimationWithDuration(NSTimeInterval start, NSTimeInterval duration, void (*animationFunction)(Stage *s, Animation *a, float elapsedSeconds)){
+//    Animation *a = malloc(sizeof(Animation));
+//    a->startTime = start;
+//    a->endTime = start+duration;
+//    a->duration = duration;
+//    a->animate = animationFunction;
+//    return a;
+//}
+//void logAnimation(Stage *s, Animation *a, float elapsedSeconds){
+//    NSLog(@"%.2f < %.2f < %.2f", a->startTime, elapsedSeconds, a->endTime);
+//}
