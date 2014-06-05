@@ -1,11 +1,3 @@
-//
-//  NavigationBar.m
-//  StagingArea
-//
-//  Created by Robby on 5/17/14.
-//  Copyright (c) 2014 Robby Kraft. All rights reserved.
-//
-
 #import "NavigationBar.h"
 #import <OpenGLES/ES1/gl.h>
 
@@ -41,10 +33,11 @@
 //    [self drawRectOutline:CGRectMake(width*.5, height*.5, width*.99, height*.99)];
 
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    if(*_scenePointer != 3)
+    if(*_scenePointer < 3)
         [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, arrowWidth*2)];
+
     glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-    if(*_scenePointer != 3){
+    if(*_scenePointer == 1){
         [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth*1.25, self.frame.size.width*4/6., 4)];
         for(int i = 0; i < 9; i++)
             [self drawRect:CGRectMake((self.frame.size.width)/12.*(i+2), arrowWidth*1.25, 1, arrowWidth*.33)];

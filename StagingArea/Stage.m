@@ -8,7 +8,7 @@
 
 #include "Camera.c"
 #include "lights.c"
-#include "geodesic.c"
+#include "geomesh.c"
 
 #import "Rhombicuboctahedron.h"
 
@@ -17,7 +17,9 @@
 //#import "OBJ.h"
 
 #define camHomeDistance 2.25
+#define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
 
+// define all possible kinds of transitions:
 typedef enum{
     animationNone,
     animationOrthoToPerspective,
@@ -26,11 +28,13 @@ typedef enum{
     animationPerspectiveToInside
 } AnimationState;
 
+// # navigation bar screens:
 typedef enum{
     scene1,
     scene2,
     scene3,
-    scene4
+    scene4,
+    scene5
 } Scene;
 
 @interface Stage (){
@@ -69,7 +73,11 @@ typedef enum{
     
     UILabel *titleLabel;
     UILabel *numberLabels[9];
+    UILabel *icosahedronLabel, *octahedronLabel;
     NSArray *hotspots;
+    NSMutableArray *allUIElements;  // make a screen element? - add it to this array
+    
+    unsigned short solidType;  //0:icosa, 1:octa, 2:tetra
 }
 
 @end
@@ -92,7 +100,7 @@ typedef enum{
     navBar = [[NavigationBar alloc] initWithFrame:_frame];
     [navBar setScenePointer:(int*)&scene];
 
-    room = [[Rhombicuboctahedron alloc] init];
+//    room = [[Rhombicuboctahedron alloc] init];
     
     // camera
     camDistance = camHomeDistance;
@@ -104,6 +112,7 @@ typedef enum{
     GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance, 0, 0, 0, 0, 0, 0, 1, 0);
     quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
     
+    solidType = 0;
     geo = icosahedron(1);
     //65535
     mesh = makeMeshTriangles(&geo, .8333333);
@@ -118,16 +127,34 @@ typedef enum{
     [titleLabel setTextColor:[UIColor whiteColor]];
     [titleLabel setText:@"SCENE 1"];
     [self addSubview:titleLabel];
-    
+
     float arrowWidth = _frame.size.width*.125;
+    
+    icosahedronLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height-arrowWidth, (_frame.size.width)*.5, (_frame.size.width)/12.)];
+    [icosahedronLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:_frame.size.width*.1]];
+    [icosahedronLabel setTextAlignment:NSTextAlignmentCenter];
+    [icosahedronLabel setTextColor:[UIColor blackColor]];
+    [icosahedronLabel setText:@"icosa"];
+    [self addSubview:icosahedronLabel];
+    octahedronLabel = [[UILabel alloc] initWithFrame:CGRectMake((_frame.size.width)*.5, self.frame.size.height-arrowWidth, (_frame.size.width)*.5, (_frame.size.width)/12.)];
+    [octahedronLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:_frame.size.width*.1]];
+    [octahedronLabel setTextAlignment:NSTextAlignmentCenter];
+    [octahedronLabel setTextColor:[UIColor blackColor]];
+    [octahedronLabel setText:@"octa"];
+    [self addSubview:octahedronLabel];
+    
+    allUIElements = [NSMutableArray array];
+    [allUIElements addObjectsFromArray:@[icosahedronLabel, octahedronLabel]];
 
     for(int i = 0; i < 9; i++){
         numberLabels[i] = [[UILabel alloc] initWithFrame:CGRectMake((_frame.size.width)/12.*(i+1.5), self.frame.size.height-arrowWidth, (_frame.size.width)/12., (_frame.size.width)/12.)];
         [numberLabels[i] setFont:[UIFont fontWithName:@"Montserrat-Regular" size:_frame.size.width*.1]];
         [numberLabels[i] setTextAlignment:NSTextAlignmentCenter];
+        [numberLabels[i] setHidden:YES];
         [numberLabels[i] setText:[NSString stringWithFormat:@"%d",i+1]];
         [numberLabels[i] setTextColor:[UIColor blackColor]];
         [self addSubview:numberLabels[i]];
+        [allUIElements addObject:numberLabels[i]];
     }
     [titleLabel setTextColor:[UIColor whiteColor]];
     
@@ -137,33 +164,28 @@ typedef enum{
     
     start = [NSDate date];
 }
+-(void) hideAllUIElements{
+    for(int i = 0; i < [allUIElements count]; i++)
+        [allUIElements[i] setHidden:YES];
+}
 -(void) changeScene:(Scene)newScene{
 //    reset_lighting();
+    [self hideAllUIElements];
+    
     if(newScene == scene1){
-//        for (int i = 0; i < 9; i++)
-//            [numberLabels[i] setTextColor:[UIColor blackColor]];
-//        [titleLabel setTextColor:[UIColor whiteColor]];
+        [octahedronLabel setHidden:NO];
+        [icosahedronLabel setHidden:NO];
         [titleLabel setText:@"SCENE 1"];
     }else if (newScene == scene2){
-        set_position(&camera, camDistance, 0, 0);
-        set_up(&camera, 0, 1, 0);
-//        for (int i = 0; i < 9; i++)
-//            [numberLabels[i] setTextColor:[UIColor whiteColor]];
-//        [titleLabel setTextColor:[UIColor blackColor]];
+        for (int i = 0; i < 9; i++)
+            [numberLabels[i] setHidden:NO];
         [titleLabel setText:@"SCENE 2"];
     }else if (newScene == scene3){
-        for (int i = 0; i < 9; i++){
-//            [numberLabels[i] setTextColor:[UIColor blackColor]];
-            [numberLabels[i] setHidden:NO];
-        }
-//        [titleLabel setTextColor:[UIColor whiteColor]];
         [titleLabel setText:@"SCENE 3"];
     }else if (newScene == scene4){
-        _orientToDevice = true;
-        for (int i = 0; i < 9; i++)
-            [numberLabels[i] setHidden:YES];
-//        [titleLabel setTextColor:[UIColor blackColor]];
         [titleLabel setText:@"SCENE 4"];
+    }else if (newScene == scene5){
+        [titleLabel setText:@"SCENE 5"];
     }
     scene = newScene;
 }
@@ -263,11 +285,13 @@ typedef enum{
         for(int i = 0; i < hotspots.count; i++){
             CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
             if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
-                if(i == 2 && scene != scene4){
-                    float freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
-                    if(freq < 0) freq = 0;
-                    if(freq > 8) freq = 8;
-                    [navBar setRadioBarPosition:freq];
+                if(i == 2){   //  the bottom toolbar
+                    if (scene == scene2){
+                        float freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
+                        if(freq < 0) freq = 0;
+                        if(freq > 8) freq = 8;
+                        [navBar setRadioBarPosition:freq];
+                    }
                 }
                 break;
             }
@@ -281,40 +305,50 @@ typedef enum{
         for(int i = 0; i < hotspots.count; i++){
             CGRect hotspot = [[hotspots objectAtIndex:i] CGRectValue];
             if(CGRectContainsPoint(hotspot, [(UITouch*)[touches anyObject] locationInView:self])){
-                if(i == 0 && scene > scene1){
+                if(i == 0 && scene > scene1){  // navbar, left arrow
                     animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
 //                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
                     if(scene == scene2)
                         [self changeCameraAnimationState:animationOrthoToPerspective];
-                    if(scene == scene4)
+                    if(scene == scene5)
                         [self changeCameraAnimationState:animationInsideToPerspective];
-                    if (scene-1 == scene2)
+                    if (scene-1 == scene3)
                         [self changeCameraAnimationState:animationPerspectiveToOrtho];
-                    if (scene-1 == scene4)
+                    if (scene-1 == scene5)
                         [self changeCameraAnimationState:animationPerspectiveToInside];
                     [self changeScene:scene-1];
                 }
-                else if(i == 1 && scene < scene4){
-                    if(scene == scene2)
+                else if(i == 1 && scene < scene5){  // navbar, right arrow
+                    if(scene == scene3)
                         [self changeCameraAnimationState:animationOrthoToPerspective];
-                    if(scene == scene4)
+                    if(scene == scene5)
                         [self changeCameraAnimationState:animationInsideToPerspective];
                     if (scene+1 == scene2)
                         [self changeCameraAnimationState:animationPerspectiveToOrtho];
-                    if (scene+1 == scene4)
+                    if (scene+1 == scene5)
                         [self changeCameraAnimationState:animationPerspectiveToInside];
 //                    animationTransition = makeAnimation(elapsedSeconds, elapsedSeconds+.25, logAnimation);
                     animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
                     [self changeScene:scene+1];
                 }
-                else if(i == 2 && scene != scene4){
-                    int freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
-                    if(freq < 0) freq = 0;
-                    if(freq > 8) freq = 8;
-                    [navBar setRadioBarPosition:freq];
-                    [self loadNewGeodesic:freq+1];
+                else if(i == 2){  // bottom toolbar
+                    if(scene == scene1){
+                        if([[touches anyObject] locationInView:self].x < self.frame.size.width*.5){
+                            [self setPolyhedraType:0];
+                        }
+                        else if([[touches anyObject] locationInView:self].x > self.frame.size.width*.5){
+                            [self setPolyhedraType:1];
+                        }
+                    }
+                    if(scene == scene2){
+                        int freq = ([[touches anyObject] locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
+                        if(freq < 0) freq = 0;
+                        if(freq > 8) freq = 8;
+                        [navBar setRadioBarPosition:freq];
+                        [self loadNewGeodesic:freq+1];
 //                    animationNewGeodesic = makeAnimation(elapsedSeconds, elapsedSeconds+.5, animateNewGeodesic);
-                    animationNewGeodesic = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.5];
+                        animationNewGeodesic = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.5];
+                    }
                 }
                 break;
             }
@@ -323,13 +357,22 @@ typedef enum{
     }
 }
 
+-(void) setPolyhedraType:(int)type{
+    solidType = type;
+    [self loadNewGeodesic:1];
+}
+
 -(void) loadNewGeodesic:(int)frequency{
     deleteCropPlanes(&cropPlanes);
     deleteMeshTriangles(&echoMesh);
     
     deleteMeshTriangles(&mesh);
     deleteGeodesic(&geo);
-    geo = icosahedron(frequency);
+    if(solidType == 0)
+        geo = icosahedron(frequency);
+    else if (solidType == 1)
+        geo = octahedron(frequency);
+    printf("%dV geodesic: %d points, %d lines, %d faces\n",frequency,geo.numPoints,geo.numLines,geo.numFaces);
     mesh = makeMeshTriangles(&geo, .8333333);
     cropPlanes = makeMeshCropPlanes(&geo);
     
@@ -344,7 +387,6 @@ typedef enum{
     else glCullFace(GL_FRONT);
 }
 
-
 -(void) dollyZoomFlat:(float)frame{
 
     float width = 1;
@@ -353,7 +395,7 @@ typedef enum{
     float fov = 5*atan( width /(2*distance) );
     fov = fov / 3.1415926 * 180.0;
 //    NSLog(@"FOV %f",fov);
-    build_projection_matrix(_frame.origin.x, _frame.origin.y, 2*_frame.size.width, 2*_frame.size.height, fov);
+    build_projection_matrix(_frame.origin.x, _frame.origin.y, (1+IS_RETINA)*_frame.size.width, (1+IS_RETINA)*_frame.size.height, fov);
 }
 
 -(void)draw{
@@ -366,6 +408,7 @@ typedef enum{
 
     
     static GLfloat one = 1.0f;
+    // how to attach lights to SCREEN
 //    if(scene == scene3)
 //        spotlightNoir(screenColor, &one, &one);
 
@@ -381,10 +424,7 @@ typedef enum{
     _orientationMatrix.m32 = -camDistance;
     glMultMatrixf(_orientationMatrix.m);
 
-//    if(scene == scene4){
-//        glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, whiteColor);
-//        [room draw];
-//    }
+
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zeroColor);
 
 //    if(scene != scene4)
@@ -426,10 +466,10 @@ typedef enum{
 //            frame_shot(&camera);
 //        }
         
-        if(scene != scene4){
+//        if(scene != scene5){
             if(echoMesh.numTriangles)
                 geodesicMeshDrawExtrudedTriangles(&echoMesh);
-        }
+//        }
         else{
             // geodesic un-spherizes back into original polyhedra
             // manage 2 geodesic objects. one morphs into the other

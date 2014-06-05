@@ -52,7 +52,7 @@
 		D51D4A2F18FE7A0700AA6C13 /* lights.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lights.c; sourceTree = "<group>"; };
 		D51D4A3018FE7A0700AA6C13 /* lights.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lights.h; sourceTree = "<group>"; };
 		D51EC01918FBA5140021FF54 /* OBJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBJ.h; sourceTree = "<group>"; };
-		D51EC01A18FBA5140021FF54 /* OBJ.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OBJ.mm; sourceTree = "<group>"; };
+		D51EC01A18FBA5140021FF54 /* OBJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBJ.m; sourceTree = "<group>"; };
 		D539CFA118F516B700EFFF19 /* noise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = noise.h; sourceTree = "<group>"; };
 		D539CFA218F516BE00EFFF19 /* noise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = noise.c; sourceTree = "<group>"; };
 		D54D4D7A1912C01000D9E319 /* geomesh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = geomesh.c; path = ../../Geodesic/geomesh.c; sourceTree = "<group>"; };
@@ -201,7 +201,7 @@
 				D5F03276190F3BDC0056281A /* Camera.c */,
 				D5B98EEA18F244E200671557 /* Camera.m */,
 				D51EC01918FBA5140021FF54 /* OBJ.h */,
-				D51EC01A18FBA5140021FF54 /* OBJ.mm */,
+				D51EC01A18FBA5140021FF54 /* OBJ.m */,
 				D572FDBE192AB2650043443E /* Fonts */,
 				D51EC01C18FBA53A0021FF54 /* geodesic */,
 				D5961C3318F7C4AB00978303 /* 3rdParty */,
