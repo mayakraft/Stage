@@ -1,14 +1,3 @@
-//
-//  StageCommon.h
-//  StagingArea
-//
-//  Created by Robby on 5/19/14.
-//  Copyright (c) 2014 Robby Kraft. All rights reserved.
-//
-
-#ifndef StagingArea_StageCommon_h
-#define StagingArea_StageCommon_h
-
 static float zeroColor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
 static float blackColor[4] = {0.0f, 0.0f, 0.0f, 1.0f};
@@ -38,4 +27,4 @@ static float black70Color[4] = {0.0f, 0.0f, 0.0f, 0.7f};
 static float black80Color[4] = {0.0f, 0.0f, 0.0f, 0.8f};
 static float black90Color[4] = {0.0f, 0.0f, 0.0f, 0.9f};
 
-#endif
+static float one_f = 1.0f;

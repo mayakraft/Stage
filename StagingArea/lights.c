@@ -1,4 +1,3 @@
-#include "lights.h"
 #include <OpenGLES/ES1/gl.h>
 
 void rainbow(float *clearColor, float *brightness, float *alpha){

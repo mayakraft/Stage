@@ -1,4 +1,3 @@
-
 #import "Primitives.h"
 #import <OpenGLES/ES1/gl.h>
 

@@ -1,7 +1,4 @@
-
 #import <Foundation/Foundation.h>
-
-#include "StageCommon.h"
 
 @interface Primitives : NSObject
 

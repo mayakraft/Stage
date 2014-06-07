@@ -18,15 +18,14 @@
     self = [super init];
     if(self){
         _frame = frame;
+        _view = [[UIView alloc] initWithFrame:frame];
+        _elements = [[NSMutableArray alloc] init];
+        width = _frame.size.width;
+        height = _frame.size.height;
+        _aspectRatio = _frame.size.width/_frame.size.height;
         [self setup];
     }
     return self;
-}
-
--(void) setup{
-    width = _frame.size.width;
-    height = _frame.size.height;
-    _aspectRatio = _frame.size.width/_frame.size.height;
 }
 
 -(void) draw{
@@ -40,8 +39,16 @@
     // in your subclass
 }
 
+-(void) setup{
+    // implement this function
+    // in your subclass
+}
+
+-(void) hideElements{ }
+
 -(void)enterOrthographic{
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -54,6 +61,7 @@
 
 -(void)exitOrthographic{
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);

@@ -1,21 +1,9 @@
-//
-//  OBJ.m
-//  StagingArea
-//
-//  Created by Robby on 4/13/14.
-//  Copyright (c) 2014 Robby Kraft. All rights reserved.
-//
 #import "OBJ.h"
-
 #import <OpenGLES/ES1/gl.h>
 #import "tiny_obj_loader.h"
-//#import "GeodesicMesh.h"
-//#import "Geodesic.h"
 
 @interface OBJ (){
     std::vector<tinyobj::shape_t> shapes;
-//    GeodesicMesh *polyhedron;
-//    Geodesic *geodesic;
 }
 
 @end
@@ -30,35 +18,12 @@
     return self;
 }
 
--(id)initWithGeodesic:(int)type Frequency:(int)v{
-    self = [super init];
-    if(self){
-//        geodesic = new Geodesic();
-//        polyhedron = new GeodesicMesh();
-//        if(v < 1) v = 1;
-//        if(type == 0)
-//            geodesic->tetrahedron(v);
-//        else if(type == 1)
-//            geodesic->octahedron(v);
-//        else
-//            geodesic->icosahedron(v);
-//        polyhedron->load(geodesic);
-    }
-    return self;
-}
-
 -(void)draw{
     if(shapes.size()){
         glColor4f(0.0, 0.0, 0.0, 1.0);
 //        [self drawOBJPoints];
         [self drawOBJTriangles];
     }
-//    if(polyhedron != nil){
-//        polyhedron->draw();//ExtrudedTriangles();
-//        polyhedron->drawFaceNormalLines();
-//        polyhedron->drawNormalLines();
-//        polyhedron->drawPoints();
-//    }
 }
 
 -(void) drawOBJPoints{
@@ -93,41 +58,6 @@
 //    for( int i = 0; i < shapes.size(); i++)
 //        if(!shapes[i].mesh.normals.size())
 //            [self fakeOBJNormals:i];
-}
-
--(void)fakeOBJNormals:(int)index{
-    if(shapes[index].mesh.positions.size()){
-        int numPoints = shapes[index].mesh.positions.size()/3.0;
-        float length;
-        for(int i = 0; i < numPoints; i++){
-            length = sqrtf( pow(shapes[index].mesh.positions[X+3*i],2) + pow(shapes[index].mesh.positions[Y+3*i],2) + pow(shapes[index].mesh.positions[Z+3*i],2) );
-            shapes[index].mesh.normals.push_back( shapes[index].mesh.positions[X+3*i] / length );
-            shapes[index].mesh.normals.push_back( shapes[index].mesh.positions[Y+3*i] / length );
-            shapes[index].mesh.normals.push_back( shapes[index].mesh.positions[Z+3*i] / length );
-        }
-    }
-}
-
--(void)loadRandomGeodesic{
-//    if(arc4random()%3 == 0)
-//        geodesic->tetrahedron(arc4random()%12+1);
-//    else if(arc4random()%2 == 0)
-//        geodesic->octahedron(arc4random()%12+1);
-//    else
-//        geodesic->icosahedron(arc4random()%12+1);
-//    polyhedron->load(geodesic);
-}
-
-// GEODESIC on stage
-
--(NSString*)exportOBJ{
-    char *obj;
-//    int length = 0;
-//    geodesic->OBJ(obj, length);
-    NSString *objString = [NSString stringWithUTF8String:obj];
-//    NSLog(@"OBJ (%d)\n%@",length,objString);
-//    delete obj;
-    return objString;
 }
 
 @end

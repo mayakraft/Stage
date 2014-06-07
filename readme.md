@@ -1,6 +1,6 @@
 # OpenGL Stage
 
-3D environment for app building with dramatic control over lighting and camera
+3D environment for mobile app building with dramatic control over lighting and camera
 
 ``` objective-c
 @class Stage  // dispatch for user-feedback and timing animations
