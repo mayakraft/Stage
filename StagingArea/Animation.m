@@ -1,4 +1,5 @@
 #import "Animation.h"
+#import "Stage.h"
 
 @implementation Animation
 
@@ -13,24 +14,29 @@
     return self;
 }
 
--(id)initOnStage:(Stage*)stage Start:(NSTimeInterval)start Duration:(NSTimeInterval)duration{
+-(id)initOnStage:(Stage*)stage StartNowWithDuration:(NSTimeInterval)duration{
     self = [super init];
     if (self) {
-        _startTime = start;
-        _endTime = start+duration;
+        _startTime = [(Stage*)_delegate elapsedSeconds];
+        _endTime = _startTime+duration;
         _duration = duration;
         _delegate = stage;
     }
     return self;
 }
 
--(float) scale{
-    return (_delegate.elapsedSeconds - _startTime)/_duration;
-}
-
 -(void) animateFrame{
 //    NSLog(@"%.2f < %.2f < %.2f", _startTime, elapsedSeconds, _endTime);
     
+}
+
+-(id) step{
+    if(_endTime < [(Stage*)_delegate elapsedSeconds]){
+        [_delegate animationDidStop:self];
+        return nil;
+    }
+    _scale = ([(Stage*)_delegate elapsedSeconds] - _startTime)/_duration;
+    return self;
 }
 
 @end

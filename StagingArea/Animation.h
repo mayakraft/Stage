@@ -1,19 +1,28 @@
 #import <Foundation/Foundation.h>
-#import "Stage.h"
+
+@class Animation;
+@class Stage;
+
+@protocol AnimationDelegate <NSObject>
+
+-(void) animationDidStop:(Animation*)a;
+
+@end
 
 @interface Animation : NSObject
 
-@property Stage *delegate;
+@property id <AnimationDelegate> delegate;
 
 @property NSTimeInterval startTime;
 @property NSTimeInterval endTime;
 @property NSTimeInterval duration;
 
--(float) scale;  // 0.0 to 1.0, start to end
+@property float scale;  // 0.0 to 1.0, start to end
 
 -(id)initOnStage:(Stage*)stage Start:(NSTimeInterval)start End:(NSTimeInterval)end;
--(id)initOnStage:(Stage*)stage Start:(NSTimeInterval)start Duration:(NSTimeInterval)duration;
+-(id)initOnStage:(Stage*)stage StartNowWithDuration:(NSTimeInterval)duration;
 
 -(void) animateFrame;
+-(id) step;
 
 @end

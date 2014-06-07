@@ -28,3 +28,6 @@ static float black80Color[4] = {0.0f, 0.0f, 0.0f, 0.8f};
 static float black90Color[4] = {0.0f, 0.0f, 0.0f, 0.9f};
 
 static float one_f = 1.0f;
+
+#define Z_NEAR 0.1f
+#define Z_FAR 100.0f

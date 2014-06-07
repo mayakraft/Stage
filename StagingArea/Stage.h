@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+#import "Animation.h"
 
-@interface Stage : GLKView
+@interface Stage : GLKView <AnimationDelegate>
 
 -(void) setup;
 -(void) draw;

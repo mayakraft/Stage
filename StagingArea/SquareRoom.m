@@ -1,11 +1,3 @@
-//
-//  Rhombicuboctahedron.m
-//  StagingArea
-//
-//  Created by Robby on 5/2/14.
-//  Copyright (c) 2014 Robby Kraft. All rights reserved.
-//
-
 #import "SquareRoom.h"
 #import <OpenGLES/ES1/gl.h>
 
@@ -17,15 +9,8 @@
 
 @implementation SquareRoom
 
--(id)init{
-    self = [super init];
-    if(self){
-        [self setup];
-    }
-    return self;
-}
-
 -(void) setup{
+    NSLog(@"THIS BETTER BE GETTING CALLED");
     [self fillQuad];
 }
 

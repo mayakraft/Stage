@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D50C4DC018E7EEB80032BD35 /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = D50C4DBF18E7EEB80032BD35 /* Stage.m */; };
+		D516D60A1942B8080017AEF5 /* Hotspot.m in Sources */ = {isa = PBXBuildFile; fileRef = D516D6091942B8080017AEF5 /* Hotspot.m */; };
+		D516D60B1942CE3C0017AEF5 /* Camera.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B98EEA18F244E200671557 /* Camera.m */; };
 		D5579DA919285273005C49C7 /* NavigationScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = D5579DA819285273005C49C7 /* NavigationScreen.m */; };
 		D5579DAC19287F67005C49C7 /* Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D5579DAB19287F67005C49C7 /* Primitives.m */; };
 		D55B3B8B1903BAF400C5D537 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D55B3B8A1903BAF400C5D537 /* CoreMotion.framework */; };
@@ -49,6 +51,8 @@
 /* Begin PBXFileReference section */
 		D50C4DBE18E7EEB80032BD35 /* Stage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stage.h; sourceTree = "<group>"; };
 		D50C4DBF18E7EEB80032BD35 /* Stage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stage.m; sourceTree = "<group>"; };
+		D516D6081942B8080017AEF5 /* Hotspot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hotspot.h; sourceTree = "<group>"; };
+		D516D6091942B8080017AEF5 /* Hotspot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hotspot.m; sourceTree = "<group>"; };
 		D51D4A2F18FE7A0700AA6C13 /* lights.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lights.c; sourceTree = "<group>"; };
 		D51EC01918FBA5140021FF54 /* OBJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBJ.h; sourceTree = "<group>"; };
 		D51EC01A18FBA5140021FF54 /* OBJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBJ.m; sourceTree = "<group>"; };
@@ -91,7 +95,6 @@
 		D5DC11BD18F8CF8B0013C321 /* tetra.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tetra.obj; sourceTree = "<group>"; };
 		D5DC11BE18F8CF8B0013C321 /* tetra.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tetra.mtl; sourceTree = "<group>"; };
 		D5F03275190F3BDC0056281A /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
-		D5F03276190F3BDC0056281A /* Camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Camera.c; sourceTree = "<group>"; };
 		D5F68C91191789BF002C97F3 /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
 		D5F68C92191789BF002C97F3 /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
 		D5F6C9DA193C700A00A32EC8 /* Animation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animation.h; sourceTree = "<group>"; };
@@ -152,14 +155,15 @@
 		D516D607194296FB0017AEF5 /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				D51EC01918FBA5140021FF54 /* OBJ.h */,
-				D51EC01A18FBA5140021FF54 /* OBJ.m */,
+				D51D4A2F18FE7A0700AA6C13 /* lights.c */,
 				D5F6C9DA193C700A00A32EC8 /* Animation.h */,
 				D5F6C9DB193C700A00A32EC8 /* Animation.m */,
-				D51D4A2F18FE7A0700AA6C13 /* lights.c */,
+				D516D6081942B8080017AEF5 /* Hotspot.h */,
+				D516D6091942B8080017AEF5 /* Hotspot.m */,
 				D5F03275190F3BDC0056281A /* Camera.h */,
-				D5F03276190F3BDC0056281A /* Camera.c */,
 				D5B98EEA18F244E200671557 /* Camera.m */,
+				D51EC01918FBA5140021FF54 /* OBJ.h */,
+				D51EC01A18FBA5140021FF54 /* OBJ.m */,
 			);
 			name = tools;
 			sourceTree = "<group>";
@@ -371,15 +375,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5F6C9DC193C700A00A32EC8 /* Animation.m in Sources */,
-				D5F68C93191789BF002C97F3 /* Room.m in Sources */,
-				D583C253191A025400824AA5 /* Screen.m in Sources */,
-				D50C4DC018E7EEB80032BD35 /* Stage.m in Sources */,
-				D5D36FA519137D6D00D3327E /* SquareRoom.m in Sources */,
-				D5579DAC19287F67005C49C7 /* Primitives.m in Sources */,
-				D571542318E2B80500037224 /* ViewController.m in Sources */,
-				D571541A18E2B80500037224 /* AppDelegate.m in Sources */,
 				D571541618E2B80500037224 /* main.m in Sources */,
+				D571541A18E2B80500037224 /* AppDelegate.m in Sources */,
+				D571542318E2B80500037224 /* ViewController.m in Sources */,
+				D50C4DC018E7EEB80032BD35 /* Stage.m in Sources */,
+				D5579DAC19287F67005C49C7 /* Primitives.m in Sources */,
+				D5F6C9DC193C700A00A32EC8 /* Animation.m in Sources */,
+				D516D60A1942B8080017AEF5 /* Hotspot.m in Sources */,
+				D5F68C93191789BF002C97F3 /* Room.m in Sources */,
+				D5D36FA519137D6D00D3327E /* SquareRoom.m in Sources */,
+				D583C253191A025400824AA5 /* Screen.m in Sources */,
+				D516D60B1942CE3C0017AEF5 /* Camera.m in Sources */,
 				D5579DA919285273005C49C7 /* NavigationScreen.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

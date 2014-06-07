@@ -10,7 +10,7 @@
 
 #define arrowWidth self.frame.size.width*.125
 
--(void) customSetup{
+-(void) setup{
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.width*.18)];
     [_titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:self.frame.size.width*.1]];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];

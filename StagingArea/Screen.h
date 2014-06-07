@@ -1,4 +1,3 @@
-
 #import <Foundation/Foundation.h>
 #import "Primitives.h"
 
@@ -11,5 +10,9 @@
 
 -(id) initWithFrame:(CGRect)frame;
 -(void) draw;
+
+//TODO: how do you say "REQUIRED"
+-(void) customDraw;
+-(void) setup;
 
 @end

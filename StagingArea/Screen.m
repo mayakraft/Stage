@@ -1,4 +1,3 @@
-
 #import "Screen.h"
 #import <OpenGLES/ES1/gl.h>
 

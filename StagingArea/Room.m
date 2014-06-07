@@ -1,4 +1,3 @@
-
 #import "Room.h"
 
 @implementation Room

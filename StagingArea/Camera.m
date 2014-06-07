@@ -5,23 +5,15 @@
 #include "noise.c"
 
 @interface Camera (){
-   
-    float       Z_NEAR = 0.1f;
-    float       Z_FAR = 100.0f;
     
-    
-    GLfloat     position[3] = {0.0f, 0.0f, 0.0f};  // x,y,z of camera lens
-    GLfloat     focus[3] = {0.0f, 0.0f, 1.0f};     // x,y,z of point on which to focus
-    GLfloat     up[3] = {0.0f, 1.0f, 0.0f};        // tilt/roll around line of sight
+    GLfloat     position[3];  // x,y,z of camera lens
+    GLfloat     focus[3];     // x,y,z of point on which to focus
+    GLfloat     up[3];        // tilt/roll around line of sight
     
     GLfloat     m[16];  // orientation
-    float       _fieldOfView = 45.0f;
-    float       _aspectRatio = 1.0f;
-    float       _screenX;
-    float       _screenY;
-    float       _screenWidth;
-    float       _screenHeight;
-    
+    float       _fieldOfView;
+    float       _aspectRatio;
+
     // for calculating orientation matrix
     float r, forward[3], side[3], above[3];
 }
@@ -44,7 +36,11 @@
 -(id) init{
     self = [super init];
     if(self){
-        up[X] = 0.0f;   up[Y] = 1.0f;   up[Z] = 0.0f;
+        position[X] = 0.0f; position[Y] = 0.0f; position[Z] = -5.0f;
+        focus[X] = 0.0f;    focus[Y] = 0.0f;    focus[Z] = 0.0f;
+        up[X] = 0.0f;       up[Y] = 1.0f;       up[Z] = 0.0f;
+        _fieldOfView = 45.0f;
+        _aspectRatio = 1.0f;
     }
     return self;
 }
@@ -69,20 +65,28 @@
     above[0] = up[X];
     above[1] = up[Y];
     above[2] = up[Z];
-    normalize(forward);
+    r = sqrt( forward[0]*forward[0] + forward[1]*forward[1] + forward[2]*forward[2] );
+    if (r == 0.0) return;
+    forward[0] /= r;      forward[1] /= r;      forward[2] /= r;
+
+//    normalize(forward);
     cross(forward, above, side);
-    normalize(side);
+//    normalize(side);
+    r = sqrt( side[0]*side[0] + side[1]*side[1] + side[2]*side[2] );
+    if (r == 0.0) return;
+    side[0] /= r;      side[1] /= r;      side[2] /= r;
+
     cross(side, forward, above);
-    //    velocity = sqrtf( pow(side[0]-m[0],2) + pow(side[1]-m[4],2) + pow(side[2]-m[8],2)
-    //                     + pow(above[0]-m[1],2) + pow(above[1]-m[5],2) + pow(above[2]-m[9],2)
-    //                     + pow(-forward[0]-m[2],2) + pow(-forward[1]-m[6],2) + pow(-forward[2]-m[10],2) );
+//    velocity = sqrtf( pow(side[0]-m[0],2) + pow(side[1]-m[4],2) + pow(side[2]-m[8],2)
+//                     + pow(above[0]-m[1],2) + pow(above[1]-m[5],2) + pow(above[2]-m[9],2)
+//                     + pow(-forward[0]-m[2],2) + pow(-forward[1]-m[6],2) + pow(-forward[2]-m[10],2) );
     m[0] = side[0];     m[1] = above[0];    m[2] = -forward[0];     m[3] = 0.0f;
     m[4] = side[1];     m[5] = above[1];    m[6] = -forward[1];     m[7] = 0.0f;
     m[8] = side[2];     m[9] = above[2];    m[10] = -forward[2];    m[11] = 0.0f;
     m[12] = 0.0f;       m[13] = 0.0f;       m[14] = 0.0f;           m[15] = 1.0f;
     glMultMatrixf(&m[0]);
     glTranslatef(-position[X], -position[Y], -position[Z]);
-    //    logOrientation();
+//    logOrientation();
 }
 
 -(void) setAnimation{
@@ -162,7 +166,7 @@
     glLoadIdentity();
     GLfloat frustum = Z_NEAR * tanf(_fieldOfView*0.00872664625997);  // pi / 180 / 2
     glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
-    glViewport(_screenX, _screenY, _screenWidth, _screenHeight);
+    glViewport(self.frame.origin.x, _screenY, _screenWidth, _screenHeight);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -187,7 +191,4 @@
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-
-
 @end
-
