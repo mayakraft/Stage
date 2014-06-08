@@ -11,11 +11,13 @@
 }
 
 -(void) setup{
-    
+    // implement this function
+    // in your subclass
 }
 
 -(void) draw{
-    
+    // implement this function
+    // in your subclass
 }
 
 @end

@@ -1,6 +1,12 @@
+#import <GLKit/GLKit.h>
+
 @interface Camera : NSObject
 
-@property CGRect frame;
+@property (nonatomic) CGRect frame;
+
+@property GLKMatrix4 matrix;
+
+@property float distanceFromOrigin;
 
 -(void) frameShot;  // call at beginning of every draw function
 
@@ -21,13 +27,10 @@ void setUp(GLfloat uX, GLfloat uY, GLfloat uZ);         // tilt/roll around line
 //void (Camera::*animation)() = NULL;
 //void setAnimation();
 // make your own animation scripts
-void animationUpAndDownAndAround();
-void animationDollyZoom();
-void animationPerlinNoiseRotateAround();
 
-void rebuildProjectionMatrix();
-void normalize(float v[3]);
-void cross(float v1[3], float v2[3], float result[3]);
+-(void) flyToCenter:(float)frame;
+-(void) dollyZoomFlat:(float)frame;
+
 
 @end
 

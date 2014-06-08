@@ -32,7 +32,6 @@
     stage = [[Stage alloc] initWithFrame:CGRectMake(0, 0, width, height) context:context];
     [self setView:stage];
     [stage setDeviceAttitude:_attitudeMatrix];
-    [stage setOrientToDevice:YES];
 }
 -(void) initDeviceOrientation{
     motionManager = [[CMMotionManager alloc] init];

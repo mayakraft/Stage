@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface Primitives : NSObject
+@interface FlatPrimitives : NSObject
 
 /* 2D PRIMITIVES */
 

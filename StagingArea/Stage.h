@@ -12,8 +12,6 @@
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
 
-@property BOOL orientToDevice;
-
 @property NSTimeInterval elapsedSeconds;
 
 @property GLfloat *deviceAttitude;  // pointer to data coming from ViewController's CMMotionManager

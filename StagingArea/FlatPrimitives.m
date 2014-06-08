@@ -1,7 +1,7 @@
-#import "Primitives.h"
+#import "FlatPrimitives.h"
 #import <OpenGLES/ES1/gl.h>
 
-@implementation Primitives
+@implementation FlatPrimitives
 
 -(void) drawRect:(CGRect)rect{
     static const GLfloat _unit_square[] = {

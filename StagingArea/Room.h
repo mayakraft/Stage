@@ -1,5 +1,8 @@
 #import <Foundation/Foundation.h>
 
 @interface Room : NSObject
--(void)draw;
+
+-(void) setup;  // implement these
+-(void) draw;   // in your subclass
+
 @end

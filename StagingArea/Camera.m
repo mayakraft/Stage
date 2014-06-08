@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include <math.h>
 #include "noise.c"
+#import "StageCommon.h"
 
 @interface Camera (){
     
@@ -10,28 +11,15 @@
     GLfloat     focus[3];     // x,y,z of point on which to focus
     GLfloat     up[3];        // tilt/roll around line of sight
     
-    GLfloat     m[16];  // orientation
     float       _fieldOfView;
     float       _aspectRatio;
-
-    // for calculating orientation matrix
-    float r, forward[3], side[3], above[3];
+    float _radius;
 }
 
 @end
 
 @implementation Camera
 
--(void)normalize:(float) v[3]{
-    r = sqrt( v[0]*v[0] + v[1]*v[1] + v[2]*v[2] );
-    if (r == 0.0) return;
-    v[0] /= r;      v[1] /= r;      v[2] /= r;
-}
--(void) cross:(float) v1[3] :(float) v2[3] :(float) result[3]{
-    result[0] = v1[1]*v2[2] - v1[2]*v2[1];
-    result[1] = v1[2]*v2[0] - v1[0]*v2[2];
-    result[2] = v1[0]*v2[1] - v1[1]*v2[0];
-}
 
 -(id) init{
     self = [super init];
@@ -43,6 +31,9 @@
         _aspectRatio = 1.0f;
     }
     return self;
+}
+-(void) dealloc{
+    
 }
 
 //-(void) setPosition(GLfloat pX, GLfloat pY, GLfloat pZ){
@@ -56,8 +47,9 @@
 //}
 
 -(void) frameShot{
-    if(animation != NULL)
-        (this->*animation)();
+//    if(animation != NULL)
+//        (this->*animation)();
+    float r, forward[3], side[3], above[3];
     
     forward[0] = focus[X] - position[X];
     forward[1] = focus[Y] - position[Y];
@@ -65,28 +57,37 @@
     above[0] = up[X];
     above[1] = up[Y];
     above[2] = up[Z];
+//    normalize(forward);
     r = sqrt( forward[0]*forward[0] + forward[1]*forward[1] + forward[2]*forward[2] );
     if (r == 0.0) return;
     forward[0] /= r;      forward[1] /= r;      forward[2] /= r;
 
-//    normalize(forward);
-    cross(forward, above, side);
+//    side = forward <cross> above
+    side[0] = forward[1]*above[2] - forward[2]*above[1];
+    side[1] = forward[2]*above[0] - forward[0]*above[2];
+    side[2] = forward[0]*above[1] - forward[1]*above[0];
 //    normalize(side);
     r = sqrt( side[0]*side[0] + side[1]*side[1] + side[2]*side[2] );
     if (r == 0.0) return;
     side[0] /= r;      side[1] /= r;      side[2] /= r;
 
-    cross(side, forward, above);
+//    above = side <cross> forward
+    above[0] = side[1]*forward[2] - side[2]*forward[1];
+    above[1] = side[2]*forward[0] - side[0]*forward[2];
+    above[2] = side[0]*forward[1] - side[1]*forward[0];
+
 //    velocity = sqrtf( pow(side[0]-m[0],2) + pow(side[1]-m[4],2) + pow(side[2]-m[8],2)
 //                     + pow(above[0]-m[1],2) + pow(above[1]-m[5],2) + pow(above[2]-m[9],2)
 //                     + pow(-forward[0]-m[2],2) + pow(-forward[1]-m[6],2) + pow(-forward[2]-m[10],2) );
-    m[0] = side[0];     m[1] = above[0];    m[2] = -forward[0];     m[3] = 0.0f;
-    m[4] = side[1];     m[5] = above[1];    m[6] = -forward[1];     m[7] = 0.0f;
-    m[8] = side[2];     m[9] = above[2];    m[10] = -forward[2];    m[11] = 0.0f;
-    m[12] = 0.0f;       m[13] = 0.0f;       m[14] = 0.0f;           m[15] = 1.0f;
-    glMultMatrixf(&m[0]);
+//    m[0] = side[0];     m[1] = above[0];    m[2] = -forward[0];     m[3] = 0.0f;
+//    m[4] = side[1];     m[5] = above[1];    m[6] = -forward[1];     m[7] = 0.0f;
+//    m[8] = side[2];     m[9] = above[2];    m[10] = -forward[2];    m[11] = 0.0f;
+//    m[12] = 0.0f;       m[13] = 0.0f;       m[14] = 0.0f;           m[15] = 1.0f;
+    
+    _matrix = GLKMatrix4Make(side[0], above[0], -forward[0], 0.0f, side[1], above[1], -forward[1], 0.0f, side[2], above[2], -forward[2], 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+
+    glMultMatrixf(_matrix.m);
     glTranslatef(-position[X], -position[Y], -position[Z]);
-//    logOrientation();
 }
 
 -(void) setAnimation{
@@ -94,42 +95,61 @@
     // to a set of starting conditions for the variables in the loop
 }
 
-// is this going to be a problem that frameNum is static with the same name?
--(void) animationUpAndDownAndAround{
-    static int frameNum;
-    frameNum++;
-    position[X] = 1.618*sinf(frameNum/100.0);
-    position[Z] = 1.618*cosf(frameNum/100.0);
-    position[Y] = 3*sinf(frameNum/33.0);
+-(void) flyToCenter:(float)frame{
+    if(frame > 1) frame = 1;
+    if(frame < 0) frame = 0;
+    _radius = .1+_distanceFromOrigin*(1-frame);
+    if(_radius < 1.0) glCullFace(GL_BACK);
+    else glCullFace(GL_FRONT);
 }
 
--(void) animationPerlinNoiseRotateAround{
-    static int frameNum;
-    frameNum++;
-    static float animAngleVelocity = 0;
-    static float animAngle;
-    animAngleVelocity = noise1(frameNum/200.0) / 1.0;
-    animAngle += animAngleVelocity;
-    position[X] = 1.75*sinf(animAngle);
-    position[Z] = 1.75*cosf(animAngle);
-    position[Y] = 1.25*noise1(frameNum/33.0);
-}
-
--(void) animationDollyZoom{
-    static float dollyFocus[3] = {0.0f, 0.0f, 0.0f};
-    static int frameNum;
-    frameNum++;
-//    position[X] = 1.618*sinf(frameNum2/100.0);
-    position[Z] = 1.618*cosf(frameNum/50.0) + 2.3;
-//    position[Y] = sinf(frameNum2/15.0);
+-(void) dollyZoomFlat:(float)frame{
+    
     float width = 1;
-    float distance = sqrtf(pow(position[X]-dollyFocus[X], 2) +
-                           pow(position[Y]-dollyFocus[Y], 2) +
-                           pow(position[Z]-dollyFocus[Z], 2) );
-    float fov = 2*atan( width /(2*distance) );
+    float distance = _distanceFromOrigin + frame * 50;
+    _radius = distance;
+    float fov = 5*atan( width /(2*distance) );
     fov = fov / 3.1415926 * 180.0;
-    setFieldOfView(fov);
+//    NSLog(@"FOV %f",fov);
+//    build_projection_matrix(self.frame.origin.x, self.frame.origin.y, (1+IS_RETINA)*self.frame.size.width, (1+IS_RETINA)*self.frame.size.height, fov);
 }
+
+// is this going to be a problem that frameNum is static with the same name?
+//-(void) animationUpAndDownAndAround{
+//    static int frameNum;
+//    frameNum++;
+//    position[X] = 1.618*sinf(frameNum/100.0);
+//    position[Z] = 1.618*cosf(frameNum/100.0);
+//    position[Y] = 3*sinf(frameNum/33.0);
+//}
+//
+//-(void) animationPerlinNoiseRotateAround{
+//    static int frameNum;
+//    frameNum++;
+//    static float animAngleVelocity = 0;
+//    static float animAngle;
+//    animAngleVelocity = noise1(frameNum/200.0) / 1.0;
+//    animAngle += animAngleVelocity;
+//    position[X] = 1.75*sinf(animAngle);
+//    position[Z] = 1.75*cosf(animAngle);
+//    position[Y] = 1.25*noise1(frameNum/33.0);
+//}
+//
+//-(void) animationDollyZoom{
+//    static float dollyFocus[3] = {0.0f, 0.0f, 0.0f};
+//    static int frameNum;
+//    frameNum++;
+////    position[X] = 1.618*sinf(frameNum2/100.0);
+//    position[Z] = 1.618*cosf(frameNum/50.0) + 2.3;
+////    position[Y] = sinf(frameNum2/15.0);
+//    float width = 1;
+//    float distance = sqrtf(pow(position[X]-dollyFocus[X], 2) +
+//                           pow(position[Y]-dollyFocus[Y], 2) +
+//                           pow(position[Z]-dollyFocus[Z], 2) );
+//    float fov = 2*atan( width /(2*distance) );
+//    fov = fov / 3.1415926 * 180.0;
+//    [self setFieldOfView:fov];
+//}
 
 -(void) logOrientation{
     static int logDelay;
@@ -147,26 +167,24 @@
 
 -(void) setFieldOfView:(float) fieldOfView{
     _fieldOfView = fieldOfView;
-    rebuildProjectionMatrix();
+    [self rebuildProjectionMatrix];
 }
 -(void) setAspectRatio:(float) aspectRatio{
     _aspectRatio = aspectRatio;
-    rebuildProjectionMatrix();
+    [self rebuildProjectionMatrix];
 }
 -(void) setFrame:(CGRect)frame{
-    _screenX = x;
-    _screenY = y;
-    _screenWidth = width;
-    _screenHeight = height;
-    _aspectRatio = _screenWidth/_screenHeight;
-    rebuildProjectionMatrix();
+    _frame = frame;
+    _aspectRatio = _frame.size.width/_frame.size.height;
+    [self rebuildProjectionMatrix];
 }
+
 -(void) rebuildProjectionMatrix{
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     GLfloat frustum = Z_NEAR * tanf(_fieldOfView*0.00872664625997);  // pi / 180 / 2
     glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
-    glViewport(self.frame.origin.x, _screenY, _screenWidth, _screenHeight);
+    glViewport(_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -175,7 +193,7 @@
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrthof(0, _screenWidth, 0, _screenHeight, -5, 1);   // width and height maybe need to switch
+    glOrthof(0, _frame.size.width, 0, _frame.size.height, -5, 1);   // width and height maybe need to switch
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 //    glEnable(GL_BLEND);

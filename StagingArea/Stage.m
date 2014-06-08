@@ -14,7 +14,6 @@
 #import "NavigationScreen.h"
 #import "SquareRoom.h"
 
-#define camHomeDistance 2.25
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
 
 // # SCENES
@@ -67,6 +66,7 @@ typedef enum{
     Camera              *camera;
     float               camDistance;
     GLKQuaternion       orientation, quaternionFrontFacing;
+    BOOL                orientToDevice;
 
     // OBJECTS
     OBJ *obj;
@@ -100,7 +100,8 @@ typedef enum{
     [navScreen setScene:(int*)&scene];
     
     // camera
-    camDistance = camHomeDistance;
+    camera = [[Camera alloc] init];
+    [camera setDistanceFromOrigin:2.25];
 //    set_up(&camera, 0, 1, 0);
 //    set_position(&camera, 0, 0, camDistance);
 //    set_focus(&camera, 0, 0, 0);
@@ -136,7 +137,7 @@ typedef enum{
 //    rainbow(screenColor, &one_f, &one_f);
     
     glPushMatrix();
-    if(_orientToDevice){
+    if(orientToDevice){
         _orientationMatrix = GLKMatrix4MakeLookAt(camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
 //        set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
 //        set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
@@ -195,16 +196,16 @@ typedef enum{
 -(void) changeCameraAnimationState:(AnimationState) newState{
     if(newState == animationNone){
         if(cameraAnimationState == animationOrthoToPerspective){
-            _orientToDevice = true;
+            orientToDevice = true;
         }
     }
     else if(newState == animationPerspectiveToOrtho){
-        GLKMatrix4 m = GLKMatrix4Make(_orientationMatrix.m[0], _orientationMatrix.m[1], _orientationMatrix.m[2], _orientationMatrix.m[3],
-                                      _orientationMatrix.m[4], _orientationMatrix.m[5], _orientationMatrix.m[6], _orientationMatrix.m[7],
-                                      _orientationMatrix.m[8], _orientationMatrix.m[9], _orientationMatrix.m[10],_orientationMatrix.m[11],
-                                      _orientationMatrix.m[12],_orientationMatrix.m[13],_orientationMatrix.m[14],_orientationMatrix.m[15]);
-        orientation = GLKQuaternionMakeWithMatrix4(m);
-        _orientToDevice = false;
+//        GLKMatrix4 m = GLKMatrix4Make(_orientationMatrix.m[0], _orientationMatrix.m[1], _orientationMatrix.m[2], _orientationMatrix.m[3],
+//                                      _orientationMatrix.m[4], _orientationMatrix.m[5], _orientationMatrix.m[6], _orientationMatrix.m[7],
+//                                      _orientationMatrix.m[8], _orientationMatrix.m[9], _orientationMatrix.m[10],_orientationMatrix.m[11],
+//                                      _orientationMatrix.m[12],_orientationMatrix.m[13],_orientationMatrix.m[14],_orientationMatrix.m[15]);
+        orientation = GLKQuaternionMakeWithMatrix4(_orientationMatrix);
+        orientToDevice = false;
     }
     cameraAnimationState = newState;
 }
@@ -215,7 +216,7 @@ typedef enum{
     }
     if([a isEqual:animationTransition]){
         if(cameraAnimationState == animationOrthoToPerspective) // this stuff could go into the function pointer function
-            _orientToDevice = true;
+            orientToDevice = true;
         cameraAnimationState = animationNone;
     }
 }
@@ -238,20 +239,20 @@ typedef enum{
         if(cameraAnimationState == animationPerspectiveToOrtho){
             GLKQuaternion q = GLKQuaternionSlerp(orientation, quaternionFrontFacing, powf(frame,2));
             _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
-            [self dollyZoomFlat:powf(frame,3)];
+            [camera dollyZoomFlat:powf(frame,3)];
         }
         if(cameraAnimationState == animationOrthoToPerspective){
             GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
             GLKQuaternion mtoq = GLKQuaternionMakeWithMatrix4(m);
             GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, mtoq, powf(frame,2));
             _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
-            [self dollyZoomFlat:powf(1-frame,3)];
+            [camera dollyZoomFlat:powf(1-frame,3)];
         }
         if(cameraAnimationState == animationPerspectiveToInside){
-            [self flyToCenter:frame];
+            [camera flyToCenter:frame];
         }
         if(cameraAnimationState == animationInsideToPerspective){
-            [self flyToCenter:1-frame];
+            [camera flyToCenter:1-frame];
         }
     }
 }
@@ -349,24 +350,6 @@ typedef enum{
     }
 }
 
--(void) flyToCenter:(float)frame{
-    if(frame > 1) frame = 1;
-    if(frame < 0) frame = 0;
-    camDistance = .1+camHomeDistance*(1-frame);
-    if(camDistance < 1.0) glCullFace(GL_BACK);
-    else glCullFace(GL_FRONT);
-}
-
--(void) dollyZoomFlat:(float)frame{
-
-    float width = 1;
-    float distance = camHomeDistance + frame * 50;
-    camDistance = distance;
-    float fov = 5*atan( width /(2*distance) );
-    fov = fov / 3.1415926 * 180.0;
-//    NSLog(@"FOV %f",fov);
-//    build_projection_matrix(self.frame.origin.x, self.frame.origin.y, (1+IS_RETINA)*self.frame.size.width, (1+IS_RETINA)*self.frame.size.height, fov);
-}
 
 -(void) tearDownGL{
     //unload shapes
