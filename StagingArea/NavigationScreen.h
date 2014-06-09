@@ -8,6 +8,7 @@
 
 @property UILabel *titleLabel;
 @property NSMutableArray *numberLabels;
-@property UILabel *icosahedronLabel, *octahedronLabel;
+@property UIButton *button1;
+@property UIButton *button2;
 
 @end

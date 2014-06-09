@@ -24,7 +24,8 @@
 -(id) init{
     self = [super init];
     if(self){
-        position[X] = 0.0f; position[Y] = 0.0f; position[Z] = -5.0f;
+        _distanceFromOrigin = 2.9;
+        position[X] = 0.0f; position[Y] = 0.0f; position[Z] = -_distanceFromOrigin;
         focus[X] = 0.0f;    focus[Y] = 0.0f;    focus[Z] = 0.0f;
         up[X] = 0.0f;       up[Y] = 1.0f;       up[Z] = 0.0f;
         _fieldOfView = 45.0f;

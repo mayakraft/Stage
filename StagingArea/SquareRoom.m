@@ -10,7 +10,6 @@
 @implementation SquareRoom
 
 -(void) setup{
-    NSLog(@"THIS BETTER BE GETTING CALLED");
     [self fillQuad];
 }
 
@@ -27,14 +26,12 @@
 
 -(void) drawQuad{
     glEnableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, quadVertices);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 -(void)drawRoomWalls{
-    glDisable(GL_CULL_FACE);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
     static float dist = 2.82842712474619;//sqrtf(2)*2;
@@ -160,9 +157,7 @@
     glPopMatrix();
     
     glPopMatrix();  // scale master
-    
-    
-    glEnable(GL_CULL_FACE);
+
 }
 
 

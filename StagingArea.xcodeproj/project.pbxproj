@@ -133,9 +133,6 @@
 				D5F68C92191789BF002C97F3 /* Room.m */,
 				D583C251191A025400824AA5 /* Screen.h */,
 				D583C252191A025400824AA5 /* Screen.m */,
-				D5579DAA19287F67005C49C7 /* FlatPrimitives.h */,
-				D5579DAB19287F67005C49C7 /* FlatPrimitives.m */,
-				D572FDC1192ABE560043443E /* StageCommon.h */,
 				D516D606194296DC0017AEF5 /* examples */,
 			);
 			name = super;
@@ -166,6 +163,20 @@
 				D51EC01A18FBA5140021FF54 /* OBJ.m */,
 			);
 			name = tools;
+			sourceTree = "<group>";
+		};
+		D516D60C1945579E0017AEF5 /* Stage */ = {
+			isa = PBXGroup;
+			children = (
+				D50C4DBE18E7EEB80032BD35 /* Stage.h */,
+				D50C4DBF18E7EEB80032BD35 /* Stage.m */,
+				D572FDC1192ABE560043443E /* StageCommon.h */,
+				D5579DAA19287F67005C49C7 /* FlatPrimitives.h */,
+				D5579DAB19287F67005C49C7 /* FlatPrimitives.m */,
+				D516D605194295F90017AEF5 /* super */,
+				D516D607194296FB0017AEF5 /* tools */,
+			);
+			name = Stage;
 			sourceTree = "<group>";
 		};
 		D57153FD18E2B80500037224 = {
@@ -208,10 +219,7 @@
 				D571541E18E2B80500037224 /* Main_iPad.storyboard */,
 				D571542118E2B80500037224 /* ViewController.h */,
 				D571542218E2B80500037224 /* ViewController.m */,
-				D50C4DBE18E7EEB80032BD35 /* Stage.h */,
-				D50C4DBF18E7EEB80032BD35 /* Stage.m */,
-				D516D605194295F90017AEF5 /* super */,
-				D516D607194296FB0017AEF5 /* tools */,
+				D516D60C1945579E0017AEF5 /* Stage */,
 				D5961C3318F7C4AB00978303 /* 3rdParty */,
 				D572FDBE192AB2650043443E /* Fonts */,
 				D571542418E2B80500037224 /* Images.xcassets */,

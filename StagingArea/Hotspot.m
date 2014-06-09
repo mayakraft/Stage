@@ -6,6 +6,17 @@
     Hotspot *h = [[Hotspot alloc] init];
     if(h){
         [h setBounds:rect];
+        [h setScene:0];
+        [h setID:i];
+    }
+    return h;
+}
+
++ (instancetype)hotspotWithID:(NSInteger)i Scene:(Scene)validScenes Bounds:(CGRect)rect{
+    Hotspot *h = [[Hotspot alloc] init];
+    if(h){
+        [h setBounds:rect];
+        [h setScene:validScenes];
         [h setID:i];
     }
     return h;

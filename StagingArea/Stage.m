@@ -9,46 +9,17 @@
 #import "Camera.h"
 #include "lights.c"
 
-
 // ROOMS and SCREENS
 #import "NavigationScreen.h"
 #import "SquareRoom.h"
 
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
 
-// # SCENES
-typedef enum{
-    scene1,
-    scene2,
-    scene3,
-    scene4,
-    scene5
-} Scene;
-
-// define all possible kinds of transitions:
-typedef enum{
-    animationNone,
-    animationOrthoToPerspective,
-    animationPerspectiveToOrtho,
-    animationInsideToPerspective,
-    animationPerspectiveToInside
-} AnimationState;
-
-// give names to all hotspots:
-typedef enum{
-    hotspotBackArrow,
-    hotspotForwardArrow,
-    hotspotControls
-} HotspotID;
-
-
 @interface Stage (){
     NSDate      *start;
     float       screenColor[4];
     
-    Scene               scene;
     AnimationState      cameraAnimationState;
-    
     
     // CUSTOMIZE BELOW
     
@@ -63,8 +34,7 @@ typedef enum{
     NavigationScreen    *navScreen;
 
     // CAMERAS
-    Camera              *camera;
-    float               camDistance;
+//    Camera              *camera;
     GLKQuaternion       orientation, quaternionFrontFacing;
     BOOL                orientToDevice;
 
@@ -72,6 +42,7 @@ typedef enum{
     OBJ *obj;
     
     // ANIMATION TRIGGERS
+    BOOL _userInteractionEnabled;
     NSArray *hotspots;  // don't overlap hotspots, or re-write touch handling code
 }
 
@@ -83,8 +54,6 @@ typedef enum{
     self = [super initWithFrame:frame context:context];
     if (self) {
         self.frame = frame;
-        NSLog(@"DID THIS WORK?: %f, %f, %f, %f",self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
-//        _frame = frame;
         [self setup];
     }
     return self;
@@ -94,37 +63,59 @@ typedef enum{
     [self customizeOpenGL];
     
     squareRoom = [[SquareRoom alloc] init];
-    
+
     navScreen = [[NavigationScreen alloc] initWithFrame:self.frame];
     [self addSubview:navScreen.view];     // add a screen's view or its UI elements won't show
-    [navScreen setScene:(int*)&scene];
-    
+    [navScreen setScene:(int*)&_scene];
+
     // camera
-    camera = [[Camera alloc] init];
-    [camera setDistanceFromOrigin:2.25];
+//    camera = [[Camera alloc] init];
 //    set_up(&camera, 0, 1, 0);
 //    set_position(&camera, 0, 0, camDistance);
 //    set_focus(&camera, 0, 0, 0);
 //    build_projection_matrix(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height, 58);  // 60
-    
-    GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance, 0, 0, 0, 0, 0, 0, 1, 0);
-    quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
+  
+//    GLKMatrix4 m = GLKMatrix4MakeLookAt(camera.distanceFromOrigin, 0, 0, 0, 0, 0, 0, 1, 0);
+//    quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
 
-    float arrowWidth = self.frame.size.width*.125;
+    float arrowWidth = self.frame.size.width*.175;
     hotspots = @[ [Hotspot hotspotWithID:hotspotBackArrow Bounds:CGRectMake(5, 5, arrowWidth, arrowWidth)],
                   [Hotspot hotspotWithID:hotspotForwardArrow Bounds:CGRectMake(self.frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)],
                   [Hotspot hotspotWithID:hotspotControls Bounds:CGRectMake(0, self.frame.size.height-arrowWidth*2.5, self.frame.size.width, arrowWidth*2.5)]];
     
     start = [NSDate date];
+    _userInteractionEnabled = true;
+    orientToDevice = true;
+ 
+    
+    screenColor[0] = 0.0; screenColor[1] = 0.0; screenColor[2] = 0.0; screenColor[3] = 1.0;
 }
 
 -(void) customizeOpenGL{
     glMatrixMode(GL_MODELVIEW);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glLoadIdentity();
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_FRONT);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+-(void) drawRect{
+    static const GLfloat _unit_square[] = {
+        -0.5f, 0.5f, 0.0,
+        0.5f, 0.5f,  0.0,
+        -0.5f, -0.5f,0.0,
+        0.5f, -0.5f, 0.0
+    };
+    glPushMatrix();
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glTranslatef(0, 0, 2.0);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, _unit_square);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glPopMatrix();
 }
 
 -(void)draw{
@@ -136,61 +127,80 @@ typedef enum{
     // lighting independent of rotation
 //    rainbow(screenColor, &one_f, &one_f);
     
-    glPushMatrix();
+//    glPushMatrix();
     if(orientToDevice){
-        _orientationMatrix = GLKMatrix4MakeLookAt(camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+//        _orientationMatrix = GLKMatrix4MakeLookAt(camera.distanceFromOrigin*_deviceAttitude[2], camera.distanceFromOrigin*_deviceAttitude[6], camera.distanceFromOrigin*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
 //        set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
 //        set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
     }
 //    frame_shot(&camera);
     
-    _orientationMatrix.m32 = -camDistance;
-    glMultMatrixf(_orientationMatrix.m);
+//    _orientationMatrix.m32 = -camera.distanceFromOrigin;
+
+//    _orientationMatrix = GLKMatrix4Identity;
+
+//    _orientationMatrix = GLKMatrix4MakeWithArray(_deviceAttitude);
+//    glMultMatrixf(_orientationMatrix.m);
     
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zeroColor);
+//    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zeroColor);
     
+//    GLKMatrix4 m = _orientationMatrix;//GLKMatrix4MakeWithArray(_deviceAttitude);
+//    NSLog(@"\n%f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f", m.m00, m.m01, m.m02, m.m03, m.m10, m.m11, m.m12, m.m13, m.m20, m.m21, m.m22, m.m23, m.m30, m.m31, m.m32, m.m33);
+
     // lighting rotates with orientation
-    rainbow(screenColor, &one_f, &one_f);
+//    rainbow(screenColor, &one_f, &one_f);
     
+
+    glMultMatrixf(GLKMatrix4Identity.m);
     
-    if(obj)
-        [obj draw];
-    
+//    if(obj)
+//        [obj draw];
+
+    glDisable(GL_LIGHTING);
+    glDisable(GL_CULL_FACE);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+ 
     if(squareRoom)
         [squareRoom draw];
     
-    if(animationNewGeodesic != nil){
-        float scale = 1.0-[animationNewGeodesic scale];  // this is getting called twice,
-        rainbow(screenColor, &one_f, &scale);
-        // draw more
-    }
     
-    if(navScreen)
-        [navScreen draw];
+//    glDisable(GL_LIGHTING);
+//    glDisable(GL_CULL_FACE);
+//    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+//    
+    [self drawRect];
+//
+//    glPopMatrix();
     
-    glPopMatrix();
-}
 
--(void) changeScene:(Scene)newScene{
+//    if(animationNewGeodesic != nil){
+//        float scale = 1.0-[animationNewGeodesic scale];  // this is getting called twice,
+//        rainbow(screenColor, &one_f, &scale);
+//        // draw more
+//    }
+    
+    
+//    if(navScreen)
+//        [navScreen draw];
+    
+}
+-(void) setScene:(Scene)scene{
 //    reset_lighting();
     [navScreen hideElements];
+    [[navScreen titleLabel] setText:[NSString stringWithFormat:@"SCENE %d",scene+1]];
     
-    if(newScene == scene1){
-        [[navScreen octahedronLabel] setHidden:NO];
-        [[navScreen icosahedronLabel] setHidden:NO];
-        [[navScreen titleLabel] setText:@"SCENE 1"];
-    }else if (newScene == scene2){
+    if(scene == scene1){
+        [[navScreen button1] setHidden:NO];
+        [[navScreen button2] setHidden:NO];
+    }
+    else if (scene == scene2){
         for (int i = 0; i < [[navScreen numberLabels] count]; i++)
             [[[navScreen numberLabels] objectAtIndex:i] setHidden:NO];
-        [[navScreen titleLabel] setText:@"SCENE 2"];
-    }else if (newScene == scene3){
-        [[navScreen titleLabel] setText:@"SCENE 3"];
-    }else if (newScene == scene4){
-        [[navScreen titleLabel] setText:@"SCENE 4"];
-    }else if (newScene == scene5){
-        [[navScreen titleLabel] setText:@"SCENE 5"];
     }
-    scene = newScene;
+    else if (scene == scene3){ }
+    else if (scene == scene4){ }
+    else if (scene == scene5){ }
+    _scene = scene;
 }
 
 -(void) changeCameraAnimationState:(AnimationState) newState{
@@ -239,28 +249,26 @@ typedef enum{
         if(cameraAnimationState == animationPerspectiveToOrtho){
             GLKQuaternion q = GLKQuaternionSlerp(orientation, quaternionFrontFacing, powf(frame,2));
             _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
-            [camera dollyZoomFlat:powf(frame,3)];
+//            [camera dollyZoomFlat:powf(frame,3)];
         }
         if(cameraAnimationState == animationOrthoToPerspective){
-            GLKMatrix4 m = GLKMatrix4MakeLookAt(camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
-            GLKQuaternion mtoq = GLKQuaternionMakeWithMatrix4(m);
-            GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, mtoq, powf(frame,2));
-            _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
-            [camera dollyZoomFlat:powf(1-frame,3)];
+//            GLKMatrix4 m = GLKMatrix4MakeLookAt(camera.distanceFromOrigin*_deviceAttitude[2], camera.distanceFromOrigin*_deviceAttitude[6], camera.distanceFromOrigin*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
+//            GLKQuaternion mtoq = GLKQuaternionMakeWithMatrix4(m);
+//            GLKQuaternion q = GLKQuaternionSlerp(quaternionFrontFacing, mtoq, powf(frame,2));
+//            _orientationMatrix = GLKMatrix4MakeWithQuaternion(q);
+//            [camera dollyZoomFlat:powf(1-frame,3)];
         }
         if(cameraAnimationState == animationPerspectiveToInside){
-            [camera flyToCenter:frame];
+//            [camera flyToCenter:frame];
         }
         if(cameraAnimationState == animationInsideToPerspective){
-            [camera flyToCenter:1-frame];
+//            [camera flyToCenter:1-frame];
         }
     }
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSLog(@"ARE TOUCHES WORKING?:");
-    if(self.userInteractionEnabled){
-        NSLog(@"YES, yes they are");
+    if(_userInteractionEnabled){
         for(UITouch *touch in touches){
             for(Hotspot *spot in hotspots){
                 if(CGRectContainsPoint([spot bounds], [touch locationInView:self])){
@@ -276,14 +284,14 @@ typedef enum{
 }
 
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(self.userInteractionEnabled){
+    if(_userInteractionEnabled){
         for(UITouch *touch in touches){
             for(Hotspot *spot in hotspots){
                 if(CGRectContainsPoint([spot bounds], [touch locationInView:self])){
                     // customize response to each touch area
                     if([spot ID] == hotspotBackArrow) { }
                     if([spot ID] == hotspotForwardArrow) { }
-                    if([spot ID] == hotspotControls && scene == scene2){
+                    if([spot ID] == hotspotControls && _scene == scene2){
                         float freq = ([touch locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
                         if(freq < 0) freq = 0;
                         if(freq > 8) freq = 8;
@@ -297,37 +305,37 @@ typedef enum{
 }
 
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(self.userInteractionEnabled){
+    if(_userInteractionEnabled){
         for(UITouch *touch in touches){
             for(Hotspot *spot in hotspots){
                 if(CGRectContainsPoint([spot bounds], [touch locationInView:self])){
                     // customize response to each touch area
-                    if([spot ID] == hotspotBackArrow && scene > scene1){
+                    if([spot ID] == hotspotBackArrow && _scene > scene1){
                         animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
-                        if(scene == scene2)
+                        if(_scene == scene2)
                             [self changeCameraAnimationState:animationOrthoToPerspective];
-                        if(scene == scene5)
+                        if(_scene == scene5)
                             [self changeCameraAnimationState:animationInsideToPerspective];
-                        if (scene-1 == scene3)
+                        if (_scene-1 == scene3)
                             [self changeCameraAnimationState:animationPerspectiveToOrtho];
-                        if (scene-1 == scene5)
+                        if (_scene-1 == scene5)
                             [self changeCameraAnimationState:animationPerspectiveToInside];
-                        [self changeScene:scene-1];
+                        [self setScene:_scene-1];
                     }
-                    else if([spot ID] == hotspotForwardArrow && scene < scene5){
-                        if(scene == scene3)
+                    else if([spot ID] == hotspotForwardArrow && _scene < scene5){
+                        if(_scene == scene3)
                             [self changeCameraAnimationState:animationOrthoToPerspective];
-                        if(scene == scene5)
+                        if(_scene == scene5)
                             [self changeCameraAnimationState:animationInsideToPerspective];
-                        if (scene+1 == scene2)
+                        if (_scene+1 == scene2)
                             [self changeCameraAnimationState:animationPerspectiveToOrtho];
-                        if (scene+1 == scene5)
+                        if (_scene+1 == scene5)
                             [self changeCameraAnimationState:animationPerspectiveToInside];
                         animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
-                        [self changeScene:scene+1];
+                        [self setScene:_scene+1];
                     }
                     else if([spot ID] == hotspotControls){
-                        if(scene == scene1){
+                        if(_scene == scene1){
                             if([touch locationInView:self].x < self.frame.size.width*.5){
                                 
                             }
@@ -335,7 +343,7 @@ typedef enum{
                                 
                             }
                         }
-                        if(scene == scene2){
+                        if(_scene == scene2){
                             int freq = ([touch locationInView:self].x-(self.frame.size.width)/12.*1.5) / ((self.frame.size.width)/12.);
                             if(freq < 0) freq = 0;
                             if(freq > 8) freq = 8;

@@ -8,31 +8,36 @@
 
 @implementation NavigationScreen
 
-#define arrowWidth self.frame.size.width*.125
+#define arrowWidth self.frame.size.width*.175
 
 -(void) setup{
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.width*.18)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, arrowWidth*1.25)];
     [_titleLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:self.frame.size.width*.1]];
+    [_titleLabel setNumberOfLines:0];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
     [_titleLabel setTextColor:[UIColor whiteColor]];
     [_titleLabel setText:@"SCENE 1"];
+//    [_titleLabel sizeToFit];
     [self.view addSubview:_titleLabel];
     
-    _icosahedronLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height-arrowWidth, (self.frame.size.width)*.5, (self.frame.size.width)/12.)];
-    [_icosahedronLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:self.frame.size.width*.1]];
-    [_icosahedronLabel setTextAlignment:NSTextAlignmentCenter];
-    [_icosahedronLabel setTextColor:[UIColor blackColor]];
-    [_icosahedronLabel setText:@"icosa"];
-    [self.view addSubview:_icosahedronLabel];
-    _octahedronLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.frame.size.width)*.5, self.frame.size.height-arrowWidth, (self.frame.size.width)*.5, (self.frame.size.width)/12.)];
-    [_octahedronLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:self.frame.size.width*.1]];
-    [_octahedronLabel setTextAlignment:NSTextAlignmentCenter];
-    [_octahedronLabel setTextColor:[UIColor blackColor]];
-    [_octahedronLabel setText:@"octa"];
-    [self.view addSubview:_octahedronLabel];
+    _button1 = [UIButton buttonWithType:UIButtonTypeCustom];
+     [_button1 setFrame:CGRectMake(0, self.frame.size.height-arrowWidth, (self.frame.size.width)*.5, (self.frame.size.width)/12.)];
+    [[_button1 titleLabel] setFont:[UIFont fontWithName:@"Montserrat-Regular" size:self.frame.size.width*.1]];
+    [[_button1 titleLabel] setTextAlignment:NSTextAlignmentCenter];
+    [[_button1 titleLabel] setTextColor:[UIColor blackColor]];
+    [[_button1 titleLabel] setText:@"button"];
+    [self.view addSubview:_button1];
+    
+    _button2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_button2 setFrame:CGRectMake((self.frame.size.width)*.5, self.frame.size.height-arrowWidth, (self.frame.size.width)*.5, (self.frame.size.width)/12.)];
+    [[_button2 titleLabel] setFont:[UIFont fontWithName:@"Montserrat-Regular" size:self.frame.size.width*.1]];
+    [[_button2 titleLabel] setTextAlignment:NSTextAlignmentCenter];
+    [[_button2 titleLabel] setTextColor:[UIColor blackColor]];
+    [[_button2 titleLabel] setText:@"button"];
+    [self.view addSubview:_button2];
     
     self.elements = [NSMutableArray array];
-    [self.elements addObjectsFromArray:@[_icosahedronLabel, _octahedronLabel]];
+    [self.elements addObjectsFromArray:@[_button1, _button2]];
     
     _numberLabels = [[NSMutableArray alloc] init];
     for(int i = 0; i < 9; i++){
@@ -67,8 +72,12 @@
     [self drawRect:CGRectMake(self.frame.size.width-(arrowWidth*.5)-5, self.frame.size.height-(arrowWidth*.5)-5, arrowWidth*.5, 5)];
 
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    if(*_scene < 3)
+    if(*_scene == 1)
         [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth, self.frame.size.width, arrowWidth*2)];
+    if(*_scene == 2)
+        [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth*.5, self.frame.size.width, arrowWidth)];
+    if(*_scene == 4)
+        [self drawRect:CGRectMake(self.frame.size.width*.5, arrowWidth*1.5, self.frame.size.width, arrowWidth*3)];
 
     glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
     if(*_scene == 1){
@@ -77,6 +86,7 @@
             [self drawRect:CGRectMake((self.frame.size.width)/12.*(i+2), arrowWidth*1.25, 1, arrowWidth*.33)];
         [self drawRect:CGRectMake((self.frame.size.width)/12.*(_radioBarPosition+2), arrowWidth*1.25, 20, 20) WithRotation:45];
     }
+    glEnable(GL_LIGHTING);
 }
 
 
