@@ -1,100 +1,80 @@
-#import <OpenGLES/ES1/gl.h>
 #import "Stage.h"
 
-//#import "Animation.h"
-//#import "Hotspot.h"
-//#import "OBJ.h"
-
-//#include "lights.c"
-
-// CUSTOM CLASSES
-//#import "SquareRoom.h"
-//#import "NavigationScreen.h"
-
-// # SCENES
-//typedef enum{
-//    scene1,
-//    scene2,
-//    scene3,
-//    scene4,
-//    scene5
-//} Scene;
-//// define all possible kinds of transitions:
-//typedef enum{
-//    animationNone,
-//    animationOrthoToPerspective,  animationPerspectiveToOrtho,
-//    animationInsideToPerspective, animationPerspectiveToInside
-//} AnimationState;
-
-
-
-@interface Stage (){
-    CMMotionManager     *motionManager;
-    NSDate              *start;
-    BOOL                _userInteractionEnabled;
-
-//    AnimationState      cameraAnimationState;
-//    
-//    // CUSTOMIZE BELOW (get rid of)
-//    
-//    // ANIMATIONS
-//    Animation           *animationTransition;  // triggered by navbar forward/back
-//    Animation           *animationNewGeodesic; // triggered by loading new geodesic
-//    
-//    // CAMERAS
-////    Camera              *camera;
-//    GLKQuaternion       quaternionFrontFacing;
-    BOOL                orientToDevice;
-//
-//    // OBJECTS
-//    OBJ *obj;
-//    
-//    // ANIMATION TRIGGERS
-//    NSArray *hotspots;  // don't overlap hotspots, or re-write touch handling code
+void set_color(float* color, float* color_ref){
+    color[0] = color_ref[0];
+    color[1] = color_ref[1];
+    color[2] = color_ref[2];
+    color[3] = color_ref[3];
 }
 
-//@property (nonatomic) int scene;
+@interface Stage (){
+    
+    NSDate      *start;
+    BOOL        orientToDevice;
+    BOOL        _userInteractionEnabled;
+    float       _aspectRatio;
+    float       _fieldOfView;
 
-@property (readonly) NSTimeInterval elapsedSeconds;
+    CMMotionManager *motionManager;
+}
 
-@property GLKQuaternion attitude;         // DEVICE ATTITUDE
-@property GLKQuaternion orientation;      // WORLD ORIENTATION, can depend or not on device attitude
-
-@property (nonatomic) float *screenColor; // CLEAR SCREEN COLOR
+@property (readonly)  NSTimeInterval elapsedSeconds;
+//@property (nonatomic) GLKQuaternion  deviceAttitude;
+@property (nonatomic) GLKQuaternion  orientation;      // WORLD ORIENTATION, can depend or not on device attitude
+@property (nonatomic) GLKMatrix4     deviceAttitude;
 
 @end
 
 @implementation Stage
 
-+ (instancetype)StageWithNavBar:(Flat*)navBar{
+// INITIALIZERS
+
++(instancetype)StageWithNavBar:(Flat*)navBar{
     Stage *stage = [[Stage alloc] init];
     if(stage){
         [stage setFlat:navBar];
+        [stage setup];
     }
     return stage;
 }
 
-- (void)viewDidLoad{
++(instancetype)StageWithRoom:(Room*)room{
+    Stage *stage = [[Stage alloc] init];
+    if(stage){
+        [stage setRoom:room];
+        [stage setup];
+    }
+    return stage;
+}
+
+// STARTUP
+
+-(void) setup{
+    NSLog(@"setup");
+    start = [NSDate date];
+    _userInteractionEnabled = true;
+    orientToDevice = true;
+    _backgroundColor = malloc(sizeof(float)*4);
+    [self initDeviceOrientation];
+}
+
+// OMG cannot subclass viewDidLoad now, cause this is important
+-(void)viewDidLoad{
+    NSLog(@"viewDidLoad");
     [super viewDidLoad];
     
+    // SETUP GLKVIEW
     GLKView *view = (GLKView *)self.view;
     view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-    
     self.preferredFramesPerSecond = 60;
-    self.paused = NO;
-    
-    [view setDelegate:self];
-    [view setEnableSetNeedsDisplay:YES];
-    [view setOpaque:YES];
     
     [self initOpenGL];
-//    [self customizeOpenGL];
-    [self setup];
+    [self customizeOpenGL];
 }
 
 -(void)initOpenGL{
     NSLog(@"initOpenGL");
-    // iOS environment
+
     float width, height;
     if([UIApplication sharedApplication].statusBarOrientation > 2){
         width = [[UIScreen mainScreen] bounds].size.height;
@@ -104,8 +84,8 @@
         height = [[UIScreen mainScreen] bounds].size.height;
     }
 
-    float _aspectRatio = width/height;
-    float _fieldOfView = 60;
+    _aspectRatio = width/height;
+    _fieldOfView = 60;
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -114,149 +94,91 @@
     glViewport(0, 0, width, height);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-}
-
--(void) setup{
-    NSLog(@"setup");
-    
-    // camera
-    //    camera = [[Camera alloc] init];
-    //    set_up(&camera, 0, 1, 0);
-    //    set_position(&camera, 0, 0, camDistance);
-    //    set_focus(&camera, 0, 0, 0);
-    //    build_projection_matrix(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height, 58);  // 60
-    
 //    GLKMatrix4 m = GLKMatrix4MakeLookAt(2.9/*camera.distanceFromOrigin*/, 0, 0, 0, 0, 0, 0, 1, 0);
 //    quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
-        
-//    start = [NSDate date];
-//    _userInteractionEnabled = true;
-    orientToDevice = true;
-
-    [self initDeviceOrientation];
-    
-    _screenColor = malloc(sizeof(float)*4);
-    
-    [self setScreenColor:greenColor];
-    
-//    [self setRoom:[[SquareRoom alloc] init]];        // TODO: INIT WITH FRAME
-//    [self setScreen:[[NavigationScreen alloc] init]];
-    
-
 }
 
-//-(void) setScreenColor:(float *)screenColor{
-//    set_color(_screenColor, screenColor);
-//}
-//
-//-(void) setScreen:(Screen *)screen{
-//    [self.view addSubview:_screen.view];     // add a screen's view or its UI elements won't show
-//    [_screen setScene:_scene];
-//}
-//
-//-(void) customizeOpenGL{
-//    NSLog(@"customizeOpenGL");
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
-////    glEnable(GL_CULL_FACE);
-////    glCullFace(GL_FRONT);
-////    glEnable(GL_DEPTH_TEST);
-////    glEnable(GL_BLEND);
-////    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//}
-//
-//-(void) drawRect{
-//    static const GLfloat _unit_square[] = {
-//        -0.5f, 0.5f, 0.0,
-//        0.5f, 0.5f,  0.0,
-//        -0.5f, -0.5f,0.0,
-//        0.5f, -0.5f, 0.0
-//    };
-//    glPushMatrix();
-//    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//    glTranslatef(0, 0, 2.0);
-//    glEnableClientState(GL_VERTEX_ARRAY);
-//    glVertexPointer(3, GL_FLOAT, 0, _unit_square);
-//    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//    glDisableClientState(GL_VERTEX_ARRAY);
-//    glPopMatrix();
-//}
+-(void) customizeOpenGL{
+    NSLog(@"customizeOpenGL");
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_FRONT);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+-(void) initDeviceOrientation{
+    NSLog(@"initDeviceOrientation");
+    motionManager = [[CMMotionManager alloc] init];
+    if([motionManager isDeviceMotionAvailable]){
+        motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
+        [motionManager startDeviceMotionUpdates];
+    }
+    else{
+//        _deviceAttitude = GLKQuaternionIdentity;
+        _deviceAttitude = GLKMatrix4Identity;
+    }
+}
+
+
+// SETTERS
+
+-(void) setBackgroundColor:(float *)backgroundColor{
+    set_color(_backgroundColor, backgroundColor);
+}
+
+-(void) setFlat:(Flat *)flat{
+    _flat = flat;
+    [self.view addSubview:_flat.view];     // add a screen's view or its UI elements won't show
+//    [_flat setScene:_scene];
+}
 
 // called before draw function
 -(void) update{
-    NSLog(@"update");
+
     _elapsedSeconds = -[start timeIntervalSinceNow];
 //    [self animationHandler];
+    
+    if([motionManager isDeviceMotionAvailable]){
+        CMRotationMatrix m = motionManager.deviceMotion.attitude.rotationMatrix;
+        _deviceAttitude = GLKMatrix4MakeLookAt(m.m31, m.m32, m.m33, 0, 0, 0, m.m21, m.m22, m.m23);
+    }
 }
 
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect{
-    NSLog(@"drawing");
+-(void) glkView:(GLKView *)view drawInRect:(CGRect)rect{
 
-    glClearColor(_screenColor[0], _screenColor[1], _screenColor[2], _screenColor[3]);
+    glClearColor(_backgroundColor[0], _backgroundColor[1], _backgroundColor[2], _backgroundColor[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//    // lighting independent of rotation
-//    //    rainbow(screenColor, &one_f, &one_f);
-//    
-//    //    glPushMatrix();
-//    if(orientToDevice){
-//        //        _orientationMatrix = GLKMatrix4MakeLookAt(camera.distanceFromOrigin*_deviceAttitude[2], camera.distanceFromOrigin*_deviceAttitude[6], camera.distanceFromOrigin*(-_deviceAttitude[10]), 0.0f, 0.0f, 0.0f, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
-//        //        set_position(&camera, camDistance*_deviceAttitude[2], camDistance*_deviceAttitude[6], camDistance*(-_deviceAttitude[10]));
-//        //        set_up(&camera, _deviceAttitude[1], _deviceAttitude[5], -_deviceAttitude[9]);
-//    }
-//    //    frame_shot(&camera);
-//    
-//    //    _orientationMatrix.m32 = -camera.distanceFromOrigin;
-//    
-//    //    _orientationMatrix = GLKMatrix4Identity;
-//    
-//    //    _orientationMatrix = GLKMatrix4MakeWithArray(_deviceAttitude);
-//    //    glMultMatrixf(_orientationMatrix.m);
-//    
-//    //    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, zeroColor);
-//    
-//    //    GLKMatrix4 m = _orientationMatrix;//GLKMatrix4MakeWithArray(_deviceAttitude);
-//    //    NSLog(@"\n%f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f\n %f, %f, %f, %f", m.m00, m.m01, m.m02, m.m03, m.m10, m.m11, m.m12, m.m13, m.m20, m.m21, m.m22, m.m23, m.m30, m.m31, m.m32, m.m33);
-//    
-//    // lighting rotates with orientation
-//    //    rainbow(screenColor, &one_f, &one_f);
-//    
-//    
-////    glMultMatrixf(GLKMatrix4Identity.m);
-//    glLoadIdentity();
-////    glMultMatrixf(GLKMatrix4MakeWithQuaternion(_attitude).m);
-//    
-//    //    if(obj)
-//    //        [obj draw];
-//    
-//    glDisable(GL_LIGHTING);
-//    glDisable(GL_CULL_FACE);
-//    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//    
-//    if(_room)
-//        [_room draw];
-//    
-//    
-//    //    glDisable(GL_LIGHTING);
-//    //    glDisable(GL_CULL_FACE);
-//    //    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-//    //
-//    [self drawRect];
-//    //
-//    //    glPopMatrix();
-//    
-//    
-//    //    if(animationNewGeodesic != nil){
-//    //        float scale = 1.0-[animationNewGeodesic scale];  // this is getting called twice,
-//    //        rainbow(screenColor, &one_f, &scale);
-//    //        // draw more
-//    //    }
-//    
-//    
-//    //    if(navScreen)
-//    //        [navScreen draw];
-//    
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    GLfloat frustum = Z_NEAR * tanf(GLKMathDegreesToRadians(_fieldOfView) / 2.0);
+    glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
+
+    glMatrixMode(GL_MODELVIEW);
+
+    glLoadIdentity();
+    glPushMatrix();
+    
+    if(orientToDevice)
+        glMultMatrixf(_deviceAttitude.m);
+    
+    glDisable(GL_LIGHTING);
+    glDisable(GL_CULL_FACE);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    
+    if(_room)
+        [_room draw];
+    
+    if(_flat)
+        [_flat draw];
+    
+    glPopMatrix();
 }
+
+
 //-(void) setScene:(int)scene{
 //    //    reset_lighting();
 //    
@@ -270,7 +192,7 @@
 //    else if (scene == scene5){ }
 //    _scene = scene;
 //}
-//
+
 //-(void) changeCameraAnimationState:(AnimationState) newState{
 //    if(newState == animationNone){
 //        if(cameraAnimationState == animationOrthoToPerspective){
@@ -373,6 +295,9 @@
 //    }
 //}
 //
+
+
+
 //-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
 //    if(_userInteractionEnabled){
 //        for(UITouch *touch in touches){
@@ -427,34 +352,6 @@
 //        }
 //    }
 //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--(void) initDeviceOrientation{
-    motionManager = [[CMMotionManager alloc] init];
-    if([motionManager isDeviceMotionAvailable]){
-        motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
-        [motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *deviceMotion, NSError *error) {
-            CMQuaternion q = deviceMotion.attitude.quaternion;
-            _attitude = GLKQuaternionMake(q.x, q.y, q.z, q.w);
-            NSLog(@".");
-        }];
-    }
-    else{
-        _attitude = GLKQuaternionIdentity;
-    }
-}
 
 - (void)tearDownGL{
     //unload shapes

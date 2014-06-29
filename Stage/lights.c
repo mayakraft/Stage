@@ -1,4 +1,4 @@
-#include <OpenGLES/ES1/gl.h>
+#import <OpenGLES/ES1/gl.h>
 
 void rainbow(float *clearColor, float *brightness, float *alpha){
     clearColor[0] = clearColor[1] = clearColor[2] = 0.0f;

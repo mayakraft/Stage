@@ -31,10 +31,3 @@ static float one_f = 1.0f;
 
 #define Z_NEAR 0.1f
 #define Z_FAR 100.0f
-
-void set_color(float* color, float* color_ref){
-    color[0] = color_ref[0];
-    color[1] = color_ref[1];
-    color[2] = color_ref[2];
-    color[3] = color_ref[3];
-}

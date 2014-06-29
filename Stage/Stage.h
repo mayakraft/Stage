@@ -1,8 +1,10 @@
+#import <OpenGLES/ES1/gl.h>
 #import <GLKit/GLKit.h>
 #import <CoreMotion/CoreMotion.h>
-#include "common.c"
 #import "Room.h"
 #import "Flat.h"
+#import "common.c"
+//#import "lights.c"
 
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
 
@@ -12,9 +14,12 @@
 @property (nonatomic) Room *room;         // ROOMS   (3D ENVIRONMENTS)
 @property (nonatomic) Flat *flat;         // SCREENS (ORTHOGRAPHIC LAYERS)
 
-+(instancetype) StageWithNavBar:(Flat*)navBar;
+@property (nonatomic) float *backgroundColor; // CLEAR SCREEN COLOR
 
--(void) update;
++(instancetype) StageWithNavBar:(Flat*)navBar;
++(instancetype) StageWithRoom:(Room*)room;
+
+-(void) update;     // automatically called before glkView:drawInRect
 -(void) glkView:(GLKView *)view drawInRect:(CGRect)rect;
 
 @end

@@ -9,20 +9,24 @@
 #import "AppDelegate.h"
 #import "Stage.h"
 
+#import "CubeOctaRoom.h"
+
 @interface AppDelegate ()
             
 
 @end
 
 @implementation AppDelegate
-            
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
     // Override point for customization after application launch.
-    Stage *stage = [[Stage alloc] initWithNibName:nil bundle:nil];
+    Stage *stage = [Stage StageWithRoom:[CubeOctaRoom room]];
+    [stage setBackgroundColor:blackColor];
+    
     self.window.rootViewController = stage;
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
     return YES;
 }

@@ -2,6 +2,11 @@
 
 @implementation Room
 
++(instancetype) room{
+    Room *room = [[Room alloc] init];
+    return room;
+}
+
 -(id)init{
     self = [super init];
     if(self){
