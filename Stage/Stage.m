@@ -32,6 +32,7 @@ void set_color(float* color, float* color_ref){
 +(instancetype)StageWithNavBar:(Flat*)navBar{
     Stage *stage = [[Stage alloc] init];
     if(stage){
+        if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
         [stage setFlat:navBar];
         [stage setup];
     }
@@ -41,6 +42,18 @@ void set_color(float* color, float* color_ref){
 +(instancetype)StageWithRoom:(Room*)room{
     Stage *stage = [[Stage alloc] init];
     if(stage){
+        if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
+        [stage setRoom:room];
+        [stage setup];
+    }
+    return stage;
+}
+
++(instancetype) StageWithRoom:(Room*)room NavBar:(Flat*)navBar{
+    Stage *stage = [[Stage alloc] init];
+    if(stage){
+        if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
+        [stage setFlat:navBar];
         [stage setRoom:room];
         [stage setup];
     }
@@ -131,8 +144,8 @@ void set_color(float* color, float* color_ref){
 
 -(void) setFlat:(Flat *)flat{
     _flat = flat;
+    [_flat setDelegate:self];
     [self.view addSubview:_flat.view];     // add a screen's view or its UI elements won't show
-//    [_flat setScene:_scene];
 }
 
 // called before draw function
@@ -178,6 +191,52 @@ void set_color(float* color, float* color_ref){
     glPopMatrix();
 }
 
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_userInteractionEnabled){
+
+    }
+}
+
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_userInteractionEnabled){
+
+    }
+}
+
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    if(_userInteractionEnabled){
+
+    }
+}
+
+
+-(void) pageTurnBack:(NSInteger)page{
+    NSLog(@"(%d) Back button pressed", page);
+//    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
+//    if(page == 1)
+//        [self changeCameraAnimationState:animationOrthoToPerspective];
+//    if(page == 4)
+//        [self changeCameraAnimationState:animationInsideToPerspective];
+//    if (page-1 == 2)
+//        [self changeCameraAnimationState:animationPerspectiveToOrtho];
+//    if (page-1 == 4)
+//        [self changeCameraAnimationState:animationPerspectiveToInside];
+//    [self setScene:page-1];
+}
+
+-(void) pageTurnForward:(NSInteger)page{
+    NSLog(@"(%d) Forward button pressed", page);
+//    if(page == 2)
+//        [self changeCameraAnimationState:animationOrthoToPerspective];
+//    if(page == 4)
+//        [self changeCameraAnimationState:animationInsideToPerspective];
+//    if (page+1 == 1)
+//        [self changeCameraAnimationState:animationPerspectiveToOrtho];
+//    if (page+1 == 4)
+//        [self changeCameraAnimationState:animationPerspectiveToInside];
+//    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
+//    [self setScene:page+1];
+}
 
 //-(void) setScene:(int)scene{
 //    //    reset_lighting();
@@ -257,101 +316,6 @@ void set_color(float* color, float* color_ref){
 //    }
 //}
 //
-//-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){
-//        for(UITouch *touch in touches){
-//            for(Hotspot *spot in hotspots){
-//                if(CGRectContainsPoint([spot bounds], [touch locationInView:self.view])){
-//                    // customize response to each touch area
-//                    if([spot ID] == hotspotBackArrow) { }
-//                    if([spot ID] == hotspotForwardArrow) { }
-//                    if([spot ID] == hotspotControls) { }
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//}
-//
-//-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){
-//        for(UITouch *touch in touches){
-//            for(Hotspot *spot in hotspots){
-//                if(CGRectContainsPoint([spot bounds], [touch locationInView:self.view])){
-//                    // customize response to each touch area
-//                    if([spot ID] == hotspotBackArrow) { }
-//                    if([spot ID] == hotspotForwardArrow) { }
-//                    if([spot ID] == hotspotControls && _scene == scene2){
-//                        float freq = ([touch locationInView:self.view].x-(self.view.frame.size.width)/12.*1.5) / ((self.view.frame.size.width)/12.);
-//                        if(freq < 0) freq = 0;
-//                        if(freq > 8) freq = 8;
-//                        //TODO: THIS NEEDS TO GET THE UPDATE
-////                        [navScreen setRadioBarPosition:freq];
-//                    }
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//}
-//
-
-
-
-//-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){
-//        for(UITouch *touch in touches){
-//            for(Hotspot *spot in hotspots){
-//                if(CGRectContainsPoint([spot bounds], [touch locationInView:self.view])){
-//                    // customize response to each touch area
-//                    if([spot ID] == hotspotBackArrow && _scene > scene1){
-//                        animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
-//                        if(_scene == scene2)
-//                            [self changeCameraAnimationState:animationOrthoToPerspective];
-//                        if(_scene == scene5)
-//                            [self changeCameraAnimationState:animationInsideToPerspective];
-//                        if (_scene-1 == scene3)
-//                            [self changeCameraAnimationState:animationPerspectiveToOrtho];
-//                        if (_scene-1 == scene5)
-//                            [self changeCameraAnimationState:animationPerspectiveToInside];
-//                        [self setScene:_scene-1];
-//                    }
-//                    else if([spot ID] == hotspotForwardArrow && _scene < scene5){
-//                        if(_scene == scene3)
-//                            [self changeCameraAnimationState:animationOrthoToPerspective];
-//                        if(_scene == scene5)
-//                            [self changeCameraAnimationState:animationInsideToPerspective];
-//                        if (_scene+1 == scene2)
-//                            [self changeCameraAnimationState:animationPerspectiveToOrtho];
-//                        if (_scene+1 == scene5)
-//                            [self changeCameraAnimationState:animationPerspectiveToInside];
-//                        animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
-//                        [self setScene:_scene+1];
-//                    }
-//                    else if([spot ID] == hotspotControls){
-//                        if(_scene == scene1){
-//                            if([touch locationInView:self.view].x < self.view.frame.size.width*.5){
-//                                
-//                            }
-//                            else if([touch locationInView:self.view].x > self.view.frame.size.width*.5){
-//                                
-//                            }
-//                        }
-//                        if(_scene == scene2){
-//                            int freq = ([touch locationInView:self.view].x-(self.view.frame.size.width)/12.*1.5) / ((self.view.frame.size.width)/12.);
-//                            if(freq < 0) freq = 0;
-//                            if(freq > 8) freq = 8;
-//                            //TODO: THIS NEEDS TO GET THE UPDATE
-////                            [navScreen setRadioBarPosition:freq];
-//                            animationNewGeodesic = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.5];
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//}
 
 - (void)tearDownGL{
     //unload shapes

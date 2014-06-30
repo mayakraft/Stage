@@ -10,6 +10,7 @@
 #import "Stage.h"
 
 #import "CubeOctaRoom.h"
+#import "NavBar.h"
 
 @interface AppDelegate ()
             
@@ -22,7 +23,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // Override point for customization after application launch.
-    Stage *stage = [Stage StageWithRoom:[CubeOctaRoom room]];
+    Stage *stage = [Stage StageWithRoom:[CubeOctaRoom room] NavBar:[[NavBar alloc] initWithFrame:[[UIScreen mainScreen] bounds]]];
     [stage setBackgroundColor:blackColor];
     
     self.window.rootViewController = stage;

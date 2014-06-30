@@ -18,7 +18,7 @@
     if(self){
         _frame = frame;
         _view = [[UIView alloc] initWithFrame:frame];
-        _elements = [[NSMutableArray alloc] init];
+//        _elements = [[NSMutableArray alloc] init];
         width = _frame.size.width;
         height = _frame.size.height;
         _aspectRatio = _frame.size.width/_frame.size.height;
@@ -44,6 +44,8 @@
 }
 
 -(void) hideElements{ }
+
+-(void) setNeedsLayout{ }
 
 -(void)enterOrthographic{
     glDisable(GL_DEPTH_TEST);
