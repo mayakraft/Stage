@@ -49,7 +49,7 @@
 
 -(void)enterOrthographic{
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
+//    glDisable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
@@ -62,7 +62,7 @@
 
 -(void)exitOrthographic{
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+//    glEnable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);

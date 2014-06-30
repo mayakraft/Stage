@@ -20,6 +20,7 @@
 		D5681524195E9FCF00DF984C /* NavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681523195E9FCF00DF984C /* NavBar.m */; };
 		D5681527195EA06E00DF984C /* Hotspot.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681526195EA06E00DF984C /* Hotspot.m */; };
 		D568152D195FAF9000DF984C /* CubeOctaRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = D568152C195FAF9000DF984C /* CubeOctaRoom.m */; };
+		D57C425B1960E60F00963C52 /* Controls.m in Sources */ = {isa = PBXBuildFile; fileRef = D57C425A1960E60F00963C52 /* Controls.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,8 @@
 		D5681529195FAA7000DF984C /* lights.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lights.c; sourceTree = "<group>"; };
 		D568152B195FAF9000DF984C /* CubeOctaRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CubeOctaRoom.h; sourceTree = "<group>"; };
 		D568152C195FAF9000DF984C /* CubeOctaRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CubeOctaRoom.m; sourceTree = "<group>"; };
+		D57C42591960E60F00963C52 /* Controls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controls.h; sourceTree = "<group>"; };
+		D57C425A1960E60F00963C52 /* Controls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Controls.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +184,8 @@
 		D568152E195FAF9200DF984C /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				D57C42591960E60F00963C52 /* Controls.h */,
+				D57C425A1960E60F00963C52 /* Controls.m */,
 				D568152B195FAF9000DF984C /* CubeOctaRoom.h */,
 				D568152C195FAF9000DF984C /* CubeOctaRoom.m */,
 			);
@@ -287,6 +292,7 @@
 				D56814F7195D4EBC00DF984C /* AppDelegate.m in Sources */,
 				D5681524195E9FCF00DF984C /* NavBar.m in Sources */,
 				D56814F4195D4EBC00DF984C /* main.m in Sources */,
+				D57C425B1960E60F00963C52 /* Controls.m in Sources */,
 				D568151B195E908100DF984C /* Flat.m in Sources */,
 				D568151A195E908100DF984C /* Room.m in Sources */,
 				D5681527195EA06E00DF984C /* Hotspot.m in Sources */,

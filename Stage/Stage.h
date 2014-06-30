@@ -3,22 +3,22 @@
 #import <CoreMotion/CoreMotion.h>
 #import "Room.h"
 #import "Flat.h"
+#import "NavBar.h"
 #import "common.c"
 //#import "lights.c"
 
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
 
 
-@interface Stage : GLKViewController <FlatDelegate>//<AnimationDelegate>
+@interface Stage : GLKViewController <NavBarDelegate>//<AnimationDelegate>
 
 @property (nonatomic) Room *room;         // ROOMS   (3D ENVIRONMENTS)
 @property (nonatomic) Flat *flat;         // SCREENS (ORTHOGRAPHIC LAYERS)
+@property (nonatomic) NavBar *navBar;         // SCREENS (ORTHOGRAPHIC LAYERS)
 
 @property (nonatomic) float *backgroundColor; // CLEAR SCREEN COLOR
 
-+(instancetype) StageWithNavBar:(Flat*)navBar;
-+(instancetype) StageWithRoom:(Room*)room;
-+(instancetype) StageWithRoom:(Room*)room NavBar:(Flat*)navBar;
++(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar;
 
 -(void) update;     // automatically called before glkView:drawInRect
 -(void) glkView:(GLKView *)view drawInRect:(CGRect)rect;

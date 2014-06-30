@@ -1,12 +1,12 @@
-# OpenGL Stage
+# OpenGL + UIKit
 
-engine for mobile app building, customizable at an OpenGL level
+OpenGL iOS app building engine
 
 * 3D layer with dramatic control over lighting, scripting, camera
 * 2D layer able to interface with Apple’s UIKit
 
 ``` objective-c
-@class Stage
+@class Stage  (GLKViewController)
 |
 |--@class Flat    // subclass for 2D layers
 |

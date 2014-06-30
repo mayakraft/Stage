@@ -1,18 +1,15 @@
 #import "Primitives.h"
 #import "Hotspot.h"
 
-@protocol FlatDelegate <NSObject>
-
--(void) pageTurnBack:(NSInteger)page;
--(void) pageTurnForward:(NSInteger)page;
-
-@optional
-
-@end
+//@protocol FlatDelegate <NSObject>
+//
+//@optional
+//
+//@end
 
 @interface Flat : Primitives
 
-@property id <FlatDelegate> delegate;
+//@property id <FlatDelegate> delegate;
 
 @property UIView *view;   // attach Apple or other user interface elements
 @property (nonatomic) CGRect frame;

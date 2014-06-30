@@ -29,32 +29,13 @@ void set_color(float* color, float* color_ref){
 
 // INITIALIZERS
 
-+(instancetype)StageWithNavBar:(Flat*)navBar{
-    Stage *stage = [[Stage alloc] init];
-    if(stage){
-        if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
-        [stage setFlat:navBar];
-        [stage setup];
-    }
-    return stage;
-}
-
-+(instancetype)StageWithRoom:(Room*)room{
++(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar{
     Stage *stage = [[Stage alloc] init];
     if(stage){
         if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
         [stage setRoom:room];
-        [stage setup];
-    }
-    return stage;
-}
-
-+(instancetype) StageWithRoom:(Room*)room NavBar:(Flat*)navBar{
-    Stage *stage = [[Stage alloc] init];
-    if(stage){
-        if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
-        [stage setFlat:navBar];
-        [stage setRoom:room];
+        [stage setFlat:flat];
+        [stage setNavBar:navBar];
         [stage setup];
     }
     return stage;
@@ -144,8 +125,16 @@ void set_color(float* color, float* color_ref){
 
 -(void) setFlat:(Flat *)flat{
     _flat = flat;
-    [_flat setDelegate:self];
+//    [_flat setDelegate:self];
     [self.view addSubview:_flat.view];     // add a screen's view or its UI elements won't show
+    if(_navBar)
+        [self.view bringSubviewToFront:_navBar.view];
+}
+
+-(void) setNavBar:(NavBar *)navBar{
+    _navBar = navBar;
+    [_navBar setDelegate:self];
+    [self.view addSubview:_navBar.view];
 }
 
 // called before draw function
@@ -179,7 +168,7 @@ void set_color(float* color, float* color_ref){
         glMultMatrixf(_deviceAttitude.m);
     
     glDisable(GL_LIGHTING);
-    glDisable(GL_CULL_FACE);
+//    glDisable(GL_CULL_FACE);
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
     if(_room)
@@ -188,27 +177,23 @@ void set_color(float* color, float* color_ref){
     if(_flat)
         [_flat draw];
     
+    if(_navBar)
+        [_navBar draw];
+    
     glPopMatrix();
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-
-    }
+    if(_userInteractionEnabled){ }
 }
-
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-
-    }
+    if(_userInteractionEnabled){ }
 }
-
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-
-    }
+    if(_userInteractionEnabled){ }
 }
 
+// DELEGATES
 
 -(void) pageTurnBack:(NSInteger)page{
     NSLog(@"(%d) Back button pressed", page);
