@@ -29,12 +29,12 @@ void set_color(float* color, float* color_ref){
 
 // INITIALIZERS
 
-+(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar{
++(instancetype) StageWithRoom:(Room*)room Curtain:(Curtain*)curtain NavBar:(NavBar*)navBar{
     Stage *stage = [[Stage alloc] init];
     if(stage){
         if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
         [stage setRoom:room];
-        [stage setFlat:flat];
+        [stage setCurtain:curtain];
         [stage setNavBar:navBar];
         [stage setup];
     }
@@ -123,10 +123,10 @@ void set_color(float* color, float* color_ref){
     set_color(_backgroundColor, backgroundColor);
 }
 
--(void) setFlat:(Flat *)flat{
-    _flat = flat;
+-(void) setCurtain:(Curtain *)curtain{
+    _curtain = curtain;
 //    [_flat setDelegate:self];
-    [self.view addSubview:_flat.view];     // add a screen's view or its UI elements won't show
+    [self.view addSubview:_curtain.view];     // add a screen's view or its UI elements won't show
     if(_navBar)
         [self.view bringSubviewToFront:_navBar.view];
 }
@@ -168,14 +168,14 @@ void set_color(float* color, float* color_ref){
         glMultMatrixf(_deviceAttitude.m);
     
     glDisable(GL_LIGHTING);
-//    glDisable(GL_CULL_FACE);
+
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
     if(_room)
         [_room draw];
     
-    if(_flat)
-        [_flat draw];
+    if(_curtain)
+        [_curtain draw];
     
     if(_navBar)
         [_navBar draw];
@@ -184,13 +184,22 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){ }
+    if(_userInteractionEnabled){
+        if(_curtain)
+            [_curtain touchesBegan:touches withEvent:event];
+    }
 }
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){ }
+    if(_userInteractionEnabled){
+        if(_curtain)
+            [_curtain touchesMoved:touches withEvent:event];
+    }
 }
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){ }
+    if(_userInteractionEnabled){
+        if(_curtain)
+            [_curtain touchesEnded:touches withEvent:event];
+    }
 }
 
 // DELEGATES

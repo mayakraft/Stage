@@ -1,6 +1,6 @@
-#import "Flat.h"
+#import "Curtain.h"
 
-@interface Controls : Flat
+@interface Controls : Curtain
 
 @property UISlider *slider;
 

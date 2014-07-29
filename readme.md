@@ -1,16 +1,17 @@
-# OpenGL + UIKit
+# OpenGL + UIKit interface
 
-OpenGL iOS app building engine
-
-* 3D layer with dramatic control over lighting, scripting, camera
-* 2D layer able to interface with Apple’s UIKit
+dramatic control over lighting, scripting, camera
 
 ``` objective-c
 @class Stage  (GLKViewController)
 |
-|--@class Flat    // subclass for 2D layers
+|---@class Curtain    // subclass for 2D layers
+|   |
+|   |--(UIView*)view  //   UIKit attach point
 |
-|--@class Room    // subclass for 3D layers
+|---@class Room       // subclass for 3D layers
+
+@property int scene //   advance scenes to load new rooms
 ```
 
 ![image](https://raw.github.com/robbykraft/StagingArea/master/globe-theatre.jpg)

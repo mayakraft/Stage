@@ -25,7 +25,7 @@
     
     // Override point for customization after application launch.
     Stage *stage = [Stage StageWithRoom:[CubeOctaRoom room]
-                                   Flat:[[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]]
+                                   Curtain:[[Controls alloc] initWithFrame:[[UIScreen mainScreen] bounds]]
                                  NavBar:[NavBar navBar]];
 
     [stage setBackgroundColor:blackColor];

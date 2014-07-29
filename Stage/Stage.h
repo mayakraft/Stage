@@ -2,7 +2,7 @@
 #import <GLKit/GLKit.h>
 #import <CoreMotion/CoreMotion.h>
 #import "Room.h"
-#import "Flat.h"
+#import "Curtain.h"
 #import "NavBar.h"
 #import "common.c"
 //#import "lights.c"
@@ -13,12 +13,12 @@
 @interface Stage : GLKViewController <NavBarDelegate>//<AnimationDelegate>
 
 @property (nonatomic) Room *room;         // ROOMS   (3D ENVIRONMENTS)
-@property (nonatomic) Flat *flat;         // SCREENS (ORTHOGRAPHIC LAYERS)
-@property (nonatomic) NavBar *navBar;         // SCREENS (ORTHOGRAPHIC LAYERS)
+@property (nonatomic) Curtain *curtain;   // SCREENS (ORTHOGRAPHIC LAYERS)
+@property (nonatomic) NavBar *navBar;     // SCREENS (ORTHOGRAPHIC LAYERS)
 
 @property (nonatomic) float *backgroundColor; // CLEAR SCREEN COLOR
 
-+(instancetype) StageWithRoom:(Room*)room Flat:(Flat*)flat NavBar:(NavBar*)navBar;
++(instancetype) StageWithRoom:(Room*)room Curtain:(Curtain*)curtain NavBar:(NavBar*)navBar;
 
 -(void) update;     // automatically called before glkView:drawInRect
 -(void) glkView:(GLKView *)view drawInRect:(CGRect)rect;

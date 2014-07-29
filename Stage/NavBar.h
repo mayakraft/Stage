@@ -1,4 +1,4 @@
-#import "Flat.h"
+#import "Curtain.h"
 
 @protocol NavBarDelegate <NSObject>
 @optional
@@ -7,7 +7,7 @@
 @end
 
 
-@interface NavBar : Flat
+@interface NavBar : Curtain
 
 @property id <NavBarDelegate> delegate;
 

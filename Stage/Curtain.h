@@ -1,15 +1,19 @@
 #import "Primitives.h"
 #import "Hotspot.h"
 
-//@protocol FlatDelegate <NSObject>
+//@protocol CurtainDelegate <NSObject>
 //
 //@optional
 //
 //@end
 
-@interface Flat : Primitives
+@interface Curtain : Primitives
 
-//@property id <FlatDelegate> delegate;
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+
+//@property id <CurtainDelegate> delegate;
 
 @property UIView *view;   // attach Apple or other user interface elements
 @property (nonatomic) CGRect frame;

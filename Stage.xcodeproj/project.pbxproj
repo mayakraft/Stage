@@ -15,7 +15,7 @@
 		D5681512195D4FB100DF984C /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5681511195D4FB100DF984C /* OpenGLES.framework */; };
 		D5681514195D4FBB00DF984C /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5681513195D4FBB00DF984C /* GLKit.framework */; };
 		D568151A195E908100DF984C /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681517195E908100DF984C /* Room.m */; };
-		D568151B195E908100DF984C /* Flat.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681519195E908100DF984C /* Flat.m */; };
+		D568151B195E908100DF984C /* Curtain.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681519195E908100DF984C /* Curtain.m */; };
 		D568151F195E90AE00DF984C /* Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D568151E195E90AE00DF984C /* Primitives.m */; };
 		D5681524195E9FCF00DF984C /* NavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681523195E9FCF00DF984C /* NavBar.m */; };
 		D5681527195EA06E00DF984C /* Hotspot.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681526195EA06E00DF984C /* Hotspot.m */; };
@@ -49,8 +49,8 @@
 		D5681513195D4FBB00DF984C /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		D5681516195E908100DF984C /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
 		D5681517195E908100DF984C /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
-		D5681518195E908100DF984C /* Flat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flat.h; sourceTree = "<group>"; };
-		D5681519195E908100DF984C /* Flat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Flat.m; sourceTree = "<group>"; };
+		D5681518195E908100DF984C /* Curtain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Curtain.h; sourceTree = "<group>"; };
+		D5681519195E908100DF984C /* Curtain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Curtain.m; sourceTree = "<group>"; };
 		D568151D195E90AE00DF984C /* Primitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Primitives.h; sourceTree = "<group>"; };
 		D568151E195E90AE00DF984C /* Primitives.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Primitives.m; sourceTree = "<group>"; };
 		D5681522195E9FCF00DF984C /* NavBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavBar.h; sourceTree = "<group>"; };
@@ -160,8 +160,8 @@
 			children = (
 				D5681516195E908100DF984C /* Room.h */,
 				D5681517195E908100DF984C /* Room.m */,
-				D5681518195E908100DF984C /* Flat.h */,
-				D5681519195E908100DF984C /* Flat.m */,
+				D5681518195E908100DF984C /* Curtain.h */,
+				D5681519195E908100DF984C /* Curtain.m */,
 				D5681522195E9FCF00DF984C /* NavBar.h */,
 				D5681523195E9FCF00DF984C /* NavBar.m */,
 			);
@@ -293,7 +293,7 @@
 				D5681524195E9FCF00DF984C /* NavBar.m in Sources */,
 				D56814F4195D4EBC00DF984C /* main.m in Sources */,
 				D57C425B1960E60F00963C52 /* Controls.m in Sources */,
-				D568151B195E908100DF984C /* Flat.m in Sources */,
+				D568151B195E908100DF984C /* Curtain.m in Sources */,
 				D568151A195E908100DF984C /* Room.m in Sources */,
 				D5681527195EA06E00DF984C /* Hotspot.m in Sources */,
 				D568151F195E90AE00DF984C /* Primitives.m in Sources */,

@@ -1,13 +1,13 @@
 #import <OpenGLES/ES1/gl.h>
-#import "Flat.h"
+#import "Curtain.h"
 
-@interface Flat (){
+@interface Curtain (){
     float _aspectRatio;
     float width, height;
 }
 @end
 
-@implementation Flat
+@implementation Curtain
 
 -(id) init{
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -46,6 +46,10 @@
 -(void) hideElements{ }
 
 -(void) setNeedsLayout{ }
+
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event { }
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event { }
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { }
 
 -(void)enterOrthographic{
     glDisable(GL_DEPTH_TEST);
