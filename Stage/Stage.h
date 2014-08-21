@@ -12,13 +12,13 @@
 
 @interface Stage : GLKViewController <NavBarDelegate>//<AnimationDelegate>
 
-@property (nonatomic) Room *room;         // ROOMS   (3D ENVIRONMENTS)
-@property (nonatomic) Curtain *curtain;   // SCREENS (ORTHOGRAPHIC LAYERS)
-@property (nonatomic) NavBar *navBar;     // SCREENS (ORTHOGRAPHIC LAYERS)
+@property (nonatomic) NSArray *rooms;
+@property (nonatomic) NSArray *curtains;
+
+-(void) addRoom:(Room*)room;            // ROOMS   (3D ENVIRONMENTS)
+-(void) addCurtain:(Curtain*)curtain;   // SCREENS (ORTHOGRAPHIC LAYERS)
 
 @property (nonatomic) float *backgroundColor; // CLEAR SCREEN COLOR
-
-+(instancetype) StageWithRoom:(Room*)room Curtain:(Curtain*)curtain NavBar:(NavBar*)navBar;
 
 -(void) update;     // automatically called before glkView:drawInRect
 -(void) glkView:(GLKView *)view drawInRect:(CGRect)rect;

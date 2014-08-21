@@ -1,5 +1,8 @@
 #import "Stage.h"
 
+// examples
+#import "CubeOctaRoom.h"
+
 void set_color(float* color, float* color_ref){
     color[0] = color_ref[0];
     color[1] = color_ref[1];
@@ -27,18 +30,21 @@ void set_color(float* color, float* color_ref){
 
 @implementation Stage
 
-// INITIALIZERS
-
-+(instancetype) StageWithRoom:(Room*)room Curtain:(Curtain*)curtain NavBar:(NavBar*)navBar{
-    Stage *stage = [[Stage alloc] init];
-    if(stage){
-        if(![stage view]) NSLog(@"PROBLEM, Stage.view not created in time");
-        [stage setRoom:room];
-        [stage setCurtain:curtain];
-        [stage setNavBar:navBar];
-        [stage setup];
+-(id) init{
+    self = [super init];
+    if(self){
+        [self setup];
+        
+        // CUSTOMIZE HERE
+        
+        NavBar *navBar = [NavBar navBar];
+        [navBar setDelegate:self];
+        [self addCurtain:navBar];
+        [self addRoom:[CubeOctaRoom room]];
+        [self setBackgroundColor:whiteColor];
+//        [self updateLayout];
     }
-    return stage;
+    return self;
 }
 
 // STARTUP
@@ -123,18 +129,33 @@ void set_color(float* color, float* color_ref){
     set_color(_backgroundColor, backgroundColor);
 }
 
--(void) setCurtain:(Curtain *)curtain{
-    _curtain = curtain;
-//    [_flat setDelegate:self];
-    [self.view addSubview:_curtain.view];     // add a screen's view or its UI elements won't show
-    if(_navBar)
-        [self.view bringSubviewToFront:_navBar.view];
+-(void) addCurtain:(Curtain *)curtain{
+    _curtains = [_curtains arrayByAddingObject:curtain];
+    [self.view addSubview:curtain.view];
 }
 
--(void) setNavBar:(NavBar *)navBar{
-    _navBar = navBar;
-    [_navBar setDelegate:self];
-    [self.view addSubview:_navBar.view];
+-(void) addRoom:(Room *)room{
+    _rooms = [_rooms arrayByAddingObject:room];
+}
+
+-(void) removeCurtains:(NSSet *)objects{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_curtains];
+    for(Curtain *curtain in objects){
+        if([array containsObject:curtain]){
+            [array removeObject:curtain];
+        }
+    }
+    _curtains = [NSArray arrayWithArray:array];
+}
+
+-(void) removeRooms:(NSSet *)objects{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_rooms];
+    for(Room *room in objects){
+        if([array containsObject:room]){
+            [array removeObject:room];
+        }
+    }
+    _rooms = [NSArray arrayWithArray:array];
 }
 
 // called before draw function
@@ -171,41 +192,50 @@ void set_color(float* color, float* color_ref){
 
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
-    if(_room)
-        [_room draw];
+    if(_rooms)
+        for(Room *room in _rooms)
+            [room draw];
     
-    if(_curtain)
-        [_curtain draw];
+    if(_curtains)
+        for (Curtain *curtain in _curtains)
+            [curtain draw];
     
-    if(_navBar)
-        [_navBar draw];
+//    if(_room)
+//        [_room draw];
+//    if(_curtain)
+//        [_curtain draw];
+//    if(_navBar)
+//        [_navBar draw];
     
     glPopMatrix();
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     if(_userInteractionEnabled){
-        if(_curtain)
-            [_curtain touchesBegan:touches withEvent:event];
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesBegan:touches withEvent:event];
     }
 }
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     if(_userInteractionEnabled){
-        if(_curtain)
-            [_curtain touchesMoved:touches withEvent:event];
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesMoved:touches withEvent:event];
     }
 }
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     if(_userInteractionEnabled){
-        if(_curtain)
-            [_curtain touchesEnded:touches withEvent:event];
+        if(_curtains)
+            for(Curtain *curtain in _curtains)
+                [curtain touchesEnded:touches withEvent:event];
     }
 }
 
 // DELEGATES
 
 -(void) pageTurnBack:(NSInteger)page{
-    NSLog(@"(%d) Back button pressed", page);
+    NSLog(@"(%ld) Back button pressed", (long)page);
 //    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
 //    if(page == 1)
 //        [self changeCameraAnimationState:animationOrthoToPerspective];
@@ -219,7 +249,7 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) pageTurnForward:(NSInteger)page{
-    NSLog(@"(%d) Forward button pressed", page);
+    NSLog(@"(%ld) Forward button pressed", (long)page);
 //    if(page == 2)
 //        [self changeCameraAnimationState:animationOrthoToPerspective];
 //    if(page == 4)
