@@ -30,6 +30,7 @@ void set_color(float* color, float* color_ref){
 
 @implementation Stage
 
+
 -(id) init{
     self = [super init];
     if(self){
@@ -37,125 +38,14 @@ void set_color(float* color, float* color_ref){
         
         // CUSTOMIZE HERE
         
-        NavBar *navBar = [NavBar navBar];
+        NavBar *navBar = [[NavBar alloc] init];
         [navBar setDelegate:self];
         [self addCurtain:navBar];
+        
         [self addRoom:[CubeOctaRoom room]];
         [self setBackgroundColor:whiteColor];
-//        [self updateLayout];
     }
     return self;
-}
-
-// STARTUP
-
--(void) setup{
-    NSLog(@"setup");
-    start = [NSDate date];
-    _userInteractionEnabled = true;
-    orientToDevice = true;
-    _backgroundColor = malloc(sizeof(float)*4);
-    [self initDeviceOrientation];
-}
-
-// OMG cannot subclass viewDidLoad now, cause this is important
--(void)viewDidLoad{
-    NSLog(@"viewDidLoad");
-    [super viewDidLoad];
-    
-    // SETUP GLKVIEW
-    GLKView *view = (GLKView *)self.view;
-    view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-    self.preferredFramesPerSecond = 60;
-    
-    [self initOpenGL];
-    [self customizeOpenGL];
-}
-
--(void)initOpenGL{
-    NSLog(@"initOpenGL");
-
-    float width, height;
-    if([UIApplication sharedApplication].statusBarOrientation > 2){
-        width = [[UIScreen mainScreen] bounds].size.height;
-        height = [[UIScreen mainScreen] bounds].size.width;
-    } else{
-        width = [[UIScreen mainScreen] bounds].size.width;
-        height = [[UIScreen mainScreen] bounds].size.height;
-    }
-
-    _aspectRatio = width/height;
-    _fieldOfView = 60;
-    
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    GLfloat frustum = Z_NEAR * tanf(GLKMathDegreesToRadians(_fieldOfView) / 2.0);
-    glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-//    GLKMatrix4 m = GLKMatrix4MakeLookAt(2.9/*camera.distanceFromOrigin*/, 0, 0, 0, 0, 0, 0, 1, 0);
-//    quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
-}
-
--(void) customizeOpenGL{
-    NSLog(@"customizeOpenGL");
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-//    glEnable(GL_CULL_FACE);
-//    glCullFace(GL_FRONT);
-//    glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
--(void) initDeviceOrientation{
-    NSLog(@"initDeviceOrientation");
-    motionManager = [[CMMotionManager alloc] init];
-    if([motionManager isDeviceMotionAvailable]){
-        motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
-        [motionManager startDeviceMotionUpdates];
-    }
-    else{
-//        _deviceAttitude = GLKQuaternionIdentity;
-        _deviceAttitude = GLKMatrix4Identity;
-    }
-}
-
-
-// SETTERS
-
--(void) setBackgroundColor:(float *)backgroundColor{
-    set_color(_backgroundColor, backgroundColor);
-}
-
--(void) addCurtain:(Curtain *)curtain{
-    _curtains = [_curtains arrayByAddingObject:curtain];
-    [self.view addSubview:curtain.view];
-}
-
--(void) addRoom:(Room *)room{
-    _rooms = [_rooms arrayByAddingObject:room];
-}
-
--(void) removeCurtains:(NSSet *)objects{
-    NSMutableArray *array = [NSMutableArray arrayWithArray:_curtains];
-    for(Curtain *curtain in objects){
-        if([array containsObject:curtain]){
-            [array removeObject:curtain];
-        }
-    }
-    _curtains = [NSArray arrayWithArray:array];
-}
-
--(void) removeRooms:(NSSet *)objects{
-    NSMutableArray *array = [NSMutableArray arrayWithArray:_rooms];
-    for(Room *room in objects){
-        if([array containsObject:room]){
-            [array removeObject:room];
-        }
-    }
-    _rooms = [NSArray arrayWithArray:array];
 }
 
 // called before draw function
@@ -211,70 +101,45 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-        if(_curtains)
-            for(Curtain *curtain in _curtains)
-                [curtain touchesBegan:touches withEvent:event];
-    }
+//    if(_userInteractionEnabled){
+//        if(_curtains)
+//            for(Curtain *curtain in _curtains)
+//                [curtain touchesBegan:touches withEvent:event];
+//    }
 }
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-        if(_curtains)
-            for(Curtain *curtain in _curtains)
-                [curtain touchesMoved:touches withEvent:event];
-    }
+//    if(_userInteractionEnabled){
+//        if(_curtains)
+//            for(Curtain *curtain in _curtains)
+//                [curtain touchesMoved:touches withEvent:event];
+//    }
 }
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    if(_userInteractionEnabled){
-        if(_curtains)
-            for(Curtain *curtain in _curtains)
-                [curtain touchesEnded:touches withEvent:event];
-    }
+//    if(_userInteractionEnabled){
+//        if(_curtains)
+//            for(Curtain *curtain in _curtains)
+//                [curtain touchesEnded:touches withEvent:event];
+//    }
 }
 
-// DELEGATES
+#pragma mark- DELEGATES
+
+// animate transition delegates from SceneController
+
+-(void) transitionFrom:(unsigned short)fromScene To:(unsigned short)toScene Tween:(float)t{
+    NSLog(@"delegate transition:%d-%d, %f",fromScene, toScene, t);
+}
+
+// NAVIGATION CONTROLLER
 
 -(void) pageTurnBack:(NSInteger)page{
-    NSLog(@"(%ld) Back button pressed", (long)page);
-//    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
-//    if(page == 1)
-//        [self changeCameraAnimationState:animationOrthoToPerspective];
-//    if(page == 4)
-//        [self changeCameraAnimationState:animationInsideToPerspective];
-//    if (page-1 == 2)
-//        [self changeCameraAnimationState:animationPerspectiveToOrtho];
-//    if (page-1 == 4)
-//        [self changeCameraAnimationState:animationPerspectiveToInside];
-//    [self setScene:page-1];
+    [_script gotoScene:page withDuration:1.0];
 }
 
 -(void) pageTurnForward:(NSInteger)page{
-    NSLog(@"(%ld) Forward button pressed", (long)page);
-//    if(page == 2)
-//        [self changeCameraAnimationState:animationOrthoToPerspective];
-//    if(page == 4)
-//        [self changeCameraAnimationState:animationInsideToPerspective];
-//    if (page+1 == 1)
-//        [self changeCameraAnimationState:animationPerspectiveToOrtho];
-//    if (page+1 == 4)
-//        [self changeCameraAnimationState:animationPerspectiveToInside];
-//    animationTransition = [[Animation alloc] initOnStage:self Start:_elapsedSeconds End:_elapsedSeconds+.2];
-//    [self setScene:page+1];
+    [_script gotoScene:page withDuration:1.0];
 }
 
-//-(void) setScene:(int)scene{
-//    //    reset_lighting();
-//    
-//    if(_screen)
-//        [_screen setScene:_scene];
-//    
-//    if(scene == scene1){ }
-//    else if (scene == scene2){ }
-//    else if (scene == scene3){ }
-//    else if (scene == scene4){ }
-//    else if (scene == scene5){ }
-//    _scene = scene;
-//}
 
 //-(void) changeCameraAnimationState:(AnimationState) newState{
 //    if(newState == animationNone){
@@ -339,7 +204,127 @@ void set_color(float* color, float* color_ref){
 //        }
 //    }
 //}
-//
+
+
+
+#pragma mark- BACK END
+
+// STARTUP
+
+-(void) setup{
+    NSLog(@"setup");
+    start = [NSDate date];
+    _userInteractionEnabled = true;
+    orientToDevice = true;
+    _backgroundColor = malloc(sizeof(float)*4);
+    _script = [[SceneController alloc] init];
+    [_script setDelegate:self];
+    [self initDeviceOrientation];
+}
+
+// OMG cannot subclass viewDidLoad now, cause this is important
+-(void)viewDidLoad{
+    NSLog(@"viewDidLoad");
+    [super viewDidLoad];
+    
+    // SETUP GLKVIEW
+    GLKView *view = (GLKView *)self.view;
+    view.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+    self.preferredFramesPerSecond = 60;
+    
+    [self initOpenGL];
+    [self customizeOpenGL];
+}
+
+-(void)initOpenGL{
+    NSLog(@"initOpenGL");
+    
+    float width, height;
+    if([UIApplication sharedApplication].statusBarOrientation > 2){
+        width = [[UIScreen mainScreen] bounds].size.height;
+        height = [[UIScreen mainScreen] bounds].size.width;
+    } else{
+        width = [[UIScreen mainScreen] bounds].size.width;
+        height = [[UIScreen mainScreen] bounds].size.height;
+    }
+    
+    _aspectRatio = width/height;
+    _fieldOfView = 60;
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    GLfloat frustum = Z_NEAR * tanf(GLKMathDegreesToRadians(_fieldOfView) / 2.0);
+    glFrustumf(-frustum, frustum, -frustum/_aspectRatio, frustum/_aspectRatio, Z_NEAR, Z_FAR);
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+//    GLKMatrix4 m = GLKMatrix4MakeLookAt(2.9/*camera.distanceFromOrigin*/, 0, 0, 0, 0, 0, 0, 1, 0);
+//    quaternionFrontFacing = GLKQuaternionMakeWithMatrix4(m);
+}
+
+-(void) customizeOpenGL{
+    NSLog(@"customizeOpenGL");
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_FRONT);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+-(void) initDeviceOrientation{
+    NSLog(@"initDeviceOrientation");
+    motionManager = [[CMMotionManager alloc] init];
+    if([motionManager isDeviceMotionAvailable]){
+        motionManager.deviceMotionUpdateInterval = 1.0f/60.0f;
+        [motionManager startDeviceMotionUpdates];
+    }
+    else{
+//        _deviceAttitude = GLKQuaternionIdentity;
+        _deviceAttitude = GLKMatrix4Identity;
+    }
+}
+
+
+// SETTERS
+
+-(void) setBackgroundColor:(float *)backgroundColor{
+    set_color(_backgroundColor, backgroundColor);
+}
+
+-(void) addCurtain:(Curtain *)curtain{
+    if(!_curtains) _curtains = [NSArray array];
+    _curtains = [_curtains arrayByAddingObject:curtain];
+    [self.view addSubview:curtain.view];
+}
+
+-(void) addRoom:(Room *)room{
+    if(!_rooms) _rooms = [NSArray array];
+    _rooms = [_rooms arrayByAddingObject:room];
+}
+
+-(void) removeCurtains:(NSSet *)objects{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_curtains];
+    for(Curtain *curtain in objects){
+        if([array containsObject:curtain]){
+            [array removeObject:curtain];
+        }
+    }
+    _curtains = [NSArray arrayWithArray:array];
+}
+
+-(void) removeRooms:(NSSet *)objects{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_rooms];
+    for(Room *room in objects){
+        if([array containsObject:room]){
+            [array removeObject:room];
+        }
+    }
+    _rooms = [NSArray arrayWithArray:array];
+}
+
+
 
 - (void)tearDownGL{
     //unload shapes

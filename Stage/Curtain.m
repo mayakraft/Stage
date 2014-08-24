@@ -18,7 +18,6 @@
     if(self){
         _frame = frame;
         _view = [[UIView alloc] initWithFrame:frame];
-//        _elements = [[NSMutableArray alloc] init];
         width = _frame.size.width;
         height = _frame.size.height;
         _aspectRatio = _frame.size.width/_frame.size.height;
@@ -43,13 +42,11 @@
     // in your subclass
 }
 
--(void) hideElements{ }
+//-(void) setNeedsLayout{ }
 
--(void) setNeedsLayout{ }
-
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event { }
--(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event { }
--(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { }
+//-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event { }
+//-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event { }
+//-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { }
 
 -(void)enterOrthographic{
     glDisable(GL_DEPTH_TEST);

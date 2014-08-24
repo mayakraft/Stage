@@ -3,7 +3,7 @@
 @implementation NavBar
 
 -(void) setup{
-    
+    NSLog(@"navBar setup");
     float arrowWidth = self.view.frame.size.width*.175;
     
     _forwardButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)];
@@ -51,22 +51,22 @@
 }
 
 -(void) setNeedsLayout{
-    if(self.page >= 0 && self.page < [_titles count])
-        [_titleLabel setText:[_titles objectAtIndex:self.page]];
+    if(_page >= 0 && _page < [_titles count])
+        [_titleLabel setText:[_titles objectAtIndex:_page]];
 }
 
 -(void) backButtonPressed{
-    if(self.page <= 0) return;
-    self.page--;
-    [[self delegate] pageTurnBack:self.page];
+    if(_page <= 0) return;
+    _page--;
+    [[self delegate] pageTurnBack:_page];
     [self setNeedsLayout];
 }
 
 -(void) forwardButtonPressed{
-    if(self.page >= _numPages-1) return;
-    self.page++;
+    if(_page >= _numPages-1) return;
+    _page++;
     [self setNeedsLayout];
-    [[self delegate] pageTurnForward:self.page];
+    [[self delegate] pageTurnForward:_page];
 }
 
 @end

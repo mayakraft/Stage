@@ -1,7 +1,7 @@
 #import "Curtain.h"
 
 @protocol NavBarDelegate <NSObject>
-@optional
+@required
 -(void) pageTurnBack:(NSInteger)page;
 -(void) pageTurnForward:(NSInteger)page;
 @end
@@ -16,6 +16,7 @@
 @property UIButton *backButton;
 
 @property (nonatomic) NSArray *titles;
+@property NSInteger page;
 @property (nonatomic) NSInteger numPages;
 
 +(instancetype) navBar;

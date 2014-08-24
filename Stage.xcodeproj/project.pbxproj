@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D527E08A19A68D100092CA64 /* SceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = D527E08919A68D100092CA64 /* SceneController.m */; };
 		D56814F4195D4EBC00DF984C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D56814F3195D4EBC00DF984C /* main.m */; };
 		D56814F7195D4EBC00DF984C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D56814F6195D4EBC00DF984C /* AppDelegate.m */; };
 		D56814F9195D4EBC00DF984C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D56814F8195D4EBC00DF984C /* Images.xcassets */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D527E08819A68D100092CA64 /* SceneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneController.h; sourceTree = "<group>"; };
+		D527E08919A68D100092CA64 /* SceneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneController.m; sourceTree = "<group>"; };
 		D56814EE195D4EBC00DF984C /* Stage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D56814F2195D4EBC00DF984C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D56814F3195D4EBC00DF984C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -148,6 +151,8 @@
 			children = (
 				D568150E195D4F3000DF984C /* Stage.h */,
 				D568150F195D4F3000DF984C /* Stage.m */,
+				D527E08819A68D100092CA64 /* SceneController.h */,
+				D527E08919A68D100092CA64 /* SceneController.m */,
 				D568151C195E908600DF984C /* Classes */,
 				D568152A195FAB7D00DF984C /* Tools */,
 				D568152E195FAF9200DF984C /* Samples */,
@@ -291,6 +296,7 @@
 			files = (
 				D56814F7195D4EBC00DF984C /* AppDelegate.m in Sources */,
 				D5681524195E9FCF00DF984C /* NavBar.m in Sources */,
+				D527E08A19A68D100092CA64 /* SceneController.m in Sources */,
 				D56814F4195D4EBC00DF984C /* main.m in Sources */,
 				D57C425B1960E60F00963C52 /* Controls.m in Sources */,
 				D568151B195E908100DF984C /* Curtain.m in Sources */,
@@ -407,6 +413,7 @@
 				INFOPLIST_FILE = Stage/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -420,6 +427,7 @@
 				INFOPLIST_FILE = Stage/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
