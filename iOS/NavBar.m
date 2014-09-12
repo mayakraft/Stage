@@ -2,6 +2,8 @@
 
 @implementation NavBar
 
+#define MENU_WIDTH 50
+
 -(void) setup{
     NSLog(@"navBar setup");
     float arrowWidth = self.view.frame.size.width*.175;
@@ -15,7 +17,7 @@
     [_forwardButton setTitle:@"▶︎" forState:UIControlStateNormal];
     [[self view] addSubview:_forwardButton];
 
-    _backButton = [[UIButton alloc] initWithFrame:CGRectMake(5, 5, arrowWidth, arrowWidth)];
+    _backButton = [[UIButton alloc] initWithFrame:CGRectMake(5 + MENU_WIDTH, 5, arrowWidth, arrowWidth)];
     [_backButton addTarget:self action:@selector(backButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [_backButton setBackgroundColor:[UIColor blackColor]];
     [_backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

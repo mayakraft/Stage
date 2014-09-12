@@ -10,6 +10,8 @@
 		D527E08A19A68D100092CA64 /* SceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = D527E08919A68D100092CA64 /* SceneController.m */; };
 		D531B1D719C3767000973DBF /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D531B1D619C3767000973DBF /* SWRevealViewController.m */; };
 		D531B1DB19C377B900973DBF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D531B1DA19C377B900973DBF /* MenuViewController.m */; };
+		D531B1E619C3892900973DBF /* reveal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D531B1E419C3892900973DBF /* reveal-icon.png */; };
+		D531B1E719C3892900973DBF /* reveal-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D531B1E519C3892900973DBF /* reveal-icon@2x.png */; };
 		D56814F4195D4EBC00DF984C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D56814F3195D4EBC00DF984C /* main.m */; };
 		D56814F7195D4EBC00DF984C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D56814F6195D4EBC00DF984C /* AppDelegate.m */; };
 		D56814F9195D4EBC00DF984C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D56814F8195D4EBC00DF984C /* Images.xcassets */; };
@@ -28,10 +30,12 @@
 /* Begin PBXFileReference section */
 		D527E08819A68D100092CA64 /* SceneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneController.h; sourceTree = "<group>"; };
 		D527E08919A68D100092CA64 /* SceneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneController.m; sourceTree = "<group>"; };
-		D531B1D519C3767000973DBF /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
-		D531B1D619C3767000973DBF /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		D531B1D519C3767000973DBF /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = SWRevealController/SWRevealViewController.h; sourceTree = "<group>"; };
+		D531B1D619C3767000973DBF /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = SWRevealController/SWRevealViewController.m; sourceTree = "<group>"; };
 		D531B1D919C377B900973DBF /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		D531B1DA19C377B900973DBF /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		D531B1E419C3892900973DBF /* reveal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reveal-icon.png"; path = "SWRevealController/reveal-icon.png"; sourceTree = "<group>"; };
+		D531B1E519C3892900973DBF /* reveal-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reveal-icon@2x.png"; path = "SWRevealController/reveal-icon@2x.png"; sourceTree = "<group>"; };
 		D56814EE195D4EBC00DF984C /* Stage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D56814F2195D4EBC00DF984C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D56814F3195D4EBC00DF984C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -76,6 +80,8 @@
 		D531B1D819C3767400973DBF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D531B1E419C3892900973DBF /* reveal-icon.png */,
+				D531B1E519C3892900973DBF /* reveal-icon@2x.png */,
 				D531B1D519C3767000973DBF /* SWRevealViewController.h */,
 				D531B1D619C3767000973DBF /* SWRevealViewController.m */,
 			);
@@ -232,6 +238,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D56814F9195D4EBC00DF984C /* Images.xcassets in Resources */,
+				D531B1E619C3892900973DBF /* reveal-icon.png in Resources */,
+				D531B1E719C3892900973DBF /* reveal-icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

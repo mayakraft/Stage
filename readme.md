@@ -1,6 +1,7 @@
 # OpenGL + UIKit
 
-for supreme control over self-contained apps, screw UIKit view-controllers, Apple transitions, pauses in load times when loading size was tiny anyway. this is like a video game IDE for Apple’s UIKit.
+iOS app building for getting underneath UIKit view-controllers and transitions, and customizing OpenGL, includes the Facebook-style slide menu [SWReveal menu](https://github.com/John-Lluch/SWRevealViewController).
+
 
 ![image](https://raw.github.com/robbykraft/StagingArea/master/globe-theatre.jpg)
 

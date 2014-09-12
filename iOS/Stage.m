@@ -47,9 +47,9 @@ void set_color(float* color, float* color_ref){
         
         // CUSTOMIZE HERE
         
-//        NavBar *navBar = [[NavBar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height*.15)];
-//        [navBar setDelegate:self];
-//        [self addCurtain:navBar];
+        NavBar *navBar = [[NavBar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height*.15)];
+        [navBar setDelegate:self];
+        [self addCurtain:navBar];
         
         [self addRoom:[CubeOctaRoom room]];
         [self setBackgroundColor:whiteColor];
@@ -239,10 +239,16 @@ void set_color(float* color, float* color_ref){
     
     SWRevealViewController *revealController = [self revealViewController];
     UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [menuButton setFrame:CGRectMake(10, 10, 100, 100)];
-    [menuButton setBackgroundColor:[UIColor purpleColor]];
+    [menuButton setFrame:CGRectMake(10, 10, 44, 44)];
+    [menuButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon.png"] forState:UIControlStateNormal];
     [menuButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:menuButton];
+//TODO: FIX
+    NSLog(@"THIS IS A SILLY FIX FOR A BIG PROBLEM");
+    [self performSelector:@selector(waitASecond:) withObject:menuButton afterDelay:1.5];
+}
+-(void) waitASecond:(UIButton*)menuButton{
+    SWRevealViewController *revealController = [self revealViewController];
     [menuButton addGestureRecognizer:revealController.panGestureRecognizer];
 }
 
