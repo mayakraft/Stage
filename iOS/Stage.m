@@ -1,5 +1,7 @@
 #import "Stage.h"
 
+#import "SWRevealViewController.h"
+
 // examples
 #import "CubeOctaRoom.h"
 
@@ -30,6 +32,13 @@ void set_color(float* color, float* color_ref){
 
 @implementation Stage
 
+-(void) endTransitionFrom:(unsigned short)fromScene To:(unsigned short)toScene{
+    
+}
+
+-(void) beginTransitionFrom:(unsigned short)fromScene To:(unsigned short)toScene{
+    
+}
 
 -(id) init{
     self = [super init];
@@ -38,9 +47,9 @@ void set_color(float* color, float* color_ref){
         
         // CUSTOMIZE HERE
         
-        NavBar *navBar = [[NavBar alloc] init];
-        [navBar setDelegate:self];
-        [self addCurtain:navBar];
+//        NavBar *navBar = [[NavBar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height*.15)];
+//        [navBar setDelegate:self];
+//        [self addCurtain:navBar];
         
         [self addRoom:[CubeOctaRoom room]];
         [self setBackgroundColor:whiteColor];
@@ -90,13 +99,6 @@ void set_color(float* color, float* color_ref){
         for (Curtain *curtain in _curtains)
             [curtain draw];
     
-//    if(_room)
-//        [_room draw];
-//    if(_curtain)
-//        [_curtain draw];
-//    if(_navBar)
-//        [_navBar draw];
-    
     glPopMatrix();
 }
 
@@ -127,7 +129,7 @@ void set_color(float* color, float* color_ref){
 // animate transition delegates from SceneController
 
 -(void) transitionFrom:(unsigned short)fromScene To:(unsigned short)toScene Tween:(float)t{
-    NSLog(@"delegate transition:%d-%d, %f",fromScene, toScene, t);
+//    NSLog(@"delegate transition:%d-%d, %f",fromScene, toScene, t);
 }
 
 // NAVIGATION CONTROLLER
@@ -234,6 +236,14 @@ void set_color(float* color, float* color_ref){
     
     [self initOpenGL];
     [self customizeOpenGL];
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [menuButton setFrame:CGRectMake(10, 10, 100, 100)];
+    [menuButton setBackgroundColor:[UIColor purpleColor]];
+    [menuButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:menuButton];
+    [menuButton addGestureRecognizer:revealController.panGestureRecognizer];
 }
 
 -(void)initOpenGL{
@@ -297,6 +307,15 @@ void set_color(float* color, float* color_ref){
     if(!_curtains) _curtains = [NSArray array];
     _curtains = [_curtains arrayByAddingObject:curtain];
     [self.view addSubview:curtain.view];
+}
+
+-(void) bringCurtainToFront:(Curtain*)curtain{
+    NSMutableArray *array = [NSMutableArray array];
+    for(Curtain *c in _curtains)
+        if(![c isEqual:curtain])
+            [array addObject:c];
+    [array addObject:curtain];
+    [self.view bringSubviewToFront:curtain.view];
 }
 
 -(void) addRoom:(Room *)room{

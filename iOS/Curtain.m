@@ -26,8 +26,26 @@
     return self;
 }
 
+-(void) setHidden:(BOOL)hidden{
+    _hidden = hidden;
+    [_view setHidden:hidden];
+}
+
+-(void) setX:(float)x{
+    _x = x;
+    _frame = CGRectMake(x, _frame.origin.y, _frame.size.width, _frame.size.height);
+    [_view setFrame:_frame];
+}
+
+-(void) setY:(float)y{
+    _y = y;
+    _frame = CGRectMake(_frame.origin.x, y, _frame.size.width, _frame.size.height);
+    [_view setFrame:_frame];
+}
+
 -(void) draw{
     [self enterOrthographic];
+    glTranslatef(_x, _y, 0.0);
     [self customDraw];
     [self exitOrthographic];
 }
@@ -44,9 +62,9 @@
 
 //-(void) setNeedsLayout{ }
 
-//-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event { }
-//-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event { }
-//-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { }
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event { }
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event { }
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { }
 
 -(void)enterOrthographic{
     glDisable(GL_DEPTH_TEST);

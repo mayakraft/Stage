@@ -3,24 +3,26 @@
 #import <CoreMotion/CoreMotion.h>
 #import "Room.h"
 #import "Curtain.h"
-#import "NavBar.h"
 #import "common.c"
 #import "SceneController.h"
 //#import "lights.c"
 
+#import "NavBar.h"
+
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(displayLinkWithTarget:selector:)] && ([UIScreen mainScreen].scale == 2.0))
 
+// ----- IMPORTANT -----
+//
+// do not subclass viewDidLoad
+// if your curtain has a protocol, make sure you manually set the delegate
+//
 
 @interface Stage : GLKViewController <SceneTransitionDelegate, NavBarDelegate>//<AnimationDelegate>
 
-@property (nonatomic) NSArray *rooms;     // ROOMS   (3D ENVIRONMENTS)
-@property (nonatomic) NSArray *curtains;  // SCREENS (ORTHOGRAPHIC LAYERS)
-
 @property SceneController *script;
 
-@property NSArray *tempArray;
-
-//@property Temp *temp;
+@property (nonatomic) NSArray *rooms;     // ROOMS   (3D ENVIRONMENTS)
+@property (nonatomic) NSArray *curtains;  // SCREENS (ORTHOGRAPHIC LAYERS)
 
 -(void) addRoom:(Room*)room;
 -(void) addCurtain:(Curtain*)curtain;

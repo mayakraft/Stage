@@ -8,10 +8,10 @@
 
 #import "AppDelegate.h"
 #import "Stage.h"
+#import "SWRevealViewController.h"
+#import "MenuViewController.h"
 
-@interface AppDelegate ()
-            
-
+@interface AppDelegate () <SWRevealViewControllerDelegate>
 @end
 
 @implementation AppDelegate
@@ -21,7 +21,18 @@
     
     // Override point for customization after application launch.
     Stage *stage = [[Stage alloc] init];
-    self.window.rootViewController = stage;
+    MenuViewController *menu = [[MenuViewController alloc] init];
+    
+    SWRevealViewController *mainRevealController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:stage];
+
+    [mainRevealController setDelegate:self];
+//    [mainRevealController setRearViewRevealWidth:60];
+//    [mainRevealController setRearViewRevealOverdraw:120];
+//    [mainRevealController setBounceBackOnOverdraw:NO];
+//    [mainRevealController setStableDragOnOverdraw:YES];
+//    [mainRevealController setFrontViewPosition:FrontViewPositionRight];
+    
+    self.window.rootViewController = mainRevealController;
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
     return YES;

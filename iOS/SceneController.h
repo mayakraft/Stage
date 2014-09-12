@@ -15,6 +15,9 @@ typedef enum : unsigned short {
 @required
 // tween increments from 0.0 to 1.0 if transition has duration
 -(void) transitionFrom:(unsigned short)fromScene To:(unsigned short)toScene Tween:(float)t;
+// called only once
+-(void) beginTransitionFrom:(unsigned short)fromScene To:(unsigned short)toScene;
+-(void) endTransitionFrom:(unsigned short)fromScene To:(unsigned short)toScene;
 
 @end
 

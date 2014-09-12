@@ -12,18 +12,21 @@
 @implementation SceneController
 
 -(void) update {
-    float t = 1.0 - (transitionDuration + [start timeIntervalSinceNow]);
-    if(t >= 1.0){
-        t = 1.0;
+    float t = -[start timeIntervalSinceNow];
+    if(t >= transitionDuration){
+        t = transitionDuration;
         [transitionTimer invalidate];
         transitionTimer = nil;
         _sceneInTransition = false;
+        [_delegate endTransitionFrom:fromScene To:toScene];
     }
-    [_delegate transitionFrom:fromScene To:toScene Tween:t];
+    [_delegate transitionFrom:fromScene To:toScene Tween:t/transitionDuration];
 }
 
 -(void) gotoScene:(unsigned short)scene{
-    [_delegate transitionFrom:_scene To:scene Tween:1.0f];
+    [_delegate beginTransitionFrom:_scene To:scene];
+    [_delegate transitionFrom:_scene To:scene Tween:1.0];
+    [_delegate endTransitionFrom:_scene To:scene];
     _scene = scene;
 }
 
@@ -37,6 +40,7 @@
         [transitionTimer invalidate];
         transitionTimer = nil;
     }
+    [_delegate beginTransitionFrom:fromScene To:toScene];
     transitionTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/60.0 target:self selector:@selector(update) userInfo:nil repeats:YES];
     start = [NSDate date];
     
