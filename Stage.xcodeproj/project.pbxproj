@@ -12,7 +12,6 @@
 		D531B1DB19C377B900973DBF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D531B1DA19C377B900973DBF /* MenuViewController.m */; };
 		D531B1E619C3892900973DBF /* reveal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D531B1E419C3892900973DBF /* reveal-icon.png */; };
 		D531B1E719C3892900973DBF /* reveal-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D531B1E519C3892900973DBF /* reveal-icon@2x.png */; };
-		D531B1EA19C72EBF00973DBF /* CurtainView.m in Sources */ = {isa = PBXBuildFile; fileRef = D531B1E919C72EBF00973DBF /* CurtainView.m */; };
 		D56814F4195D4EBC00DF984C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D56814F3195D4EBC00DF984C /* main.m */; };
 		D56814F7195D4EBC00DF984C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D56814F6195D4EBC00DF984C /* AppDelegate.m */; };
 		D56814F9195D4EBC00DF984C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D56814F8195D4EBC00DF984C /* Images.xcassets */; };
@@ -37,8 +36,6 @@
 		D531B1DA19C377B900973DBF /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		D531B1E419C3892900973DBF /* reveal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reveal-icon.png"; path = "SWRevealController/reveal-icon.png"; sourceTree = "<group>"; };
 		D531B1E519C3892900973DBF /* reveal-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reveal-icon@2x.png"; path = "SWRevealController/reveal-icon@2x.png"; sourceTree = "<group>"; };
-		D531B1E819C72EBF00973DBF /* CurtainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurtainView.h; sourceTree = "<group>"; };
-		D531B1E919C72EBF00973DBF /* CurtainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurtainView.m; sourceTree = "<group>"; };
 		D56814EE195D4EBC00DF984C /* Stage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D56814F2195D4EBC00DF984C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D56814F3195D4EBC00DF984C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -138,8 +135,6 @@
 			children = (
 				D568150E195D4F3000DF984C /* Stage.h */,
 				D568150F195D4F3000DF984C /* Stage.m */,
-				D531B1E819C72EBF00973DBF /* CurtainView.h */,
-				D531B1E919C72EBF00973DBF /* CurtainView.m */,
 				D527E08819A68D100092CA64 /* SceneController.h */,
 				D527E08919A68D100092CA64 /* SceneController.m */,
 				D568151C195E908600DF984C /* Classes */,
@@ -262,7 +257,6 @@
 				D531B1DB19C377B900973DBF /* MenuViewController.m in Sources */,
 				D57C425B1960E60F00963C52 /* Controls.m in Sources */,
 				D568151B195E908100DF984C /* Curtain.m in Sources */,
-				D531B1EA19C72EBF00973DBF /* CurtainView.m in Sources */,
 				D568151A195E908100DF984C /* Room.m in Sources */,
 				D5681527195EA06E00DF984C /* Hotspot.m in Sources */,
 				D568151F195E90AE00DF984C /* Primitives.m in Sources */,
