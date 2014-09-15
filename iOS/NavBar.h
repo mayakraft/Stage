@@ -20,6 +20,10 @@
 @property NSInteger page;
 @property (nonatomic) NSInteger numPages;
 
-+(instancetype) navBar;
+-(void) forwardButtonPressed;
+-(void) backButtonPressed;
+
++(instancetype) navBarTop;
++(instancetype) navBarBottom;
 
 @end

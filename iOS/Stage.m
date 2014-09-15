@@ -47,7 +47,7 @@ void set_color(float* color, float* color_ref){
         
         // CUSTOMIZE HERE
         
-        NavBar *navBar = [[NavBar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height*.15)];
+        NavBar *navBar = [NavBar navBarBottom];
         [navBar setDelegate:self];
         [self addCurtain:navBar];
         
@@ -102,27 +102,27 @@ void set_color(float* color, float* color_ref){
     glPopMatrix();
 }
 
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){
-//        if(_curtains)
-//            for(Curtain *curtain in _curtains)
-//                [curtain touchesBegan:touches withEvent:event];
-//    }
-}
--(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){
-//        if(_curtains)
-//            for(Curtain *curtain in _curtains)
-//                [curtain touchesMoved:touches withEvent:event];
-//    }
-}
--(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-//    if(_userInteractionEnabled){
-//        if(_curtains)
-//            for(Curtain *curtain in _curtains)
-//                [curtain touchesEnded:touches withEvent:event];
-//    }
-}
+//-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+////    if(_userInteractionEnabled){
+////        if(_curtains)
+////            for(Curtain *curtain in _curtains)
+////                [curtain touchesBegan:touches withEvent:event];
+////    }
+//}
+//-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+////    if(_userInteractionEnabled){
+////        if(_curtains)
+////            for(Curtain *curtain in _curtains)
+////                [curtain touchesMoved:touches withEvent:event];
+////    }
+//}
+//-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+////    if(_userInteractionEnabled){
+////        if(_curtains)
+////            for(Curtain *curtain in _curtains)
+////                [curtain touchesEnded:touches withEvent:event];
+////    }
+//}
 
 #pragma mark- DELEGATES
 

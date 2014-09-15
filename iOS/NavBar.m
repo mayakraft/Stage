@@ -6,45 +6,80 @@
 
 -(void) setup{
     NSLog(@"NavBar.m : setup");
-    float arrowWidth = self.view.frame.size.width*.175;
-    
-    _forwardButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)];
-    [_forwardButton addTarget:self action:@selector(forwardButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [_forwardButton setBackgroundColor:[UIColor blackColor]];
-    [[_forwardButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
-    [_forwardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_forwardButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-    [_forwardButton setTitle:@"▶︎" forState:UIControlStateNormal];
-    [[self view] addSubview:_forwardButton];
-
-    _backButton = [[UIButton alloc] initWithFrame:CGRectMake(5 + MENU_WIDTH, 5, arrowWidth, arrowWidth)];
-    [_backButton addTarget:self action:@selector(backButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [_backButton setBackgroundColor:[UIColor blackColor]];
-    [_backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_backButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
-    [_backButton setTitle:@"◀︎" forState:UIControlStateNormal];
-    [[_backButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
-
-    [[self view] addSubview:_backButton];
-    
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth*1.33 /* fix */, 5, self.view.frame.size.width-arrowWidth*2, arrowWidth)];
-    [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [_titleLabel setFont:[UIFont boldSystemFontOfSize:24]];
-    [_titleLabel setTextColor:[UIColor blackColor]];
-    [[self view] addSubview:_titleLabel];
-    
-    _numPages = 5;
-    [self setTitles:@[@"SCENE 1", @"SCENE 2", @"SCENE 3", @"SCENE 4", @"SCENE 5"]];
 }
 
-+(instancetype) navBar{
-    float w = [[UIScreen mainScreen] bounds].size.width;
-    NavBar *navBar = [[NavBar alloc] initWithFrame:CGRectMake(0, 0, w, [[UIScreen mainScreen] bounds].size.width*.175+10)];
++(instancetype) navBarTop{
+    NavBar *navBar = [[NavBar alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     if(navBar){
+        float arrowWidth = navBar.view.frame.size.width*.175;
         
+        navBar.forwardButton = [[UIButton alloc] initWithFrame:CGRectMake(navBar.view.frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)];
+        [navBar.forwardButton addTarget:navBar action:@selector(forwardButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [navBar.forwardButton setBackgroundColor:[UIColor blackColor]];
+        [[navBar.forwardButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
+        [navBar.forwardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [navBar.forwardButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+        [navBar.forwardButton setTitle:@"▶︎" forState:UIControlStateNormal];
+        [[navBar view] addSubview:navBar.forwardButton];
+        
+        navBar.backButton = [[UIButton alloc] initWithFrame:CGRectMake(5 + MENU_WIDTH, 5, arrowWidth, arrowWidth)];
+        [navBar.backButton addTarget:navBar action:@selector(backButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [navBar.backButton setBackgroundColor:[UIColor blackColor]];
+        [navBar.backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [navBar.backButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+        [navBar.backButton setTitle:@"◀︎" forState:UIControlStateNormal];
+        [[navBar.backButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
+        
+        [[navBar view] addSubview:navBar.backButton];
+        
+        navBar.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth*1.33 /* fix */, 5, navBar.view.frame.size.width-arrowWidth*2, arrowWidth)];
+        [navBar.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        [navBar.titleLabel setFont:[UIFont boldSystemFontOfSize:30]];
+        [navBar.titleLabel setTextColor:[UIColor blackColor]];
+        [[navBar view] addSubview:navBar.titleLabel];
+
+        [navBar setNumPages:5];
+        [navBar setTitles:@[@"SCENE 1", @"SCENE 2", @"SCENE 3", @"SCENE 4", @"SCENE 5"]];
     }
     return navBar;
 }
+
++(instancetype) navBarBottom{
+    NavBar *navBar = [[NavBar alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    if(navBar){
+        float arrowWidth = navBar.view.frame.size.width*.125;
+        
+        navBar.forwardButton = [[UIButton alloc] initWithFrame:CGRectMake(navBar.view.frame.size.width-(arrowWidth*.75+5), navBar.view.frame.size.height - arrowWidth*1.66-5, arrowWidth*.75, arrowWidth*1.66)];
+        [navBar.forwardButton addTarget:navBar action:@selector(forwardButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [navBar.forwardButton setBackgroundColor:[UIColor blackColor]];
+        [[navBar.forwardButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
+        [navBar.forwardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [navBar.forwardButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+        [navBar.forwardButton setTitle:@"▶︎" forState:UIControlStateNormal];
+        [[navBar view] addSubview:navBar.forwardButton];
+        
+        navBar.backButton = [[UIButton alloc] initWithFrame:CGRectMake(5, navBar.view.frame.size.height - arrowWidth*1.66-5, arrowWidth*.75, arrowWidth*1.66)];
+        [navBar.backButton addTarget:navBar action:@selector(backButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        [navBar.backButton setBackgroundColor:[UIColor blackColor]];
+        [navBar.backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [navBar.backButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+        [navBar.backButton setTitle:@"◀︎" forState:UIControlStateNormal];
+        [[navBar.backButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
+        
+        [[navBar view] addSubview:navBar.backButton];
+        
+        navBar.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth, 5, navBar.view.frame.size.width-arrowWidth*2, arrowWidth)];
+        [navBar.titleLabel setTextAlignment:NSTextAlignmentCenter];
+        [navBar.titleLabel setFont:[UIFont boldSystemFontOfSize:30]];
+        [navBar.titleLabel setTextColor:[UIColor blackColor]];
+        [[navBar view] addSubview:navBar.titleLabel];
+
+        [navBar setNumPages:5];
+        [navBar setTitles:@[@"SCENE 1", @"SCENE 2", @"SCENE 3", @"SCENE 4", @"SCENE 5"]];
+    }
+    return navBar;
+}
+
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"NavBar : touchesBegan");
