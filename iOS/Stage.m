@@ -214,7 +214,7 @@ void set_color(float* color, float* color_ref){
 // STARTUP
 
 -(void) setup{
-    NSLog(@"setup");
+    NSLog(@"Stage.m : setup");
     start = [NSDate date];
     _userInteractionEnabled = true;
     orientToDevice = true;
@@ -226,7 +226,7 @@ void set_color(float* color, float* color_ref){
 
 // OMG cannot subclass viewDidLoad now, cause this is important
 -(void)viewDidLoad{
-    NSLog(@"viewDidLoad");
+    NSLog(@"Stage.m : viewDidLoad");
     [super viewDidLoad];
     
     // SETUP GLKVIEW
@@ -253,7 +253,7 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void)initOpenGL{
-    NSLog(@"initOpenGL");
+    NSLog(@"Stage.m : initOpenGL");
     
     float width, height;
     if([UIApplication sharedApplication].statusBarOrientation > 2){
@@ -363,7 +363,7 @@ void set_color(float* color, float* color_ref){
 }
 
 -(void) dealloc{
-    NSLog(@"DEALLOC");
+    NSLog(@"Stage.m : DEALLOC");
 //    free(_screenColor);
 }
 

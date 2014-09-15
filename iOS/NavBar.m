@@ -1,29 +1,11 @@
 #import "NavBar.h"
 
-@implementation NavBarView
-
--(UIView*) hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-//    NSLog(@"navBar hitTest:(%.1f,%.1f) Subviews:%d",point.x, point.y, self.subviews.count);
-    for(UIView* v in [self subviews]){
-        CGPoint touchPoint = [v convertPoint:point fromView:self];
-        if([v pointInside:touchPoint withEvent:event]){
-            NSLog(@"%@",v.description);
-            return [super hitTest:point withEvent:event];
-        }
-    }
-    return nil;
-}
-
-@end
-
 @implementation NavBar
 
 #define MENU_WIDTH 50
 
 -(void) setup{
-    
-    self.view = [[NavBarView alloc] initWithFrame:self.view.frame];
-    NSLog(@"navBar setup");
+    NSLog(@"NavBar.m : setup");
     float arrowWidth = self.view.frame.size.width*.175;
     
     _forwardButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-(arrowWidth+5), 5, arrowWidth, arrowWidth)];
@@ -65,13 +47,13 @@
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"NavBar: touchesBegan");
+    NSLog(@"NavBar : touchesBegan");
 }
 -(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"NavBar: touchesMoved");
+    NSLog(@"NavBar : touchesMoved");
 }
 -(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"NavBar: touchesEnded");
+    NSLog(@"NavBar : touchesEnded");
 }
 
 -(void) setTitles:(NSArray *)titles{

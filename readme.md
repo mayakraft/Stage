@@ -16,8 +16,8 @@ iOS skeleton project for getting underneath UIKit view-controllers and transitio
 |   |--(UIView*)view  //   UIKit attach point
 |
 |---@class Room       // 3D layers
-∙
-∙
+.
+.
 @class SceneController
 |
 @protocol SceneTransitionDelegate  // animate transitions inside Stage

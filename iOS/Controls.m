@@ -1,12 +1,10 @@
 #import "Controls.h"
 
-
 typedef enum{
     hotspotBackArrow,
     hotspotForwardArrow,
     hotspotControls
 } HotspotID;
-
 
 @implementation Controls
 

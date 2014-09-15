@@ -1,6 +1,22 @@
 #import <OpenGLES/ES1/gl.h>
 #import "Curtain.h"
 
+@implementation CurtainView
+
+-(UIView*) hitTest:(CGPoint)point withEvent:(UIEvent *)event{
+    //    NSLog(@"CurtainView : hitTest:(%.1f,%.1f) Subviews:%d",point.x, point.y, self.subviews.count);
+    for(UIView* v in [self subviews]){
+        CGPoint touchPoint = [v convertPoint:point fromView:self];
+        if([v pointInside:touchPoint withEvent:event]){
+//            NSLog(@"%@",v.description);
+            return [super hitTest:point withEvent:event];
+        }
+    }
+    return nil;
+}
+
+@end
+
 @interface Curtain (){
     float _aspectRatio;
     float width, height;
@@ -17,7 +33,7 @@
     self = [super init];
     if(self){
         _frame = frame;
-        _view = [[UIView alloc] initWithFrame:frame];
+        _view = [[CurtainView alloc] initWithFrame:frame];
         width = _frame.size.width;
         height = _frame.size.height;
         _aspectRatio = _frame.size.width/_frame.size.height;
@@ -58,18 +74,6 @@
 -(void) setup{
     // implement this function
     // in your subclass
-}
-
-//-(void) setNeedsLayout{ }
-
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"Curtain: touchesBegan");
-}
--(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"Curtain: touchesMoved");
-}
--(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"Curtain: touchesEnded");
 }
 
 -(void)enterOrthographic{

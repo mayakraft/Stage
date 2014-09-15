@@ -1,7 +1,5 @@
 #import "Curtain.h"
 
-@interface NavBarView : UIView
-@end
 
 @protocol NavBarDelegate <NSObject>
 @required
@@ -13,8 +11,6 @@
 @interface NavBar : Curtain
 
 @property id <NavBarDelegate> delegate;
-
-@property NavBarView *view;
 
 @property UILabel *titleLabel;
 @property UIButton *forwardButton;
