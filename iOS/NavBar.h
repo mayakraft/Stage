@@ -1,5 +1,8 @@
 #import "Curtain.h"
 
+@interface NavBarView : UIView
+@end
+
 @protocol NavBarDelegate <NSObject>
 @required
 -(void) pageTurnBack:(NSInteger)page;
@@ -10,6 +13,8 @@
 @interface NavBar : Curtain
 
 @property id <NavBarDelegate> delegate;
+
+@property NavBarView *view;
 
 @property UILabel *titleLabel;
 @property UIButton *forwardButton;

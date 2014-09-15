@@ -1,10 +1,28 @@
 #import "NavBar.h"
 
+@implementation NavBarView
+
+-(UIView*) hitTest:(CGPoint)point withEvent:(UIEvent *)event{
+//    NSLog(@"navBar hitTest:(%.1f,%.1f) Subviews:%d",point.x, point.y, self.subviews.count);
+    for(UIView* v in [self subviews]){
+        CGPoint touchPoint = [v convertPoint:point fromView:self];
+        if([v pointInside:touchPoint withEvent:event]){
+            NSLog(@"%@",v.description);
+            return [super hitTest:point withEvent:event];
+        }
+    }
+    return nil;
+}
+
+@end
+
 @implementation NavBar
 
 #define MENU_WIDTH 50
 
 -(void) setup{
+    
+    self.view = [[NavBarView alloc] initWithFrame:self.view.frame];
     NSLog(@"navBar setup");
     float arrowWidth = self.view.frame.size.width*.175;
     
@@ -27,9 +45,9 @@
 
     [[self view] addSubview:_backButton];
     
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth, 5, self.view.frame.size.width-arrowWidth*2, arrowWidth)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5+arrowWidth*1.33 /* fix */, 5, self.view.frame.size.width-arrowWidth*2, arrowWidth)];
     [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [_titleLabel setFont:[UIFont boldSystemFontOfSize:30]];
+    [_titleLabel setFont:[UIFont boldSystemFontOfSize:24]];
     [_titleLabel setTextColor:[UIColor blackColor]];
     [[self view] addSubview:_titleLabel];
     
@@ -44,6 +62,16 @@
         
     }
     return navBar;
+}
+
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"NavBar: touchesBegan");
+}
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"NavBar: touchesMoved");
+}
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"NavBar: touchesEnded");
 }
 
 -(void) setTitles:(NSArray *)titles{

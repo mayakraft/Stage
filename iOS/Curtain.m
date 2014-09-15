@@ -62,9 +62,15 @@
 
 //-(void) setNeedsLayout{ }
 
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event { }
--(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event { }
--(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { }
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"Curtain: touchesBegan");
+}
+-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"Curtain: touchesMoved");
+}
+-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"Curtain: touchesEnded");
+}
 
 -(void)enterOrthographic{
     glDisable(GL_DEPTH_TEST);
