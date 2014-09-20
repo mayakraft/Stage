@@ -1,4 +1,4 @@
-#import "Curtain.h"
+#import "ScreenView.h"
 
 
 @protocol NavBarDelegate <NSObject>
@@ -8,7 +8,7 @@
 @end
 
 
-@interface NavBar : Curtain
+@interface NavBar : ScreenView
 
 @property id <NavBarDelegate> delegate;
 

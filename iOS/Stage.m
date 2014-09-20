@@ -23,22 +23,9 @@ void set_color(float* color, float* color_ref){
     CMMotionManager *motionManager;
 }
 
-@property (readonly)  NSTimeInterval elapsedSeconds;
-//@property (nonatomic) GLKQuaternion  deviceAttitude;
-@property (nonatomic) GLKQuaternion  orientation;      // WORLD ORIENTATION, can depend or not on device attitude
-@property (nonatomic) GLKMatrix4     deviceAttitude;
-
 @end
 
 @implementation Stage
-
--(void) endTransitionFrom:(unsigned short)fromScene To:(unsigned short)toScene{
-    
-}
-
--(void) beginTransitionFrom:(unsigned short)fromScene To:(unsigned short)toScene{
-    
-}
 
 -(id) init{
     self = [super init];
@@ -46,13 +33,14 @@ void set_color(float* color, float* color_ref){
         [self setup];
         
         // CUSTOMIZE HERE
-        
+
         NavBar *navBar = [NavBar navBarBottom];
         [navBar setDelegate:self];
-        [self addCurtain:navBar];
+        [self addSubscreen:navBar];
         
-        [self addRoom:[CubeOctaRoom room]];
+        [self addSubroom:[CubeOctaRoom roomView]];
         [self setBackgroundColor:whiteColor];
+        
     }
     return self;
 }
@@ -91,17 +79,20 @@ void set_color(float* color, float* color_ref){
 
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     
-    if(_rooms)
-        for(Room *room in _rooms)
-            [room draw];
+    if(_roomViews)
+        for(RoomView *roomView in _roomViews)
+            [roomView draw];
     
-    if(_curtains)
-        for (Curtain *curtain in _curtains)
-            [curtain draw];
+    if(_screenViews)
+        for (ScreenView *screenView in _screenViews)
+            [screenView draw];
     
     glPopMatrix();
 }
-
+-(void) auxDraw{
+    [self update];
+    [(GLKView*)self.view display];
+}
 //-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 ////    if(_userInteractionEnabled){
 ////        if(_curtains)
@@ -124,9 +115,18 @@ void set_color(float* color, float* color_ref){
 ////    }
 //}
 
+
 #pragma mark- DELEGATES
 
 // animate transition delegates from SceneController
+
+-(void) beginTransitionFrom:(unsigned short)fromScene To:(unsigned short)toScene{
+    NSLog(@"+++ BEGIN transition:%d-%d",fromScene, toScene);
+}
+
+-(void) endTransitionFrom:(unsigned short)fromScene To:(unsigned short)toScene{
+    NSLog(@"---  END  transition:%d-%d",fromScene, toScene);
+}
 
 -(void) transitionFrom:(unsigned short)fromScene To:(unsigned short)toScene Tween:(float)t{
 //    NSLog(@"delegate transition:%d-%d, %f",fromScene, toScene, t);
@@ -224,7 +224,7 @@ void set_color(float* color, float* color_ref){
     [self initDeviceOrientation];
 }
 
-// OMG cannot subclass viewDidLoad now, cause this is important
+// OMG cannot subclass and implement viewDidLoad now, cause this is important
 -(void)viewDidLoad{
     NSLog(@"Stage.m : viewDidLoad");
     [super viewDidLoad];
@@ -309,44 +309,44 @@ void set_color(float* color, float* color_ref){
     set_color(_backgroundColor, backgroundColor);
 }
 
--(void) addCurtain:(Curtain *)curtain{
-    if(!_curtains) _curtains = [NSArray array];
-    _curtains = [_curtains arrayByAddingObject:curtain];
-    [self.view addSubview:curtain.view];
+-(void) addSubscreen:(ScreenView *)screenView{
+    if(!_screenViews) _screenViews = [NSArray array];
+    _screenViews = [_screenViews arrayByAddingObject:screenView];
+    [self.view addSubview:screenView.view];
 }
 
--(void) bringCurtainToFront:(Curtain*)curtain{
+-(void) bringCurtainToFront:(ScreenView *)screenView{
     NSMutableArray *array = [NSMutableArray array];
-    for(Curtain *c in _curtains)
-        if(![c isEqual:curtain])
-            [array addObject:c];
-    [array addObject:curtain];
-    [self.view bringSubviewToFront:curtain.view];
+    for(ScreenView *s in _screenViews)
+        if(![s isEqual:screenView])
+            [array addObject:s];
+    [array addObject:screenView];
+    [self.view bringSubviewToFront:screenView.view];
 }
 
--(void) addRoom:(Room *)room{
-    if(!_rooms) _rooms = [NSArray array];
-    _rooms = [_rooms arrayByAddingObject:room];
+-(void) addSubroom:(RoomView *)roomView{
+    if(!_roomViews) _roomViews = [NSArray array];
+    _roomViews = [_roomViews arrayByAddingObject:roomView];
 }
 
 -(void) removeCurtains:(NSSet *)objects{
-    NSMutableArray *array = [NSMutableArray arrayWithArray:_curtains];
-    for(Curtain *curtain in objects){
-        if([array containsObject:curtain]){
-            [array removeObject:curtain];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_screenViews];
+    for(ScreenView *screenView in objects){
+        if([array containsObject:screenView]){
+            [array removeObject:screenView];
         }
     }
-    _curtains = [NSArray arrayWithArray:array];
+    _screenViews = [NSArray arrayWithArray:array];
 }
 
 -(void) removeRooms:(NSSet *)objects{
-    NSMutableArray *array = [NSMutableArray arrayWithArray:_rooms];
-    for(Room *room in objects){
-        if([array containsObject:room]){
-            [array removeObject:room];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:_roomViews];
+    for(RoomView *roomView in objects){
+        if([array containsObject:roomView]){
+            [array removeObject:roomView];
         }
     }
-    _rooms = [NSArray arrayWithArray:array];
+    _roomViews = [NSArray arrayWithArray:array];
 }
 
 

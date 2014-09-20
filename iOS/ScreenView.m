@@ -1,10 +1,10 @@
 #import <OpenGLES/ES1/gl.h>
-#import "Curtain.h"
+#import "ScreenView.h"
 
-@implementation CurtainView
+@implementation UIScreenView
 
 -(UIView*) hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-    //    NSLog(@"CurtainView : hitTest:(%.1f,%.1f) Subviews:%d",point.x, point.y, self.subviews.count);
+//    NSLog(@"CurtainView : hitTest:(%.1f,%.1f) Subviews:%d",point.x, point.y, self.subviews.count);
     for(UIView* v in [self subviews]){
         CGPoint touchPoint = [v convertPoint:point fromView:self];
         if([v pointInside:touchPoint withEvent:event]){
@@ -17,23 +17,29 @@
 
 @end
 
-@interface Curtain (){
+@interface ScreenView (){
     float _aspectRatio;
     float width, height;
 }
 @end
 
-@implementation Curtain
+@implementation ScreenView
 
 -(id) init{
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
+}
+
+-(void) setFrame:(CGRect)frame{
+    _frame = frame;
+    _bounds = CGRectMake(0, 0, frame.size.width, frame.size.height);
 }
 
 -(id) initWithFrame:(CGRect)frame{
     self = [super init];
     if(self){
         _frame = frame;
-        _view = [[CurtainView alloc] initWithFrame:frame];
+        _bounds = CGRectMake(0, 0, frame.size.width, frame.size.height);
+        _view = [[UIScreenView alloc] initWithFrame:frame];
         width = _frame.size.width;
         height = _frame.size.height;
         _aspectRatio = _frame.size.width/_frame.size.height;

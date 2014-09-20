@@ -1,10 +1,10 @@
-#import "Room.h"
+#import "RoomView.h"
 
-@implementation Room
+@implementation RoomView
 
-+(instancetype) room{
-    Room *room = [[Room alloc] init];
-    return room;
++(instancetype) roomView{
+    RoomView *roomView = [[RoomView alloc] init];
+    return roomView;
 }
 
 -(id)init{

@@ -49,7 +49,7 @@
     if(navBar){
         float arrowWidth = navBar.view.frame.size.width*.125;
         
-        navBar.forwardButton = [[UIButton alloc] initWithFrame:CGRectMake(navBar.view.frame.size.width-(arrowWidth*.75+5), navBar.view.frame.size.height - arrowWidth*1.66-5, arrowWidth*.75, arrowWidth*1.66)];
+        navBar.forwardButton = [[UIButton alloc] initWithFrame:CGRectMake(navBar.view.frame.size.width-(arrowWidth+5), navBar.view.frame.size.height - arrowWidth*1.66-5, arrowWidth, arrowWidth*1.66)];
         [navBar.forwardButton addTarget:navBar action:@selector(forwardButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [navBar.forwardButton setBackgroundColor:[UIColor blackColor]];
         [[navBar.forwardButton titleLabel] setFont:[UIFont boldSystemFontOfSize:30]];
@@ -58,7 +58,7 @@
         [navBar.forwardButton setTitle:@"▶︎" forState:UIControlStateNormal];
         [[navBar view] addSubview:navBar.forwardButton];
         
-        navBar.backButton = [[UIButton alloc] initWithFrame:CGRectMake(5, navBar.view.frame.size.height - arrowWidth*1.66-5, arrowWidth*.75, arrowWidth*1.66)];
+        navBar.backButton = [[UIButton alloc] initWithFrame:CGRectMake(5, navBar.view.frame.size.height - arrowWidth*1.66-5, arrowWidth, arrowWidth*1.66)];
         [navBar.backButton addTarget:navBar action:@selector(backButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         [navBar.backButton setBackgroundColor:[UIColor blackColor]];
         [navBar.backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -80,6 +80,17 @@
     return navBar;
 }
 
+-(void) customDraw{
+    static int del;
+    del++;
+    glColor4f(0.75f, 0.75f, 0.75f, 1.0f);
+    glPushMatrix();
+    glTranslatef(self.view.bounds.size.width*.5, self.view.bounds.size.height, 0.0);
+    glRotatef(del, 0, 0, 1.0);
+    glScalef(100, 100, 1);
+    [self drawPentagon];
+    glPopMatrix();
+}
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     NSLog(@"NavBar : touchesBegan");
