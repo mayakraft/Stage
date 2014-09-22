@@ -5,6 +5,11 @@
 // examples
 #import "CubeOctaRoom.h"
 
+// scroll view
+#import "GLScrollView.h"
+#import "UIScrollViewSubclass.h"
+#import "UIViewSubclass.h"
+
 void set_color(float* color, float* color_ref){
     color[0] = color_ref[0];
     color[1] = color_ref[1];
@@ -21,6 +26,9 @@ void set_color(float* color, float* color_ref){
     float       _fieldOfView;
 
     CMMotionManager *motionManager;
+    
+    GLScrollView *glScrollView;
+    CADisplayLink *_displayLink;
 }
 
 @end
@@ -34,16 +42,106 @@ void set_color(float* color, float* color_ref){
         
         // CUSTOMIZE HERE
 
-        NavBar *navBar = [NavBar navBarBottom];
-        [navBar setDelegate:self];
-        [self addSubscreen:navBar];
+//        NavBar *navBar = [NavBar navBarBottom];
+//        [navBar setDelegate:self];
+//        [self addSubscreen:navBar];
+//
+//        [self addSubroom:[CubeOctaRoom roomView]];
+//        [self setBackgroundColor:whiteColor];
         
-        [self addSubroom:[CubeOctaRoom roomView]];
-        [self setBackgroundColor:whiteColor];
+        glScrollView = [[GLScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height*.4, self.view.bounds.size.width, self.view.bounds.size.height*.2)];
+        [glScrollView.view setBackgroundColor:[UIColor lightGrayColor]];
+        UIView *darkGray = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width, 0, self.view.bounds.size.width, glScrollView.frame.size.height)];
+        [darkGray setBackgroundColor:[UIColor darkGrayColor]];
+        [glScrollView.view addSubview:darkGray];
+        [glScrollView.view setUserInteractionEnabled:NO];
+        [darkGray setUserInteractionEnabled:NO];
+        [self.view addSubview:glScrollView.view];
         
+        UIScrollViewSubclass *scrollView = [[UIScrollViewSubclass alloc] init];
+        scrollView.frame = glScrollView.frame;
+        scrollView.contentSize = CGSizeMake(glScrollView.frame.size.width*3, glScrollView.frame.size.height);//glScrollView.scrollableContentSize;
+        scrollView.showsHorizontalScrollIndicator = NO;
+        [scrollView setPagingEnabled:YES];
+        scrollView.delegate = self;
+        scrollView.tag = 0;
+        scrollView.hidden = YES;
+        [self.view addSubview:scrollView];
+        
+        UIViewSubclass *dummyView = [[UIViewSubclass alloc] initWithFrame:scrollView.frame];
+        //        [dummyView setBackgroundColor:[UIColor clearColor]];
+        [dummyView addGestureRecognizer:scrollView.panGestureRecognizer];
+        [self.view addSubview:dummyView];
+
     }
     return self;
 }
+
+
+/////////////////////////////
+///// SCROLL VIEW STUFF /////
+/////////////////////////////
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    //    NSLog(@"scrolling: %f",scrollView.contentOffset.x);
+    //    for every scrollView
+    //    if(scrollView.tag == 0)
+    glScrollView.scrollOffset = scrollView.contentOffset;
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self startDisplayLinkIfNeeded];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate) {
+        [self stopDisplayLink];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSLog(@"scrolling stopped");
+    [self stopDisplayLink];
+}
+
+// uncomment this method to force the scrollView to land on a little cube boundary
+//- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+//{
+//    *targetContentOffset = [_cubeView scrollOffsetForProposedOffset:*targetContentOffset];
+//}
+
+#pragma mark Display Link
+
+- (void)startDisplayLinkIfNeeded
+{
+    if (!_displayLink) {
+        NSLog(@"display link");
+        _displayLink = [CADisplayLink displayLinkWithTarget:(GLKView*)self selector:@selector(auxDraw)];
+        [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:UITrackingRunLoopMode];
+    }
+}
+-(void) auxDraw{
+    [self update];
+    [(GLKView*)self.view display];
+}
+- (void)stopDisplayLink
+{
+    NSLog(@"stopping display link");
+    if(_displayLink)
+        [_displayLink invalidate];
+    _displayLink = nil;
+}
+
+/////////////////////////////////
+///// END SCROLL VIEW STUFF /////
+/////////////////////////////////
+
 
 // called before draw function
 -(void) update{
@@ -70,29 +168,26 @@ void set_color(float* color, float* color_ref){
     glMatrixMode(GL_MODELVIEW);
 
     glLoadIdentity();
-    glPushMatrix();
-    
-    if(orientToDevice)
-        glMultMatrixf(_deviceAttitude.m);
-    
-    glDisable(GL_LIGHTING);
+//    glPushMatrix();
+//    
+//    if(orientToDevice)
+//        glMultMatrixf(_deviceAttitude.m);
+//    
+//    glDisable(GL_LIGHTING);
+//
+//    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+//    
+//    if(_roomViews)
+//        for(RoomView *roomView in _roomViews)
+//            [roomView draw];
+//    
+//    if(_screenViews)
+//        for (ScreenView *screenView in _screenViews)
+//            [screenView draw];
+//    
+//    glPopMatrix();
+}
 
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    
-    if(_roomViews)
-        for(RoomView *roomView in _roomViews)
-            [roomView draw];
-    
-    if(_screenViews)
-        for (ScreenView *screenView in _screenViews)
-            [screenView draw];
-    
-    glPopMatrix();
-}
--(void) auxDraw{
-    [self update];
-    [(GLKView*)self.view display];
-}
 //-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
 ////    if(_userInteractionEnabled){
 ////        if(_curtains)
@@ -216,7 +311,7 @@ void set_color(float* color, float* color_ref){
 -(void) setup{
     NSLog(@"Stage.m : setup");
     start = [NSDate date];
-    _userInteractionEnabled = true;
+//    _userInteractionEnabled = true;
     orientToDevice = true;
     _backgroundColor = malloc(sizeof(float)*4);
     _script = [[SceneController alloc] init];
@@ -237,15 +332,15 @@ void set_color(float* color, float* color_ref){
     [self initOpenGL];
     [self customizeOpenGL];
     
-    SWRevealViewController *revealController = [self revealViewController];
-    UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [menuButton setFrame:CGRectMake(10, 10, 44, 44)];
-    [menuButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon.png"] forState:UIControlStateNormal];
-    [menuButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:menuButton];
+//    SWRevealViewController *revealController = [self revealViewController];
+//    UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    [menuButton setFrame:CGRectMake(10, 10, 44, 44)];
+//    [menuButton setBackgroundImage:[UIImage imageNamed:@"reveal-icon.png"] forState:UIControlStateNormal];
+//    [menuButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:menuButton];
 //TODO: FIX
     NSLog(@"THIS IS A SILLY FIX FOR A BIG PROBLEM");
-    [self performSelector:@selector(waitASecond:) withObject:menuButton afterDelay:1.5];
+//    [self performSelector:@selector(waitASecond:) withObject:menuButton afterDelay:1.5];
 }
 -(void) waitASecond:(UIButton*)menuButton{
     SWRevealViewController *revealController = [self revealViewController];

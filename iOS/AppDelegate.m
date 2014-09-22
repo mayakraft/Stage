@@ -21,18 +21,18 @@
     
     // Override point for customization after application launch.
     Stage *stage = [[Stage alloc] init];
-    MenuViewController *menu = [[MenuViewController alloc] init];
+//    MenuViewController *menu = [[MenuViewController alloc] init];
+//    
+//    SWRevealViewController *mainRevealController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:stage];
+//
+//    [mainRevealController setDelegate:self];
+////    [mainRevealController setRearViewRevealWidth:60];
+////    [mainRevealController setRearViewRevealOverdraw:120];
+////    [mainRevealController setBounceBackOnOverdraw:NO];
+////    [mainRevealController setStableDragOnOverdraw:YES];
+////    [mainRevealController setFrontViewPosition:FrontViewPositionRight];
     
-    SWRevealViewController *mainRevealController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:stage];
-
-    [mainRevealController setDelegate:self];
-//    [mainRevealController setRearViewRevealWidth:60];
-//    [mainRevealController setRearViewRevealOverdraw:120];
-//    [mainRevealController setBounceBackOnOverdraw:NO];
-//    [mainRevealController setStableDragOnOverdraw:YES];
-//    [mainRevealController setFrontViewPosition:FrontViewPositionRight];
-    
-    self.window.rootViewController = mainRevealController;
+    self.window.rootViewController = stage;
     self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
     return YES;

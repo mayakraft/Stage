@@ -92,15 +92,15 @@
     glPopMatrix();
 }
 
--(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"NavBar : touchesBegan");
-}
--(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"NavBar : touchesMoved");
-}
--(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"NavBar : touchesEnded");
-}
+//-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"NavBar : touchesBegan");
+//}
+//-(void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"NavBar : touchesMoved");
+//}
+//-(void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+//    NSLog(@"NavBar : touchesEnded");
+//}
 
 -(void) setTitles:(NSArray *)titles{
     _titles = titles;

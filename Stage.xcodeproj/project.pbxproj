@@ -29,6 +29,9 @@
 		D5B38B5519CCFE2400459315 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38B5419CCFE2400459315 /* AppDelegate.m */; };
 		D5B38B5719CCFE2400459315 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5B38B5619CCFE2400459315 /* Images.xcassets */; };
 		D5B38B6319CCFE2400459315 /* glscrollerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38B6219CCFE2400459315 /* glscrollerTests.m */; };
+		D5B38BB219CD02F000459315 /* GLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BAD19CD02F000459315 /* GLScrollView.m */; };
+		D5B38BB319CD02F000459315 /* UIScrollViewSubclass.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BAF19CD02F000459315 /* UIScrollViewSubclass.m */; };
+		D5B38BB419CD02F000459315 /* UIViewSubclass.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BB119CD02F000459315 /* UIViewSubclass.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,12 @@
 		D5B38B5C19CCFE2400459315 /* glscrollerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = glscrollerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B38B6119CCFE2400459315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5B38B6219CCFE2400459315 /* glscrollerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = glscrollerTests.m; sourceTree = "<group>"; };
+		D5B38BAC19CD02F000459315 /* GLScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLScrollView.h; sourceTree = "<group>"; };
+		D5B38BAD19CD02F000459315 /* GLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLScrollView.m; sourceTree = "<group>"; };
+		D5B38BAE19CD02F000459315 /* UIScrollViewSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScrollViewSubclass.h; sourceTree = "<group>"; };
+		D5B38BAF19CD02F000459315 /* UIScrollViewSubclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIScrollViewSubclass.m; sourceTree = "<group>"; };
+		D5B38BB019CD02F000459315 /* UIViewSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewSubclass.h; sourceTree = "<group>"; };
+		D5B38BB119CD02F000459315 /* UIViewSubclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewSubclass.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +206,7 @@
 				D536C6E319CA591300EFF156 /* Animation */,
 				D568151C195E908600DF984C /* Interface */,
 				D536C6E419CA592A00EFF156 /* Custom Interface */,
+				D5B38BB519CD02F300459315 /* ScrollView */,
 				D568152A195FAB7D00DF984C /* Tools */,
 				D568152E195FAF9200DF984C /* Samples */,
 			);
@@ -273,6 +283,19 @@
 				D5B38B6119CCFE2400459315 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D5B38BB519CD02F300459315 /* ScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38BAC19CD02F000459315 /* GLScrollView.h */,
+				D5B38BAD19CD02F000459315 /* GLScrollView.m */,
+				D5B38BAE19CD02F000459315 /* UIScrollViewSubclass.h */,
+				D5B38BAF19CD02F000459315 /* UIScrollViewSubclass.m */,
+				D5B38BB019CD02F000459315 /* UIViewSubclass.h */,
+				D5B38BB119CD02F000459315 /* UIViewSubclass.m */,
+			);
+			name = ScrollView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -407,12 +430,15 @@
 				D5681524195E9FCF00DF984C /* NavBar.m in Sources */,
 				D527E08A19A68D100092CA64 /* SceneController.m in Sources */,
 				D56814F4195D4EBC00DF984C /* main.m in Sources */,
+				D5B38BB419CD02F000459315 /* UIViewSubclass.m in Sources */,
 				D531B1DB19C377B900973DBF /* MenuViewController.m in Sources */,
 				D57C425B1960E60F00963C52 /* Controls.m in Sources */,
 				D568151B195E908100DF984C /* ScreenView.m in Sources */,
 				D568151A195E908100DF984C /* RoomView.m in Sources */,
+				D5B38BB319CD02F000459315 /* UIScrollViewSubclass.m in Sources */,
 				D5681527195EA06E00DF984C /* Hotspot.m in Sources */,
 				D568151F195E90AE00DF984C /* Primitives.m in Sources */,
+				D5B38BB219CD02F000459315 /* GLScrollView.m in Sources */,
 				D5681510195D4F3000DF984C /* Stage.m in Sources */,
 				D568152D195FAF9000DF984C /* CubeOctaRoom.m in Sources */,
 				D531B1D719C3767000973DBF /* SWRevealViewController.m in Sources */,
