@@ -1,9 +1,10 @@
-#import "Primitives.h"
+#import <UIKit/UIKit.h>
+#import <OpenGLES/ES1/gl.h>
 
 @interface UIScreenView : UIView
 @end
 
-@interface ScreenView : Primitives
+@interface ScreenView : NSObject
 
 @property UIScreenView *view;   // attach Apple or other user interface elements
 @property (nonatomic) CGRect frame;

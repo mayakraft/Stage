@@ -1,5 +1,5 @@
-#import "ScreenView.h"
+#import "Curtain.h"
 
-@interface Controls : ScreenView
+@interface Controls : Curtain
 @property UISlider *slider;
 @end

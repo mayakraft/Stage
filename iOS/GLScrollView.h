@@ -8,6 +8,7 @@
 
 #import "ScreenView.h"
 #import <GLKit/GLKit.h>
+#import <OpenGLES/ES1/gl.h>
 
 @interface GLScrollView : ScreenView
 

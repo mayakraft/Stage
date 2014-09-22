@@ -7,6 +7,88 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+<<<<<<< HEAD
+		D5B38BC519CD0A9A00459315 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BC419CD0A9A00459315 /* main.m */; };
+		D5B38BC819CD0A9A00459315 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BC719CD0A9A00459315 /* AppDelegate.m */; };
+		D5B38BCA19CD0A9A00459315 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = D5B38BC919CD0A9A00459315 /* Shader.fsh */; };
+		D5B38BCC19CD0A9A00459315 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = D5B38BCB19CD0A9A00459315 /* Shader.vsh */; };
+		D5B38BCF19CD0A9A00459315 /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BCE19CD0A9A00459315 /* Stage.m */; };
+		D5B38BD419CD0A9A00459315 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5B38BD319CD0A9A00459315 /* Images.xcassets */; };
+		D5B38BE019CD0A9A00459315 /* iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BDF19CD0A9A00459315 /* iOSTests.m */; };
+		D5B38BEF19CD10C200459315 /* Primitives.c in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BEA19CD10C200459315 /* Primitives.c */; };
+		D5B38BF019CD10C200459315 /* ScreenView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BEC19CD10C200459315 /* ScreenView.m */; };
+		D5B38BF119CD10C200459315 /* GLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BEE19CD10C200459315 /* GLScrollView.m */; };
+		D5B38BF419CD17A600459315 /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BF319CD17A600459315 /* Room.m */; };
+		D5B38BF719CD190E00459315 /* AnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BF619CD190E00459315 /* AnimationController.m */; };
+		D5B38BFD19CD1D6500459315 /* reveal-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B38BF919CD1D6500459315 /* reveal-icon.png */; };
+		D5B38BFE19CD1D6500459315 /* reveal-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D5B38BFA19CD1D6500459315 /* reveal-icon@2x.png */; };
+		D5B38BFF19CD1D6500459315 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BFC19CD1D6500459315 /* SWRevealViewController.m */; };
+		D5B38C0519CD1D8200459315 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38C0219CD1D8200459315 /* MenuViewController.m */; };
+		D5B38C0619CD1D8200459315 /* NavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38C0419CD1D8200459315 /* NavBar.m */; };
+		D5B38C1319D0790000459315 /* GLUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38C1019D0790000459315 /* GLUIView.m */; };
+		D5B38C1419D0790000459315 /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38C1219D0790000459315 /* GLView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D5B38BDA19CD0A9A00459315 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D5B38BB719CD0A9900459315 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D5B38BBE19CD0A9A00459315;
+			remoteInfo = iOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D5B38BBF19CD0A9A00459315 /* Stage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B38BC319CD0A9A00459315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5B38BC419CD0A9A00459315 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D5B38BC619CD0A9A00459315 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D5B38BC719CD0A9A00459315 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D5B38BC919CD0A9A00459315 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		D5B38BCB19CD0A9A00459315 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		D5B38BCD19CD0A9A00459315 /* Stage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Stage.h; sourceTree = "<group>"; };
+		D5B38BCE19CD0A9A00459315 /* Stage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Stage.m; sourceTree = "<group>"; };
+		D5B38BD319CD0A9A00459315 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D5B38BD919CD0A9A00459315 /* StageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5B38BDE19CD0A9A00459315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5B38BDF19CD0A9A00459315 /* iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSTests.m; sourceTree = "<group>"; };
+		D5B38BEA19CD10C200459315 /* Primitives.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Primitives.c; sourceTree = "<group>"; };
+		D5B38BEB19CD10C200459315 /* ScreenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenView.h; sourceTree = "<group>"; };
+		D5B38BEC19CD10C200459315 /* ScreenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenView.m; sourceTree = "<group>"; };
+		D5B38BED19CD10C200459315 /* GLScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLScrollView.h; sourceTree = "<group>"; };
+		D5B38BEE19CD10C200459315 /* GLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLScrollView.m; sourceTree = "<group>"; };
+		D5B38BF219CD17A600459315 /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
+		D5B38BF319CD17A600459315 /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
+		D5B38BF519CD190E00459315 /* AnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationController.h; sourceTree = "<group>"; };
+		D5B38BF619CD190E00459315 /* AnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationController.m; sourceTree = "<group>"; };
+		D5B38BF919CD1D6500459315 /* reveal-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon.png"; sourceTree = "<group>"; };
+		D5B38BFA19CD1D6500459315 /* reveal-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reveal-icon@2x.png"; sourceTree = "<group>"; };
+		D5B38BFB19CD1D6500459315 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		D5B38BFC19CD1D6500459315 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		D5B38C0119CD1D8200459315 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		D5B38C0219CD1D8200459315 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		D5B38C0319CD1D8200459315 /* NavBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavBar.h; sourceTree = "<group>"; };
+		D5B38C0419CD1D8200459315 /* NavBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavBar.m; sourceTree = "<group>"; };
+		D5B38C0F19D0790000459315 /* GLUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLUIView.h; sourceTree = "<group>"; };
+		D5B38C1019D0790000459315 /* GLUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLUIView.m; sourceTree = "<group>"; };
+		D5B38C1119D0790000459315 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
+		D5B38C1219D0790000459315 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D5B38BBC19CD0A9A00459315 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5B38BD619CD0A9A00459315 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+=======
 		D527E08A19A68D100092CA64 /* SceneController.m in Sources */ = {isa = PBXBuildFile; fileRef = D527E08919A68D100092CA64 /* SceneController.m */; };
 		D531B1D719C3767000973DBF /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D531B1D619C3767000973DBF /* SWRevealViewController.m */; };
 		D531B1DB19C377B900973DBF /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D531B1DA19C377B900973DBF /* MenuViewController.m */; };
@@ -18,31 +100,14 @@
 		D5681510195D4F3000DF984C /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = D568150F195D4F3000DF984C /* Stage.m */; };
 		D5681512195D4FB100DF984C /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5681511195D4FB100DF984C /* OpenGLES.framework */; };
 		D5681514195D4FBB00DF984C /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5681513195D4FBB00DF984C /* GLKit.framework */; };
-		D568151A195E908100DF984C /* RoomView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681517195E908100DF984C /* RoomView.m */; };
-		D568151B195E908100DF984C /* ScreenView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681519195E908100DF984C /* ScreenView.m */; };
+		D568151A195E908100DF984C /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681517195E908100DF984C /* Room.m */; };
+		D568151B195E908100DF984C /* Curtain.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681519195E908100DF984C /* Curtain.m */; };
 		D568151F195E90AE00DF984C /* Primitives.m in Sources */ = {isa = PBXBuildFile; fileRef = D568151E195E90AE00DF984C /* Primitives.m */; };
 		D5681524195E9FCF00DF984C /* NavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681523195E9FCF00DF984C /* NavBar.m */; };
 		D5681527195EA06E00DF984C /* Hotspot.m in Sources */ = {isa = PBXBuildFile; fileRef = D5681526195EA06E00DF984C /* Hotspot.m */; };
 		D568152D195FAF9000DF984C /* CubeOctaRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = D568152C195FAF9000DF984C /* CubeOctaRoom.m */; };
 		D57C425B1960E60F00963C52 /* Controls.m in Sources */ = {isa = PBXBuildFile; fileRef = D57C425A1960E60F00963C52 /* Controls.m */; };
-		D5B38B5219CCFE2400459315 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38B5119CCFE2400459315 /* main.m */; };
-		D5B38B5519CCFE2400459315 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38B5419CCFE2400459315 /* AppDelegate.m */; };
-		D5B38B5719CCFE2400459315 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5B38B5619CCFE2400459315 /* Images.xcassets */; };
-		D5B38B6319CCFE2400459315 /* glscrollerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38B6219CCFE2400459315 /* glscrollerTests.m */; };
-		D5B38BB219CD02F000459315 /* GLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BAD19CD02F000459315 /* GLScrollView.m */; };
-		D5B38BB319CD02F000459315 /* UIScrollViewSubclass.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BAF19CD02F000459315 /* UIScrollViewSubclass.m */; };
-		D5B38BB419CD02F000459315 /* UIViewSubclass.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BB119CD02F000459315 /* UIViewSubclass.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		D5B38B5D19CCFE2400459315 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D56814E6195D4EBC00DF984C /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D5B38B4C19CCFE2400459315;
-			remoteInfo = glscroller;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		D527E08819A68D100092CA64 /* SceneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneController.h; sourceTree = "<group>"; };
@@ -63,10 +128,10 @@
 		D568150F195D4F3000DF984C /* Stage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stage.m; sourceTree = "<group>"; };
 		D5681511195D4FB100DF984C /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		D5681513195D4FBB00DF984C /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		D5681516195E908100DF984C /* RoomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomView.h; sourceTree = "<group>"; };
-		D5681517195E908100DF984C /* RoomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomView.m; sourceTree = "<group>"; };
-		D5681518195E908100DF984C /* ScreenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenView.h; sourceTree = "<group>"; };
-		D5681519195E908100DF984C /* ScreenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenView.m; sourceTree = "<group>"; };
+		D5681516195E908100DF984C /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
+		D5681517195E908100DF984C /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
+		D5681518195E908100DF984C /* Curtain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Curtain.h; sourceTree = "<group>"; };
+		D5681519195E908100DF984C /* Curtain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Curtain.m; sourceTree = "<group>"; };
 		D568151D195E90AE00DF984C /* Primitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Primitives.h; sourceTree = "<group>"; };
 		D568151E195E90AE00DF984C /* Primitives.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Primitives.m; sourceTree = "<group>"; };
 		D5681522195E9FCF00DF984C /* NavBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavBar.h; sourceTree = "<group>"; };
@@ -79,21 +144,6 @@
 		D568152C195FAF9000DF984C /* CubeOctaRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CubeOctaRoom.m; sourceTree = "<group>"; };
 		D57C42591960E60F00963C52 /* Controls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controls.h; sourceTree = "<group>"; };
 		D57C425A1960E60F00963C52 /* Controls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Controls.m; sourceTree = "<group>"; };
-		D5B38B4D19CCFE2400459315 /* glscroller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = glscroller.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5B38B5019CCFE2400459315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D5B38B5119CCFE2400459315 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D5B38B5319CCFE2400459315 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D5B38B5419CCFE2400459315 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		D5B38B5619CCFE2400459315 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		D5B38B5C19CCFE2400459315 /* glscrollerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = glscrollerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5B38B6119CCFE2400459315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D5B38B6219CCFE2400459315 /* glscrollerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = glscrollerTests.m; sourceTree = "<group>"; };
-		D5B38BAC19CD02F000459315 /* GLScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLScrollView.h; sourceTree = "<group>"; };
-		D5B38BAD19CD02F000459315 /* GLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLScrollView.m; sourceTree = "<group>"; };
-		D5B38BAE19CD02F000459315 /* UIScrollViewSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIScrollViewSubclass.h; sourceTree = "<group>"; };
-		D5B38BAF19CD02F000459315 /* UIScrollViewSubclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIScrollViewSubclass.m; sourceTree = "<group>"; };
-		D5B38BB019CD02F000459315 /* UIViewSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewSubclass.h; sourceTree = "<group>"; };
-		D5B38BB119CD02F000459315 /* UIViewSubclass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewSubclass.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,26 +153,79 @@
 			files = (
 				D5681514195D4FBB00DF984C /* GLKit.framework in Frameworks */,
 				D5681512195D4FB100DF984C /* OpenGLES.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D5B38B4A19CCFE2400459315 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D5B38B5919CCFE2400459315 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+<<<<<<< HEAD
+		D5B38BB619CD0A9900459315 = {
+			isa = PBXGroup;
+			children = (
+				D5B38BC119CD0A9A00459315 /* iOS */,
+				D5B38BDC19CD0A9A00459315 /* iOSTests */,
+				D5B38BC019CD0A9A00459315 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D5B38BC019CD0A9A00459315 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38BBF19CD0A9A00459315 /* Stage.app */,
+				D5B38BD919CD0A9A00459315 /* StageTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D5B38BC119CD0A9A00459315 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38BC619CD0A9A00459315 /* AppDelegate.h */,
+				D5B38BC719CD0A9A00459315 /* AppDelegate.m */,
+				D5B38BC919CD0A9A00459315 /* Shader.fsh */,
+				D5B38BCB19CD0A9A00459315 /* Shader.vsh */,
+				D5B38BCD19CD0A9A00459315 /* Stage.h */,
+				D5B38BCE19CD0A9A00459315 /* Stage.m */,
+				D5B38BF819CD1A8500459315 /* Animations */,
+				D5B38BEA19CD10C200459315 /* Primitives.c */,
+				D5B38BF219CD17A600459315 /* Room.h */,
+				D5B38BF319CD17A600459315 /* Room.m */,
+				D5B38C0B19CD2BAB00459315 /* Views */,
+				D5B38BED19CD10C200459315 /* GLScrollView.h */,
+				D5B38BEE19CD10C200459315 /* GLScrollView.m */,
+				D5B38C0719CD1D8600459315 /* Examples */,
+				D5B38C0019CD1D6800459315 /* RevealMenu */,
+				D5B38BD319CD0A9A00459315 /* Images.xcassets */,
+				D5B38BC219CD0A9A00459315 /* Supporting Files */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		D5B38BC219CD0A9A00459315 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38BC319CD0A9A00459315 /* Info.plist */,
+				D5B38BC419CD0A9A00459315 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D5B38BDC19CD0A9A00459315 /* iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38BDF19CD0A9A00459315 /* iOSTests.m */,
+				D5B38BDD19CD0A9A00459315 /* Supporting Files */,
+			);
+			path = iOSTests;
+			sourceTree = "<group>";
+		};
+		D5B38BDD19CD0A9A00459315 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38BDE19CD0A9A00459315 /* Info.plist */,
+=======
 		D531B1D819C3767400973DBF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,32 +237,10 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D536C6E319CA591300EFF156 /* Animation */ = {
-			isa = PBXGroup;
-			children = (
-				D527E08819A68D100092CA64 /* SceneController.h */,
-				D527E08919A68D100092CA64 /* SceneController.m */,
-			);
-			name = Animation;
-			sourceTree = "<group>";
-		};
-		D536C6E419CA592A00EFF156 /* Custom Interface */ = {
-			isa = PBXGroup;
-			children = (
-				D531B1D919C377B900973DBF /* MenuViewController.h */,
-				D531B1DA19C377B900973DBF /* MenuViewController.m */,
-				D5681522195E9FCF00DF984C /* NavBar.h */,
-				D5681523195E9FCF00DF984C /* NavBar.m */,
-			);
-			name = "Custom Interface";
-			sourceTree = "<group>";
-		};
 		D56814E5195D4EBC00DF984C = {
 			isa = PBXGroup;
 			children = (
 				D56814F0195D4EBC00DF984C /* iOS */,
-				D5B38B4E19CCFE2400459315 /* glscroller */,
-				D5B38B5F19CCFE2400459315 /* glscrollerTests */,
 				D56814EF195D4EBC00DF984C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -168,8 +249,6 @@
 			isa = PBXGroup;
 			children = (
 				D56814EE195D4EBC00DF984C /* Stage.app */,
-				D5B38B4D19CCFE2400459315 /* glscroller.app */,
-				D5B38B5C19CCFE2400459315 /* glscrollerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -179,6 +258,8 @@
 			children = (
 				D56814F5195D4EBC00DF984C /* AppDelegate.h */,
 				D56814F6195D4EBC00DF984C /* AppDelegate.m */,
+				D531B1D919C377B900973DBF /* MenuViewController.h */,
+				D531B1DA19C377B900973DBF /* MenuViewController.m */,
 				D5681515195E8F7800DF984C /* StageKit */,
 				D531B1D819C3767400973DBF /* Frameworks */,
 				D56814F8195D4EBC00DF984C /* Images.xcassets */,
@@ -194,34 +275,80 @@
 				D5681511195D4FB100DF984C /* OpenGLES.framework */,
 				D56814F2195D4EBC00DF984C /* Info.plist */,
 				D56814F3195D4EBC00DF984C /* main.m */,
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
+		D5B38BF819CD1A8500459315 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38BF519CD190E00459315 /* AnimationController.h */,
+				D5B38BF619CD190E00459315 /* AnimationController.m */,
+			);
+			name = Animations;
+			sourceTree = "<group>";
+		};
+		D5B38C0019CD1D6800459315 /* RevealMenu */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38C0119CD1D8200459315 /* MenuViewController.h */,
+				D5B38C0219CD1D8200459315 /* MenuViewController.m */,
+				D5B38BFB19CD1D6500459315 /* SWRevealViewController.h */,
+				D5B38BFC19CD1D6500459315 /* SWRevealViewController.m */,
+				D5B38BF919CD1D6500459315 /* reveal-icon.png */,
+				D5B38BFA19CD1D6500459315 /* reveal-icon@2x.png */,
+			);
+			name = RevealMenu;
+			sourceTree = "<group>";
+		};
+		D5B38C0719CD1D8600459315 /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38C0319CD1D8200459315 /* NavBar.h */,
+				D5B38C0419CD1D8200459315 /* NavBar.m */,
+			);
+			name = Examples;
+			sourceTree = "<group>";
+		};
+		D5B38C0B19CD2BAB00459315 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D5B38C1119D0790000459315 /* GLView.h */,
+				D5B38C1219D0790000459315 /* GLView.m */,
+				D5B38C0F19D0790000459315 /* GLUIView.h */,
+				D5B38C1019D0790000459315 /* GLUIView.m */,
+				D5B38BEB19CD10C200459315 /* ScreenView.h */,
+				D5B38BEC19CD10C200459315 /* ScreenView.m */,
+			);
+			name = Views;
+=======
 		D5681515195E8F7800DF984C /* StageKit */ = {
 			isa = PBXGroup;
 			children = (
 				D568150E195D4F3000DF984C /* Stage.h */,
 				D568150F195D4F3000DF984C /* Stage.m */,
-				D536C6E319CA591300EFF156 /* Animation */,
-				D568151C195E908600DF984C /* Interface */,
-				D536C6E419CA592A00EFF156 /* Custom Interface */,
-				D5B38BB519CD02F300459315 /* ScrollView */,
+				D527E08819A68D100092CA64 /* SceneController.h */,
+				D527E08919A68D100092CA64 /* SceneController.m */,
+				D568151C195E908600DF984C /* Classes */,
 				D568152A195FAB7D00DF984C /* Tools */,
 				D568152E195FAF9200DF984C /* Samples */,
 			);
 			name = StageKit;
 			sourceTree = "<group>";
 		};
-		D568151C195E908600DF984C /* Interface */ = {
+		D568151C195E908600DF984C /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D5681516195E908100DF984C /* RoomView.h */,
-				D5681517195E908100DF984C /* RoomView.m */,
-				D5681518195E908100DF984C /* ScreenView.h */,
-				D5681519195E908100DF984C /* ScreenView.m */,
+				D5681516195E908100DF984C /* Room.h */,
+				D5681517195E908100DF984C /* Room.m */,
+				D5681518195E908100DF984C /* Curtain.h */,
+				D5681519195E908100DF984C /* Curtain.m */,
+				D5681522195E9FCF00DF984C /* NavBar.h */,
+				D5681523195E9FCF00DF984C /* NavBar.m */,
 			);
-			name = Interface;
+			name = Classes;
 			sourceTree = "<group>";
 		};
 		D568152A195FAB7D00DF984C /* Tools */ = {
@@ -246,61 +373,21 @@
 				D568152C195FAF9000DF984C /* CubeOctaRoom.m */,
 			);
 			name = Samples;
-			sourceTree = "<group>";
-		};
-		D5B38B4E19CCFE2400459315 /* glscroller */ = {
-			isa = PBXGroup;
-			children = (
-				D5B38B5319CCFE2400459315 /* AppDelegate.h */,
-				D5B38B5419CCFE2400459315 /* AppDelegate.m */,
-				D5B38B5619CCFE2400459315 /* Images.xcassets */,
-				D5B38B4F19CCFE2400459315 /* Supporting Files */,
-			);
-			path = glscroller;
-			sourceTree = "<group>";
-		};
-		D5B38B4F19CCFE2400459315 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D5B38B5019CCFE2400459315 /* Info.plist */,
-				D5B38B5119CCFE2400459315 /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D5B38B5F19CCFE2400459315 /* glscrollerTests */ = {
-			isa = PBXGroup;
-			children = (
-				D5B38B6219CCFE2400459315 /* glscrollerTests.m */,
-				D5B38B6019CCFE2400459315 /* Supporting Files */,
-			);
-			path = glscrollerTests;
-			sourceTree = "<group>";
-		};
-		D5B38B6019CCFE2400459315 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D5B38B6119CCFE2400459315 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D5B38BB519CD02F300459315 /* ScrollView */ = {
-			isa = PBXGroup;
-			children = (
-				D5B38BAC19CD02F000459315 /* GLScrollView.h */,
-				D5B38BAD19CD02F000459315 /* GLScrollView.m */,
-				D5B38BAE19CD02F000459315 /* UIScrollViewSubclass.h */,
-				D5B38BAF19CD02F000459315 /* UIScrollViewSubclass.m */,
-				D5B38BB019CD02F000459315 /* UIViewSubclass.h */,
-				D5B38BB119CD02F000459315 /* UIViewSubclass.m */,
-			);
-			name = ScrollView;
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+<<<<<<< HEAD
+		D5B38BBE19CD0A9A00459315 /* Stage */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5B38BE319CD0A9A00459315 /* Build configuration list for PBXNativeTarget "Stage" */;
+			buildPhases = (
+				D5B38BBB19CD0A9A00459315 /* Sources */,
+				D5B38BBC19CD0A9A00459315 /* Frameworks */,
+				D5B38BBD19CD0A9A00459315 /* Resources */,
+=======
 		D56814ED195D4EBC00DF984C /* Stage */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D5681508195D4EBC00DF984C /* Build configuration list for PBXNativeTarget "Stage" */;
@@ -308,78 +395,90 @@
 				D56814EA195D4EBC00DF984C /* Sources */,
 				D56814EB195D4EBC00DF984C /* Frameworks */,
 				D56814EC195D4EBC00DF984C /* Resources */,
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Stage;
-			productName = Stage;
-			productReference = D56814EE195D4EBC00DF984C /* Stage.app */;
+<<<<<<< HEAD
+			productName = iOS;
+			productReference = D5B38BBF19CD0A9A00459315 /* Stage.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D5B38B4C19CCFE2400459315 /* glscroller */ = {
+		D5B38BD819CD0A9A00459315 /* StageTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D5B38B6419CCFE2400459315 /* Build configuration list for PBXNativeTarget "glscroller" */;
+			buildConfigurationList = D5B38BE619CD0A9A00459315 /* Build configuration list for PBXNativeTarget "StageTests" */;
 			buildPhases = (
-				D5B38B4919CCFE2400459315 /* Sources */,
-				D5B38B4A19CCFE2400459315 /* Frameworks */,
-				D5B38B4B19CCFE2400459315 /* Resources */,
+				D5B38BD519CD0A9A00459315 /* Sources */,
+				D5B38BD619CD0A9A00459315 /* Frameworks */,
+				D5B38BD719CD0A9A00459315 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D5B38BDB19CD0A9A00459315 /* PBXTargetDependency */,
 			);
-			name = glscroller;
-			productName = glscroller;
-			productReference = D5B38B4D19CCFE2400459315 /* glscroller.app */;
-			productType = "com.apple.product-type.application";
-		};
-		D5B38B5B19CCFE2400459315 /* glscrollerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D5B38B6719CCFE2400459315 /* Build configuration list for PBXNativeTarget "glscrollerTests" */;
-			buildPhases = (
-				D5B38B5819CCFE2400459315 /* Sources */,
-				D5B38B5919CCFE2400459315 /* Frameworks */,
-				D5B38B5A19CCFE2400459315 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D5B38B5E19CCFE2400459315 /* PBXTargetDependency */,
-			);
-			name = glscrollerTests;
-			productName = glscrollerTests;
-			productReference = D5B38B5C19CCFE2400459315 /* glscrollerTests.xctest */;
+			name = StageTests;
+			productName = iOSTests;
+			productReference = D5B38BD919CD0A9A00459315 /* StageTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
+		D5B38BB719CD0A9900459315 /* Project object */ = {
+=======
+			productName = Stage;
+			productReference = D56814EE195D4EBC00DF984C /* Stage.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
 		D56814E6195D4EBC00DF984C /* Project object */ = {
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Robby;
 				TargetAttributes = {
+<<<<<<< HEAD
+					D5B38BBE19CD0A9A00459315 = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					D5B38BD819CD0A9A00459315 = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = D5B38BBE19CD0A9A00459315;
+					};
+				};
+			};
+			buildConfigurationList = D5B38BBA19CD0A9A00459315 /* Build configuration list for PBXProject "Stage" */;
+=======
 					D56814ED195D4EBC00DF984C = {
 						CreatedOnToolsVersion = 6.0;
-					};
-					D5B38B4C19CCFE2400459315 = {
-						CreatedOnToolsVersion = 6.0;
-					};
-					D5B38B5B19CCFE2400459315 = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = D5B38B4C19CCFE2400459315;
 					};
 				};
 			};
 			buildConfigurationList = D56814E9195D4EBC00DF984C /* Build configuration list for PBXProject "Stage" */;
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+<<<<<<< HEAD
+				Base,
+			);
+			mainGroup = D5B38BB619CD0A9900459315;
+			productRefGroup = D5B38BC019CD0A9A00459315 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D5B38BBE19CD0A9A00459315 /* Stage */,
+				D5B38BD819CD0A9A00459315 /* StageTests */,
+=======
 			);
 			mainGroup = D56814E5195D4EBC00DF984C;
 			productRefGroup = D56814EF195D4EBC00DF984C /* Products */;
@@ -387,13 +486,30 @@
 			projectRoot = "";
 			targets = (
 				D56814ED195D4EBC00DF984C /* Stage */,
-				D5B38B4C19CCFE2400459315 /* glscroller */,
-				D5B38B5B19CCFE2400459315 /* glscrollerTests */,
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+<<<<<<< HEAD
+		D5B38BBD19CD0A9A00459315 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5B38BD419CD0A9A00459315 /* Images.xcassets in Resources */,
+				D5B38BFE19CD1D6500459315 /* reveal-icon@2x.png in Resources */,
+				D5B38BCC19CD0A9A00459315 /* Shader.vsh in Resources */,
+				D5B38BCA19CD0A9A00459315 /* Shader.fsh in Resources */,
+				D5B38BFD19CD1D6500459315 /* reveal-icon.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5B38BD719CD0A9A00459315 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+=======
 		D56814EC195D4EBC00DF984C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -401,27 +517,40 @@
 				D56814F9195D4EBC00DF984C /* Images.xcassets in Resources */,
 				D531B1E619C3892900973DBF /* reveal-icon.png in Resources */,
 				D531B1E719C3892900973DBF /* reveal-icon@2x.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D5B38B4B19CCFE2400459315 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D5B38B5719CCFE2400459315 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D5B38B5A19CCFE2400459315 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+<<<<<<< HEAD
+		D5B38BBB19CD0A9A00459315 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5B38BF119CD10C200459315 /* GLScrollView.m in Sources */,
+				D5B38C1419D0790000459315 /* GLView.m in Sources */,
+				D5B38BC819CD0A9A00459315 /* AppDelegate.m in Sources */,
+				D5B38BF019CD10C200459315 /* ScreenView.m in Sources */,
+				D5B38BCF19CD0A9A00459315 /* Stage.m in Sources */,
+				D5B38BC519CD0A9A00459315 /* main.m in Sources */,
+				D5B38C0619CD1D8200459315 /* NavBar.m in Sources */,
+				D5B38BFF19CD1D6500459315 /* SWRevealViewController.m in Sources */,
+				D5B38BEF19CD10C200459315 /* Primitives.c in Sources */,
+				D5B38BF719CD190E00459315 /* AnimationController.m in Sources */,
+				D5B38C1319D0790000459315 /* GLUIView.m in Sources */,
+				D5B38BF419CD17A600459315 /* Room.m in Sources */,
+				D5B38C0519CD1D8200459315 /* MenuViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5B38BD519CD0A9A00459315 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5B38BE019CD0A9A00459315 /* iOSTests.m in Sources */,
+=======
 		D56814EA195D4EBC00DF984C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -430,50 +559,36 @@
 				D5681524195E9FCF00DF984C /* NavBar.m in Sources */,
 				D527E08A19A68D100092CA64 /* SceneController.m in Sources */,
 				D56814F4195D4EBC00DF984C /* main.m in Sources */,
-				D5B38BB419CD02F000459315 /* UIViewSubclass.m in Sources */,
 				D531B1DB19C377B900973DBF /* MenuViewController.m in Sources */,
 				D57C425B1960E60F00963C52 /* Controls.m in Sources */,
-				D568151B195E908100DF984C /* ScreenView.m in Sources */,
-				D568151A195E908100DF984C /* RoomView.m in Sources */,
-				D5B38BB319CD02F000459315 /* UIScrollViewSubclass.m in Sources */,
+				D568151B195E908100DF984C /* Curtain.m in Sources */,
+				D568151A195E908100DF984C /* Room.m in Sources */,
 				D5681527195EA06E00DF984C /* Hotspot.m in Sources */,
 				D568151F195E90AE00DF984C /* Primitives.m in Sources */,
-				D5B38BB219CD02F000459315 /* GLScrollView.m in Sources */,
 				D5681510195D4F3000DF984C /* Stage.m in Sources */,
 				D568152D195FAF9000DF984C /* CubeOctaRoom.m in Sources */,
 				D531B1D719C3767000973DBF /* SWRevealViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D5B38B4919CCFE2400459315 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D5B38B5519CCFE2400459315 /* AppDelegate.m in Sources */,
-				D5B38B5219CCFE2400459315 /* main.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D5B38B5819CCFE2400459315 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D5B38B6319CCFE2400459315 /* glscrollerTests.m in Sources */,
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+<<<<<<< HEAD
 /* Begin PBXTargetDependency section */
-		D5B38B5E19CCFE2400459315 /* PBXTargetDependency */ = {
+		D5B38BDB19CD0A9A00459315 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D5B38B4C19CCFE2400459315 /* glscroller */;
-			targetProxy = D5B38B5D19CCFE2400459315 /* PBXContainerItemProxy */;
+			target = D5B38BBE19CD0A9A00459315 /* Stage */;
+			targetProxy = D5B38BDA19CD0A9A00459315 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		D5B38BE119CD0A9A00459315 /* Debug */ = {
+=======
+/* Begin XCBuildConfiguration section */
 		D5681506195D4EBC00DF984C /* Debug */ = {
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -515,7 +630,11 @@
 			};
 			name = Debug;
 		};
+<<<<<<< HEAD
+		D5B38BE219CD0A9A00459315 /* Release */ = {
+=======
 		D5681507195D4EBC00DF984C /* Release */ = {
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -551,12 +670,24 @@
 			};
 			name = Release;
 		};
+<<<<<<< HEAD
+		D5B38BE419CD0A9A00459315 /* Debug */ = {
+=======
 		D5681509195D4EBC00DF984C /* Debug */ = {
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = iOS/Info.plist;
+<<<<<<< HEAD
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = Stage;
+			};
+			name = Debug;
+		};
+		D5B38BE519CD0A9A00459315 /* Release */ = {
+=======
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
@@ -566,121 +697,112 @@
 			name = Debug;
 		};
 		D568150A195D4EBC00DF984C /* Release */ = {
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = iOS/Info.plist;
+<<<<<<< HEAD
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = Stage;
+			};
+			name = Release;
+		};
+		D5B38BE719CD0A9A00459315 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iOS.app/iOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = iOSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = StageTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		D5B38BE819CD0A9A00459315 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iOS.app/iOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = iOSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = StageTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+=======
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Release;
-		};
-		D5B38B6519CCFE2400459315 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = glscroller/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				METAL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		D5B38B6619CCFE2400459315 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				INFOPLIST_FILE = glscroller/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				METAL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		D5B38B6819CCFE2400459315 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/glscroller.app/glscroller";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = glscrollerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				METAL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-			};
-			name = Debug;
-		};
-		D5B38B6919CCFE2400459315 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/glscroller.app/glscroller";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = glscrollerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				METAL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+<<<<<<< HEAD
+		D5B38BBA19CD0A9A00459315 /* Build configuration list for PBXProject "Stage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5B38BE119CD0A9A00459315 /* Debug */,
+				D5B38BE219CD0A9A00459315 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D5B38BE319CD0A9A00459315 /* Build configuration list for PBXNativeTarget "Stage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5B38BE419CD0A9A00459315 /* Debug */,
+				D5B38BE519CD0A9A00459315 /* Release */,
+=======
 		D56814E9195D4EBC00DF984C /* Build configuration list for PBXProject "Stage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D5681506195D4EBC00DF984C /* Debug */,
 				D5681507195D4EBC00DF984C /* Release */,
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+<<<<<<< HEAD
+		D5B38BE619CD0A9A00459315 /* Build configuration list for PBXNativeTarget "StageTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5B38BE719CD0A9A00459315 /* Debug */,
+				D5B38BE819CD0A9A00459315 /* Release */,
+=======
 		D5681508195D4EBC00DF984C /* Build configuration list for PBXNativeTarget "Stage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D5681509195D4EBC00DF984C /* Debug */,
 				D568150A195D4EBC00DF984C /* Release */,
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D5B38B6419CCFE2400459315 /* Build configuration list for PBXNativeTarget "glscroller" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D5B38B6519CCFE2400459315 /* Debug */,
-				D5B38B6619CCFE2400459315 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		D5B38B6719CCFE2400459315 /* Build configuration list for PBXNativeTarget "glscrollerTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D5B38B6819CCFE2400459315 /* Debug */,
-				D5B38B6919CCFE2400459315 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
 /* End XCConfigurationList section */
 	};
+<<<<<<< HEAD
+	rootObject = D5B38BB719CD0A9900459315 /* Project object */;
+=======
 	rootObject = D56814E6195D4EBC00DF984C /* Project object */;
+>>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 }

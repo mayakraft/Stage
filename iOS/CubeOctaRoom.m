@@ -10,9 +10,9 @@ const GLfloat quadVertices[3*4] = {
 
 @implementation CubeOctaRoom
 
-+(instancetype) roomView{
-    CubeOctaRoom *roomView = [[CubeOctaRoom alloc] init];
-    return roomView;
++(instancetype) room{
+    CubeOctaRoom *room = [[CubeOctaRoom alloc] init];
+    return room;
 }
 
 -(void) draw{

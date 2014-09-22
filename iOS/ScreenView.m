@@ -1,4 +1,3 @@
-#import <OpenGLES/ES1/gl.h>
 #import "ScreenView.h"
 
 @implementation UIScreenView

@@ -1,5 +1,5 @@
-#import "RoomView.h"
+#import "Room.h"
 
-@interface CubeOctaRoom : RoomView
+@interface CubeOctaRoom : Room
 
 @end

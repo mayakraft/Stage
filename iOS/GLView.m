@@ -16,6 +16,19 @@
 
 @implementation GLView
 
+-(UIView*) hitTest:(CGPoint)point withEvent:(UIEvent *)event{
+    //    NSLog(@"CurtainView : hitTest:(%.1f,%.1f) Subviews:%d",point.x, point.y, self.subviews.count);
+    for(UIView* v in [self subviews]){
+        CGPoint touchPoint = [v convertPoint:point fromView:self];
+        if([v pointInside:touchPoint withEvent:event]){
+            //            NSLog(@"%@",v.description);
+            return [super hitTest:point withEvent:event];
+        }
+    }
+    return nil;
+}
+
+
 //TODO: compensate for device-orientation aspect
 
 -(id) init{
