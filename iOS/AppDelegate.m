@@ -2,11 +2,7 @@
 //  AppDelegate.m
 //  Stage
 //
-<<<<<<< HEAD
 //  Created by Robby on 9/19/14.
-=======
-//  Created by Robby on 6/27/14.
->>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
 //  Copyright (c) 2014 Robby. All rights reserved.
 //
 
@@ -16,7 +12,6 @@
 #import "MenuViewController.h"
 
 @interface AppDelegate () <SWRevealViewControllerDelegate>
-<<<<<<< HEAD
             
 
 @end
@@ -26,23 +21,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-=======
-@end
-
-@implementation AppDelegate
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
->>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     // Override point for customization after application launch.
     Stage *stage = [[Stage alloc] init];
     MenuViewController *menu = [[MenuViewController alloc] init];
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 71b2221663ac7ac7d1bc71a7807620b95db9a580
     SWRevealViewController *mainRevealController = [[SWRevealViewController alloc] initWithRearViewController:menu frontViewController:stage];
 
     [mainRevealController setDelegate:self];
