@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D59632BF19D08BFC00EA5E4C /* SpinningPentagon.m in Sources */ = {isa = PBXBuildFile; fileRef = D59632BE19D08BFC00EA5E4C /* SpinningPentagon.m */; };
 		D5B38BC519CD0A9A00459315 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BC419CD0A9A00459315 /* main.m */; };
 		D5B38BC819CD0A9A00459315 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BC719CD0A9A00459315 /* AppDelegate.m */; };
 		D5B38BCA19CD0A9A00459315 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = D5B38BC919CD0A9A00459315 /* Shader.fsh */; };
@@ -15,7 +16,6 @@
 		D5B38BD419CD0A9A00459315 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5B38BD319CD0A9A00459315 /* Images.xcassets */; };
 		D5B38BE019CD0A9A00459315 /* iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BDF19CD0A9A00459315 /* iOSTests.m */; };
 		D5B38BEF19CD10C200459315 /* Primitives.c in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BEA19CD10C200459315 /* Primitives.c */; };
-		D5B38BF019CD10C200459315 /* ScreenView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BEC19CD10C200459315 /* ScreenView.m */; };
 		D5B38BF119CD10C200459315 /* GLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BEE19CD10C200459315 /* GLScrollView.m */; };
 		D5B38BF419CD17A600459315 /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BF319CD17A600459315 /* Room.m */; };
 		D5B38BF719CD190E00459315 /* AnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BF619CD190E00459315 /* AnimationController.m */; };
@@ -24,7 +24,6 @@
 		D5B38BFF19CD1D6500459315 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BFC19CD1D6500459315 /* SWRevealViewController.m */; };
 		D5B38C0519CD1D8200459315 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38C0219CD1D8200459315 /* MenuViewController.m */; };
 		D5B38C0619CD1D8200459315 /* NavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38C0419CD1D8200459315 /* NavBar.m */; };
-		D5B38C1319D0790000459315 /* GLUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38C1019D0790000459315 /* GLUIView.m */; };
 		D5B38C1419D0790000459315 /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38C1219D0790000459315 /* GLView.m */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D59632BD19D08BFC00EA5E4C /* SpinningPentagon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpinningPentagon.h; sourceTree = "<group>"; };
+		D59632BE19D08BFC00EA5E4C /* SpinningPentagon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpinningPentagon.m; sourceTree = "<group>"; };
 		D5B38BBF19CD0A9A00459315 /* Stage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B38BC319CD0A9A00459315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5B38BC419CD0A9A00459315 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -53,8 +54,6 @@
 		D5B38BDE19CD0A9A00459315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5B38BDF19CD0A9A00459315 /* iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSTests.m; sourceTree = "<group>"; };
 		D5B38BEA19CD10C200459315 /* Primitives.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Primitives.c; sourceTree = "<group>"; };
-		D5B38BEB19CD10C200459315 /* ScreenView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenView.h; sourceTree = "<group>"; };
-		D5B38BEC19CD10C200459315 /* ScreenView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenView.m; sourceTree = "<group>"; };
 		D5B38BED19CD10C200459315 /* GLScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLScrollView.h; sourceTree = "<group>"; };
 		D5B38BEE19CD10C200459315 /* GLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLScrollView.m; sourceTree = "<group>"; };
 		D5B38BF219CD17A600459315 /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
@@ -69,8 +68,6 @@
 		D5B38C0219CD1D8200459315 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		D5B38C0319CD1D8200459315 /* NavBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavBar.h; sourceTree = "<group>"; };
 		D5B38C0419CD1D8200459315 /* NavBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavBar.m; sourceTree = "<group>"; };
-		D5B38C0F19D0790000459315 /* GLUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLUIView.h; sourceTree = "<group>"; };
-		D5B38C1019D0790000459315 /* GLUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLUIView.m; sourceTree = "<group>"; };
 		D5B38C1119D0790000459315 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
 		D5B38C1219D0790000459315 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -186,6 +183,8 @@
 		D5B38C0719CD1D8600459315 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				D59632BD19D08BFC00EA5E4C /* SpinningPentagon.h */,
+				D59632BE19D08BFC00EA5E4C /* SpinningPentagon.m */,
 				D5B38C0319CD1D8200459315 /* NavBar.h */,
 				D5B38C0419CD1D8200459315 /* NavBar.m */,
 			);
@@ -197,10 +196,6 @@
 			children = (
 				D5B38C1119D0790000459315 /* GLView.h */,
 				D5B38C1219D0790000459315 /* GLView.m */,
-				D5B38C0F19D0790000459315 /* GLUIView.h */,
-				D5B38C1019D0790000459315 /* GLUIView.m */,
-				D5B38BEB19CD10C200459315 /* ScreenView.h */,
-				D5B38BEC19CD10C200459315 /* ScreenView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -310,16 +305,15 @@
 				D5B38BF119CD10C200459315 /* GLScrollView.m in Sources */,
 				D5B38C1419D0790000459315 /* GLView.m in Sources */,
 				D5B38BC819CD0A9A00459315 /* AppDelegate.m in Sources */,
-				D5B38BF019CD10C200459315 /* ScreenView.m in Sources */,
 				D5B38BCF19CD0A9A00459315 /* Stage.m in Sources */,
 				D5B38BC519CD0A9A00459315 /* main.m in Sources */,
 				D5B38C0619CD1D8200459315 /* NavBar.m in Sources */,
 				D5B38BFF19CD1D6500459315 /* SWRevealViewController.m in Sources */,
 				D5B38BEF19CD10C200459315 /* Primitives.c in Sources */,
 				D5B38BF719CD190E00459315 /* AnimationController.m in Sources */,
-				D5B38C1319D0790000459315 /* GLUIView.m in Sources */,
 				D5B38BF419CD17A600459315 /* Room.m in Sources */,
 				D5B38C0519CD1D8200459315 /* MenuViewController.m in Sources */,
+				D59632BF19D08BFC00EA5E4C /* SpinningPentagon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

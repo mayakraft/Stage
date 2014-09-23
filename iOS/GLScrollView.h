@@ -6,12 +6,13 @@
 //  Copyright (c) 2014 Robby. All rights reserved.
 //
 
-#import "ScreenView.h"
+#import "GLView.h"
 #import <GLKit/GLKit.h>
 #import <OpenGLES/ES1/gl.h>
 
-@interface GLScrollView : ScreenView
+@interface GLScrollView : GLView
 
+@property (nonatomic) CGPoint unMovableOrigin;
 @property (nonatomic, readonly) CGRect scrollableFrame;
 @property (nonatomic, readonly) CGSize scrollableContentSize;
 

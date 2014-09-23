@@ -12,8 +12,25 @@
 #define LITTLE_CUBE_WIDTH      (320.f / 3.f)
 #define SCROLLER_HEIGHT        LITTLE_CUBE_WIDTH
 
-
 @implementation GLScrollView
+
+-(id) initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self){
+        _unMovableOrigin = CGPointMake(frame.origin.x, frame.origin.y);
+    }
+    return self;
+}
+
+-(void) setFrame:(CGRect)frame{
+    
+    [super setFrame:frame];
+    _unMovableOrigin = CGPointMake(frame.origin.x, frame.origin.y);
+}
+
+-(UIView*) hitTest:(CGPoint)point withEvent:(UIEvent *)event{
+    return self;
+}
 
 - (CGRect)scrollableFrame
 {
@@ -41,13 +58,15 @@
 
 -(void) setScrollOffset:(CGPoint)scrollOffset{
     _scrollOffset = scrollOffset;
-    [self.view setCenter:CGPointMake(self.frame.origin.x + self.frame.size.width*.5 - scrollOffset.x,
-                                     self.frame.origin.y + self.frame.size.height*.5 - scrollOffset.y)];
+//    [self setCenter:CGPointMake(self.frame.origin.x + self.frame.size.width*.5 - scrollOffset.x,
+//                                self.frame.origin.y + self.frame.size.height*.5 - scrollOffset.y)];
+    [self setCenter:CGPointMake(_unMovableOrigin.x + self.frame.size.width*.5 - scrollOffset.x,
+                                _unMovableOrigin.y + self.frame.size.height*.5 - scrollOffset.y)];
 }
 
 -(void) customDraw{
     glPushMatrix();
-    glTranslatef(- self.scrollOffset.x, -self.scrollOffset.y, 0.0f);
+    glTranslatef(-self.scrollOffset.x, -self.scrollOffset.y, 0.0f);
     
     // draw code here
     

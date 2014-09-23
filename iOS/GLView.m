@@ -17,15 +17,17 @@
 @implementation GLView
 
 -(UIView*) hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-    //    NSLog(@"CurtainView : hitTest:(%.1f,%.1f) Subviews:%d",point.x, point.y, self.subviews.count);
+    NSLog(@"GLView (%d): hitTest:(%.1f,%.1f) Subviews:%d",self.tag, point.x, point.y, self.subviews.count);
     for(UIView* v in [self subviews]){
         CGPoint touchPoint = [v convertPoint:point fromView:self];
-        if([v pointInside:touchPoint withEvent:event]){
-            //            NSLog(@"%@",v.description);
+        if(v.userInteractionEnabled && [v pointInside:touchPoint withEvent:event]){
+            NSLog(@"Point Inside: %@",v.description);
             return [super hitTest:point withEvent:event];
         }
     }
-    return nil;
+    if([self isKindOfClass:[GLView class]])
+        return nil;
+    return [super hitTest:point withEvent:event];
 }
 
 
@@ -35,29 +37,14 @@
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
 }
 
-//-(id) initWithFrame:(CGRect)frame context:(EAGLContext *)context{
-//    self = [super initWithFrame:frame context:context];
-//    if(self){
-////        self.frame = frame;
-////        _bounds = CGRectMake(0, 0, frame.size.width, frame.size.height);
-//        width = self.frame.size.width;
-//        height = self.frame.size.height;
-//        _aspectRatio = self.frame.size.width/self.frame.size.height;
-////        self.opaque = NO;
-////        self.backgroundColor = [UIColor clearColor];
-//        [self setup];
-//    }
-//    return self;
-//}
-
 -(id) initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
         width = self.frame.size.width;
         height = self.frame.size.height;
         _aspectRatio = self.frame.size.width/self.frame.size.height;
+        self.backgroundColor = [UIColor clearColor];
 //        self.opaque = NO;
-        [self setup];
     }
     return self;
 }
@@ -71,11 +58,6 @@
     _y = y;
     self.frame = CGRectMake(self.frame.origin.x, y, self.frame.size.width, self.frame.size.height);
 }
-
-//-(void) displayLayer:(CALayer *)layer{
-//    NSLog(@"display layer");
-//    [super displayLayer:layer];
-//}
 
 -(void) drawRect:(CGRect)rect{
     NSLog(@"draw rect");
@@ -92,18 +74,7 @@
     }
 }
 
--(void)content{
-    static int rot;
-    rot++;
-    NSLog(@"draw");
-    // implement this function
-    // in your subclass
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0);
-    glTranslatef(self.bounds.size.width*.5, self.bounds.size.height*.5, 0.0);
-    glRotatef(rot, 0, 0, 1);
-    glScalef(75, 75, 1);
-    [self drawPentagon];
-}
+-(void)content{  }
 
 -(void) drawRect:(CGRect)rect forViewPrintFormatter:(UIViewPrintFormatter *)formatter{
     NSLog(@"draw rect forviewprintformatter");
@@ -115,42 +86,13 @@
     [super drawLayer:layer inContext:ctx];
 }
 
--(void) drawPentagon{
-    static const GLfloat pentFan[] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        .951f, .309f,
-        .5878, -.809,
-        -.5878, -.809,
-        -.951f, .309f,
-        0.0f, 1.0f
-    };
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, pentFan);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
-    glDisableClientState(GL_VERTEX_ARRAY);
-}
-
--(void) setup{
-    self.backgroundColor = [UIColor clearColor];
-    // implement this function
-    // in your subclass
-    
-    UIButton *b = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 100, 50)];
-    [b setBackgroundColor:[UIColor purpleColor]];
-    [self addSubview:b];
-}
-
 -(void)enterOrthographic{
-    NSLog(@"enter ortho");
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    
-    glOrthof(0, [[UIScreen mainScreen] bounds].size.width, 0, [[UIScreen mainScreen] bounds].size.height, -5, 1);
-//    glOrthof(0, width, 0, height, -5, 1);
+    glOrthof(0, width, 0, height, -5, 1);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 //    glEnable(GL_BLEND);

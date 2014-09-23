@@ -4,7 +4,6 @@
 
 +(instancetype) room;  // must subclass and implement with your custom class name
 
--(void) setup;  // implement these
--(void) draw;   // in your subclass
+-(void) draw;   // implement in your subclass
 
 @end

@@ -1,19 +1,19 @@
 # OpenGL + UIKit
 
-iOS skeleton project for getting underneath UIKit view-controllers and transitions, and seamlessly integrating 3D and OpenGL alongside Apple’s UIKit
+mini iOS framework for getting underneath UIKit view-controllers and transitions, and seamlessly integrating 3D and OpenGL alongside Apple’s UIKit
 
 # includes
 
 * the Facebook-style slide menu [SWReveal](https://github.com/John-Lluch/SWRevealViewController)
+* UIScrollView + OpenGL fix, the fix for the freezing draw loop problem (see WWDC 2012)
+* 2D OpenGL primitives
 
 ![image](https://raw.github.com/robbykraft/StagingArea/master/globe-theatre.jpg)
 
 ``` objective-c
 @class Stage  (GLKViewController)
 |
-|---@class Curtain    // 2D layers (touch interaction enabled)
-|   |
-|   |--(UIView*)view  //   UIKit attach point
+|---@class GLView     // 2D layers (touch interaction enabled for UIKit subviews)
 |
 |---@class Room       // 3D layers
 .

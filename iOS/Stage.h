@@ -10,7 +10,6 @@
 #import <GLKit/GLKit.h>
 
 #import "Room.h"
-#import "ScreenView.h"
 //#import "common.c"
 #import "AnimationController.h"
 #import "GLView.h"
@@ -22,11 +21,8 @@
 @property AnimationController *scene;
 
 @property (nonatomic) NSArray *rooms;     // ROOMS   (3D ENVIRONMENTS)
-@property (nonatomic) NSArray *screenViews;  // SCREENS (ORTHOGRAPHIC LAYERS)
 
 -(void) addSubroom:(Room*)roomView;
--(void) addSubglview:(GLView*)glView;
-//-(void) addSubscreen:(ScreenView*)screenView;
 
 @property (readonly)  NSTimeInterval elapsedSeconds;
 

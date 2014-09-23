@@ -11,19 +11,16 @@
 
 #import "SWRevealViewController.h"
 #import "GLScrollView.h"
-#import "ScreenView.h"
 
 /// custom
 #import "NavBar.h"
+#import "SpinningPentagon.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 ///////////////////////////
 ///////////////
-//// okay
-///////what is happening underneath the hood, with a UIView,
-/// where is the master draw loop, and what function is getting called inside a UIView
-/// to draw the stuff inside it
+//TODO: needs frame clipping, in GLView
 //////////
 ///
 ///
@@ -150,38 +147,37 @@ GLfloat gCubeVertexData[216] =
     start = [NSDate date];
     _backgroundColor = malloc(sizeof(float)*4);
     
-    NavBar *navBar = [NavBar navBarBottom];
-    [navBar setDelegate:self];
-    [self addSubscreen:navBar];
     
     ////////////////////////////////////////////////////
     
     glScrollView = [[GLScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height*.6, self.view.bounds.size.width, self.view.bounds.size.height*.2)];
-    [glScrollView.view setBackgroundColor:[UIColor lightGrayColor]];
-    UIView *darkGray = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width, 0, self.view.bounds.size.width, glScrollView.frame.size.height)];
-    [darkGray setBackgroundColor:[UIColor darkGrayColor]];
-    [glScrollView.view addSubview:darkGray];
-    [glScrollView.view setUserInteractionEnabled:NO];
-    [darkGray setUserInteractionEnabled:NO];
-    [self.view addSubview:glScrollView.view];
+//    [glScrollView setBackgroundColor:[UIColor lightGrayColor]];
+    [glScrollView setUserInteractionEnabled:NO];
+    [self.view addSubview:glScrollView];
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.frame = glScrollView.frame;
     scrollView.contentSize = CGSizeMake(glScrollView.frame.size.width*3, glScrollView.frame.size.height);//glScrollView.scrollableContentSize;
     scrollView.showsHorizontalScrollIndicator = NO;
     [scrollView setPagingEnabled:YES];
+    [scrollView setMinimumZoomScale:.01];
+    [scrollView setMaximumZoomScale:10.0];
     scrollView.delegate = self;
-    scrollView.tag = 0;
+    scrollView.tag = 1;
     scrollView.hidden = YES;
     [self.view addSubview:scrollView];
     
     UIView *dummyView = [[UIView alloc] initWithFrame:scrollView.frame];
-//    [dummyView setBackgroundColor:[UIColor clearColor]];
     [dummyView addGestureRecognizer:scrollView.panGestureRecognizer];
+    [dummyView setTag:2];
     [self.view addSubview:dummyView];
-    
-//    GLView *glView = [[GLView alloc] initWithFrame:CGRectMake(100, 100, 100, 100)];
-//    [self addSubglview:glView];
+
+    // adding content to the scrollview
+    UIView *darkGray = [[UIView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width, 0, self.view.bounds.size.width, glScrollView.frame.size.height)];
+    [darkGray setBackgroundColor:[UIColor darkGrayColor]];
+    [glScrollView addSubview:darkGray];
+    [darkGray setUserInteractionEnabled:NO];
+
     
     ///////////////////////////////////////////////////
     // Reveal Menu
@@ -195,16 +191,25 @@ GLfloat gCubeVertexData[216] =
     [self.view addSubview:menuButton];
     [menuButton addGestureRecognizer:revealController.panGestureRecognizer];
     
-    GLView *glkv = [[GLView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) ];
+    /////////////////////////////
+    // custom stuff
+    
+    SpinningPentagon *glkv = [[SpinningPentagon alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) ];
     [(GLKView *)self.view addSubview:glkv];
+    [glkv setTag:5];
+    
+    
+    NavBar *navBar = [NavBar navBarBottom];
+    [navBar setDelegate:self];
+    [self.view addSubview:navBar];
+    [navBar setTag:3];
+
 }
 
+//-(UIView*) viewForZoomingInScrollView:(UIScrollView *)scrollView{
+//    return self.view;
+//}
 
--(void) addSubscreen:(ScreenView *)screenView{
-    if(!_screenViews) _screenViews = [NSArray array];
-    _screenViews = [_screenViews arrayByAddingObject:screenView];
-    [self.view addSubview:screenView.view];
-}
 -(void) addSubroom:(Room *)room{
     if(!_rooms) _rooms = [NSArray array];
     _rooms = [_rooms arrayByAddingObject:room];

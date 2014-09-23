@@ -18,12 +18,10 @@
 
 @property (nonatomic) BOOL hidden;
 
--(id) init;   // fullscreen
-
+-(id) init;   // default fullscreen
 -(id) initWithFrame:(CGRect)frame;
 
 -(void) draw;
--(void) setup;
 
 @end
 

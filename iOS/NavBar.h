@@ -1,5 +1,4 @@
-#import "ScreenView.h"
-
+#import "GLView.h"
 
 @protocol NavBarDelegate <NSObject>
 @required
@@ -8,7 +7,7 @@
 @end
 
 
-@interface NavBar : ScreenView
+@interface NavBar : GLView
 
 @property id <NavBarDelegate> delegate;
 
