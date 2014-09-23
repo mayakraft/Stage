@@ -6,10 +6,6 @@
 
 #define STATUS_BAR 22
 
--(void) setup{
-    NSLog(@"NavBar.m : setup");
-}
-
 -(void) drawPentagon{
     static const GLfloat pentFan[] = {
         0.0f, 0.0f,
@@ -136,8 +132,8 @@
 -(void) backButtonPressed{
     if(_page <= 0) return;
     _page--;
-    [[self delegate] pageTurnBack:_page];
     [self setNeedsLayout];
+    [[self delegate] pageTurnBack:_page];
 }
 
 -(void) forwardButtonPressed{

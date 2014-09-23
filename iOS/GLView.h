@@ -13,15 +13,15 @@
 
 @interface GLView : UIView
 
-@property (nonatomic, readonly) float x;
-@property (nonatomic, readonly) float y;
+//@property (nonatomic, readonly) float x;
+//@property (nonatomic, readonly) float y;
 
 @property (nonatomic) BOOL hidden;
 
 -(id) init;   // default fullscreen
 -(id) initWithFrame:(CGRect)frame;
 
--(void) draw;
+-(void) draw:(CGPoint)parentFrameOffset;
 
 @end
 

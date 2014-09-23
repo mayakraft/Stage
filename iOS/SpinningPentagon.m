@@ -8,6 +8,8 @@
 
 #import "SpinningPentagon.h"
 
+#include "Primitives.h"
+
 @implementation SpinningPentagon
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -20,30 +22,15 @@
     return self;
 }
 
--(void) drawPentagon{
-    static const GLfloat pentFan[] = {
-        0.0f, 0.0f,
-        0.0f, 1.0f,
-        .951f, .309f,
-        .5878, -.809,
-        -.5878, -.809,
-        -.951f, .309f,
-        0.0f, 1.0f
-    };
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(2, GL_FLOAT, 0, pentFan);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
-    glDisableClientState(GL_VERTEX_ARRAY);
-}
-
 -(void)content{
     static int rot;
     rot++;
     glColor4f(1.0f, 1.0f, 1.0f, 1.0);
     glTranslatef(self.bounds.size.width*.5, self.bounds.size.height*.5, 0.0);
     glRotatef(rot, 0, 0, 1);
-    glScalef(75, 75, 1);
-    [self drawPentagon];
+    glScalef(100, 100, 1);
+//    glDrawRect(CGRectMake(0, 0, 2, 2));
+    glDrawTriangle();
 }
 
 /*

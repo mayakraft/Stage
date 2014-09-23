@@ -18,6 +18,11 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
+
+#define Z_NEAR 0.1f
+#define Z_FAR 100.0f
+
+
 ///////////////////////////
 ///////////////
 //TODO: needs frame clipping, in GLView
@@ -139,6 +144,7 @@ GLfloat gCubeVertexData[216] =
     GLKView *view = (GLKView *)self.view;
     view.context = self.context;
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+//    [self setPreferredFramesPerSecond:60];
     
 //    [self setupGL];
     
@@ -150,7 +156,7 @@ GLfloat gCubeVertexData[216] =
     
     ////////////////////////////////////////////////////
     
-    glScrollView = [[GLScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height*.6, self.view.bounds.size.width, self.view.bounds.size.height*.2)];
+    glScrollView = [[GLScrollView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height*.3, self.view.bounds.size.width, self.view.bounds.size.height*.2)];
 //    [glScrollView setBackgroundColor:[UIColor lightGrayColor]];
     [glScrollView setUserInteractionEnabled:NO];
     [self.view addSubview:glScrollView];
@@ -177,6 +183,12 @@ GLfloat gCubeVertexData[216] =
     [darkGray setBackgroundColor:[UIColor darkGrayColor]];
     [glScrollView addSubview:darkGray];
     [darkGray setUserInteractionEnabled:NO];
+    
+    SpinningPentagon *sp = [[SpinningPentagon alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, glScrollView.frame.size.height)];
+    [glScrollView addSubview:sp];
+    [sp setTag:9];
+    
+    [self.view setClipsToBounds:YES];
 
     
     ///////////////////////////////////////////////////
@@ -194,9 +206,9 @@ GLfloat gCubeVertexData[216] =
     /////////////////////////////
     // custom stuff
     
-    SpinningPentagon *glkv = [[SpinningPentagon alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) ];
-    [(GLKView *)self.view addSubview:glkv];
-    [glkv setTag:5];
+//    SpinningPentagon *glkv = [[SpinningPentagon alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) ];
+//    [self.view addSubview:glkv];
+//    [glkv setTag:5];
     
     
     NavBar *navBar = [NavBar navBarBottom];
@@ -265,7 +277,7 @@ GLfloat gCubeVertexData[216] =
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    NSLog(@"scrolling stopped");
+    NSLog(@"2 scrolling stopped");
     [self stopDisplayLink];
 }
 
@@ -277,21 +289,23 @@ GLfloat gCubeVertexData[216] =
 
 #pragma mark Display Link
 
-- (void)startDisplayLinkIfNeeded
-{
+- (void)startDisplayLinkIfNeeded{
     if (!_displayLink) {
-        NSLog(@"display link");
-        _displayLink = [CADisplayLink displayLinkWithTarget:(GLKView*)self selector:@selector(auxDraw)];
+        NSLog(@"1 display link");
+        _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(auxDraw)];
+// problem though, lowers to 30 for opengl, but to 15 for uikit translations
+//        [_displayLink setFrameInterval:2];   // maintain 30 fps
         [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:UITrackingRunLoopMode];
     }
 }
+
 -(void) auxDraw{
     [self update];
     [(GLKView*)self.view display];
 }
-- (void)stopDisplayLink
-{
-    NSLog(@"stopping display link");
+
+- (void)stopDisplayLink{
+    NSLog(@"3 stopping display link");
     if(_displayLink)
         [_displayLink invalidate];
     _displayLink = nil;
@@ -406,6 +420,7 @@ GLfloat gCubeVertexData[216] =
     
     
     _elapsedSeconds = -[start timeIntervalSinceNow];
+    
 //    [self animationHandler];
     
 //    if([motionManager isDeviceMotionAvailable]){
@@ -447,7 +462,7 @@ GLfloat gCubeVertexData[216] =
     for(id view in self.view.subviews){
         if([view isKindOfClass:[GLView class]]){//[view respondsToSelector:@selector(setNeedsDisplay)]){
 //            NSLog(@"manually inserting display (%f, %f)",[view frame].origin.x, [view frame].origin.y);
-            [view draw];
+            [view draw:CGPointZero];
         }
     }
 }

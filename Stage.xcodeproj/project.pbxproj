@@ -15,7 +15,6 @@
 		D5B38BCF19CD0A9A00459315 /* Stage.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BCE19CD0A9A00459315 /* Stage.m */; };
 		D5B38BD419CD0A9A00459315 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5B38BD319CD0A9A00459315 /* Images.xcassets */; };
 		D5B38BE019CD0A9A00459315 /* iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BDF19CD0A9A00459315 /* iOSTests.m */; };
-		D5B38BEF19CD10C200459315 /* Primitives.c in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BEA19CD10C200459315 /* Primitives.c */; };
 		D5B38BF119CD10C200459315 /* GLScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BEE19CD10C200459315 /* GLScrollView.m */; };
 		D5B38BF419CD17A600459315 /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BF319CD17A600459315 /* Room.m */; };
 		D5B38BF719CD190E00459315 /* AnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B38BF619CD190E00459315 /* AnimationController.m */; };
@@ -53,7 +52,7 @@
 		D5B38BD919CD0A9A00459315 /* StageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5B38BDE19CD0A9A00459315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5B38BDF19CD0A9A00459315 /* iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iOSTests.m; sourceTree = "<group>"; };
-		D5B38BEA19CD10C200459315 /* Primitives.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Primitives.c; sourceTree = "<group>"; };
+		D5B38BEA19CD10C200459315 /* Primitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Primitives.h; sourceTree = "<group>"; };
 		D5B38BED19CD10C200459315 /* GLScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLScrollView.h; sourceTree = "<group>"; };
 		D5B38BEE19CD10C200459315 /* GLScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLScrollView.m; sourceTree = "<group>"; };
 		D5B38BF219CD17A600459315 /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
@@ -118,12 +117,10 @@
 				D5B38BCD19CD0A9A00459315 /* Stage.h */,
 				D5B38BCE19CD0A9A00459315 /* Stage.m */,
 				D5B38BF819CD1A8500459315 /* Animations */,
-				D5B38BEA19CD10C200459315 /* Primitives.c */,
+				D5B38BEA19CD10C200459315 /* Primitives.h */,
 				D5B38BF219CD17A600459315 /* Room.h */,
 				D5B38BF319CD17A600459315 /* Room.m */,
-				D5B38C0B19CD2BAB00459315 /* Views */,
-				D5B38BED19CD10C200459315 /* GLScrollView.h */,
-				D5B38BEE19CD10C200459315 /* GLScrollView.m */,
+				D5B38C0B19CD2BAB00459315 /* GLView */,
 				D5B38C0719CD1D8600459315 /* Examples */,
 				D5B38C0019CD1D6800459315 /* RevealMenu */,
 				D5B38BD319CD0A9A00459315 /* Images.xcassets */,
@@ -191,13 +188,15 @@
 			name = Examples;
 			sourceTree = "<group>";
 		};
-		D5B38C0B19CD2BAB00459315 /* Views */ = {
+		D5B38C0B19CD2BAB00459315 /* GLView */ = {
 			isa = PBXGroup;
 			children = (
 				D5B38C1119D0790000459315 /* GLView.h */,
 				D5B38C1219D0790000459315 /* GLView.m */,
+				D5B38BED19CD10C200459315 /* GLScrollView.h */,
+				D5B38BEE19CD10C200459315 /* GLScrollView.m */,
 			);
-			name = Views;
+			name = GLView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,7 +308,6 @@
 				D5B38BC519CD0A9A00459315 /* main.m in Sources */,
 				D5B38C0619CD1D8200459315 /* NavBar.m in Sources */,
 				D5B38BFF19CD1D6500459315 /* SWRevealViewController.m in Sources */,
-				D5B38BEF19CD10C200459315 /* Primitives.c in Sources */,
 				D5B38BF719CD190E00459315 /* AnimationController.m in Sources */,
 				D5B38BF419CD17A600459315 /* Room.m in Sources */,
 				D5B38C0519CD1D8200459315 /* MenuViewController.m in Sources */,
@@ -370,7 +368,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				METAL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -406,7 +404,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				METAL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -420,6 +418,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Stage;
 			};
@@ -431,6 +430,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Stage;
 			};
